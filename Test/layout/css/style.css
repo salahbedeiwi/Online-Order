@@ -1,0 +1,42 @@
+body{
+	background-color: #e1e1e1; /* #0b0b59*/
+	color: #c9a311;
+}
+/* main page : select location */
+.showLocation {
+    background-color: #e1e1e1;
+    border: 2px solid #e6dfc1;
+    border-radius: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #3c763d;
+    font-size: 1.5em;
+    padding: 10px;
+    margin: 10.33% 33.33% auto 33.33%;
+    width: 33.33%;
+}
+.showMenu {
+    background-color: #e1e1e1;
+    border: 2px solid #e6dfc1;
+    border-radius: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #3c763d;
+    font-size: 1.5em;
+    padding: 10px;
+    margin: 2%;
+    width: 90%;
+    min-height: 500px;
+    height: 1200px;
+}
+.menuItemsSmall {
+    background-color: #e1e1e1;
+    border: 2px solid #e6dfc1;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #31708f;
+}
+/* Small Screens: iphone, samsungs, ... */
+@media screen and (max-width: 776px) {
+  .showLocation {
+	    margin: auto 2%;
+	    width: 90%;
+	}
+}
