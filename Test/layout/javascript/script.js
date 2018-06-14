@@ -23,6 +23,7 @@ var customDinners = [
 var Menu = { "Menu" :
 	[
 	{
+		"id"			: 1,
 		"Category" 		: categories[0],
 		"Item"			: "Catfish & Shrimp",
 		"Price"			: 15.99,
@@ -30,11 +31,12 @@ var Menu = { "Menu" :
 		"CustomItem"	: customDinners, //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
-		"IsDescriped"	: true,
-		"Description"	: "This is one of our favorite dish",
+		"IsDescriped"	: false,
+		"Description"	: "This is one of our favorite dish for Catfish & Shrimp",
 		"Active"		: true
 	},
 	{
+		"id"			: 2,
 		"Category" 		: categories[0],
 		"Item"			: "Chicken Tender & Perch",
 		"Price"			: 10.99,
@@ -43,10 +45,11 @@ var Menu = { "Menu" :
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
-		"Description"	: "This is one of our favorite dish",
+		"Description"	: "This is one of our favorite dish for Chicken Tender & Perch",
 		"Active"		: true
 	},
 	{
+		"id"			: 3,
 		"Category" 		: categories[0],
 		"Item"			: "Catfish & Shrimp",
 		"Price"			: 15.99,
@@ -55,22 +58,24 @@ var Menu = { "Menu" :
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
-		"Description"	: "This is one of our favorite dish",
+		"Description"	: "This is one of our favorite dish for Catfish & Shrimp",
 		"Active"		: true
 	},
 	{
+		"id"			: 4,
 		"Category" 		: categories[0],
 		"Item"			: "Chicken Tender & Perch",
 		"Price"			: 10.99,
-		"IsCustomItem"	: true,
+		"IsCustomItem"	: false,
 		"CustomItem"	: customDinners, //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
-		"Description"	: "This is one of our favorite dish",
+		"Description"	: "This is one of our favorite dish for Chicken Tender & Perch",
 		"Active"		: true
 	},
 	{
+		"id"			: 5,
 		"Category" 		: categories[0],
 		"Item"			: "Wings & Gizzards",
 		"Price"			: 10.99,
@@ -79,10 +84,11 @@ var Menu = { "Menu" :
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
-		"Description"	: "This is one of our favorite dish",
+		"Description"	: "This is one of our favorite dish for Wings & Gizzards",
 		"Active"		: false
 	},
 	{
+		"id"			: 6,
 		"Category" 		: categories[1],
 		"Item"			: "Philly Steak",
 		"Price"			: 10.99,
@@ -91,7 +97,7 @@ var Menu = { "Menu" :
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
-		"Description"	: "This is one of our favorite dish",
+		"Description"	: "This is one of our favorite dish for Philly Steak",
 		"Active"		: true
 	}
 	]
@@ -156,8 +162,7 @@ function loadingImg(id){
 }
 //load main Image after selecting the location
 function loadingMainImgAfterLocationIsSelected(id){
-	selectElement(id).innerHTML = 
-		"<img src='layout/img/Design/Screen-Shot-2018-04-24-at-1.49.12-PM-e1524694734911.png' class='img-responsive img-rounded center-block' alt='' title='loading'/>";
+	selectElement(id).innerHTML = "<img src='layout/img/Design/Screen-Shot-2018-04-24-at-1.49.12-PM-e1524694734911.png' class='img-responsive img-rounded center-block' alt='' title='loading'/>";
 }
 //set cookies : cookiesName, When does it expire
 function setCookie(cname, cvalue, extraHours) {
@@ -238,9 +243,9 @@ function loadMyCategories(rslt){
 var	 txt1 = "";
 function loadMenu(rslt){
 	//add a select dropdown for all categories:
-	txt1 += '<div class="col-xm-12 col-sm-6"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
+	txt1 += '<div class="col-xm-12 col-sm-8"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
 	//show the related menu based on the value of the #showCategoriesName
-	txt1 += "<div id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-6' id='renderOrderedItems'><h3>Your Order!</h3></div>";
+	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!</h3></div>";
     /*
 	txt1 += "<table border='1'>";
     for (x in getLocations) {
@@ -293,6 +298,16 @@ function displayLocationMenu(){
 	else
 		setElementValue("showLocationError", "Must Select Location!"); // 1.1.3
 }
+//check if an item is descriped
+function checkDescription(x){
+	var descriptionSection = "";
+	if(Menu['Menu'][x].IsDescriped == true){
+		descriptionSection = "<label class='text-muted itemDescription'>- "+descriptionRslt + "</label>";
+	}else{
+		descriptionSection = ""; //keep empty
+	}
+	return descriptionSection;
+}
 //get related menu item:
 function getRelatedMenu(value){
 	if(value.length == 0 || value == "")
@@ -300,15 +315,43 @@ function getRelatedMenu(value){
 	else{
 		test(value + ' is Selected!');
 		//match selected item
-		var itemName, itemPrice = "";
+		var itemName, itemPrice, itemId, 
+			customOrder, descriptionRslt, 
+			descriptionSection, itemDescriped,
+			itemCustom, itemCustomButtons,customItemDetails,
+			customItemAre = "";
 		selectElement("addRelatedMenu").innerHTML = "<p class='lead'>"+ value +"</p>";
 		for(x in Menu['Menu']){
 			if(Menu['Menu'][x].Category == value && Menu['Menu'][x].Active == true){
 				console.log(Menu['Menu'][x].Item + ' ........\n\t\t\t\t\t\t $' + Menu['Menu'][x].Price);
 				itemName = Menu['Menu'][x].Item,
 				itemPrice = Menu['Menu'][x].Price;
-				//addResult = addMenu(itemName,itemPrice); 
-				selectElement("addRelatedMenu").innerHTML +=  "<p class='col-xm-12 lead menuItemsSmall'>" + itemName + "<br><span class='text-right'>$" + itemPrice + "</span>"+"</p>"; 
+				itemId	= Menu['Menu'][x].id;
+				itemDescriped = Menu['Menu'][x].IsDescriped;
+				descriptionRslt	= Menu['Menu'][x].Description;
+				itemCustom	= Menu['Menu'][x].IsCustomItem;
+				customItemAre = Menu['Menu'][x].CustomItem;
+				//check if description is true, if so -> show description section				
+				if(itemDescriped == true)
+					descriptionSection = "<label class='text-muted itemDescription'>- "+descriptionRslt + "</label>";
+				else
+					descriptionSection = ""; //keep empty
+				//show custom info: IsCustomItem
+				if(itemCustom == true ){
+					itemCustomButtons = '<div class="orderBtnSection"><button type="button" class="col-xs-3 btn btn-info"  data-toggle="collapse" href="#collapseItem_'+itemId+'" role="button" aria-expanded="false" aria-controls="collapseItem_'+itemId+'">Custom</button><span class="col-xs-6"></span>';
+					
+				}
+				else
+					itemCustomButtons = '<div class="orderBtnSection"><span class="col-xs-3"></span><span class="col-xs-6"></span>';
+				//get all extra custom items:
+				//for(x in Menu['Menu'][3].CustomItem) console.log(Menu['Menu'][3].CustomItem[x].custItem);
+				for(y in customItemAre)
+					customItemDetails = '<div class="col-xs-12"><div class="col-xs-8">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div><div class="col-xs-4"> ' + Menu['Menu'][x].CustomItem[y].price + '</div></div>';
+				customOrder = '<div class="col-xm-12 menuItemsSmall"><span class="itemName col-xs-10">'+ itemName + "</span><span class='itemPrice col-xs-2'>$" + itemPrice;
+				customOrder +='</span><div class="clearfix"></div>'+ descriptionSection +' <div class="clearfix"></div>' + itemCustomButtons;
+				customOrder += '<button type="button" class="col-xs-3 btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>'
+				customOrder += '<div  class="collapse" id="collapseItem_'+itemId+'">'+ customItemDetails +'</div></div></div>';
+				selectElement("addRelatedMenu").innerHTML +=  customOrder;
 			}
 		}
 	}
@@ -316,5 +359,5 @@ function getRelatedMenu(value){
 function addMenu(itemName,itemPrice){
 	var myDiv = 	"<div class='col-xm-12 col-sm-6'>";
 		myDiv += 	"<p class='lead'>" + itemName + "<label class='text-right'>$" + itemPrice + "</label>"+"</p>";
-		myDiv += 	"</div>";
+		myDiv += 	"</div></div>";
 }

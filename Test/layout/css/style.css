@@ -1,6 +1,13 @@
+/*
+	Name 		: Salah Bedeiwi
+	Version 	: 1.0.0
+	Date 		: 6/11/2018
+	Copyright	: Custom Work!
+*/
 body{
 	background-color: #e1e1e1; /* #0b0b59*/
-	color: #c9a311;
+	color: #a77b41;
+	font-family: serif;
 }
 /* main page : select location */
 .showLocation {
@@ -20,23 +27,62 @@ body{
     border-radius: 5%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #3c763d;
-    font-size: 1.5em;
+    /*font-size: 1.5em;*/
+    height: 1200px;
     padding: 10px;
     margin: 2%;
-    width: 90%;
     min-height: 500px;
-    height: 1200px;
+    /*width: 90%;*/
 }
 .menuItemsSmall {
     background-color: #e1e1e1;
     border: 2px solid #e6dfc1;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #31708f;
+    margin: 30px 0px
+}
+.itemPrice {
+	position: relative;
+    right: 0px;
+    background-color: #57020229;
+    color: black;
+    padding: 2px;
+    border-radius: 9%;
+    top: -13px;
+    border-bottom: 2px solid #092136;
+    text-align: center;
+    font-style: oblique;
+    font-size: medium;
+}
+.itemName{
+	color: #1e0d0d;
+    font-family: serif;
+    font-size: 1.2em;
+    font-style: unset;
+    font-variant-caps: small-caps;
+    font-weight: bold;
+}
+.itemDescription {
+    font-style: italic;
+	font-weight: 300;
+    padding-left: 48px;
+    margin-bottom: 0
+}
+.CustomOrAddOrderBtn{
+	padding: 0;
+
+}
+.orderBtnSection{
+	background-color: #e1e1e1;
+    padding: 38px;
 }
 /* Small Screens: iphone, samsungs, ... */
 @media screen and (max-width: 776px) {
-  .showLocation {
+  	/*.showLocation {
 	    margin: auto 2%;
 	    width: 90%;
+	}*/
+	.itemPrice {
+	    right: 3px;
 	}
 }
