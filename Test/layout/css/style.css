@@ -9,6 +9,12 @@ body{
 	color: #a77b41;
 	font-family: serif;
 }
+.mt-12 {
+	margin-top: 12px
+}
+.mb-neg-32{
+	margin-bottom: -32px;
+}
 /* main page : select location */
 .showLocation {
     background-color: #e1e1e1;
@@ -61,6 +67,7 @@ body{
     font-style: unset;
     font-variant-caps: small-caps;
     font-weight: bold;
+    margin-top: 12px;
 }
 .itemDescription {
     font-style: italic;
@@ -74,7 +81,21 @@ body{
 }
 .orderBtnSection{
 	background-color: #e1e1e1;
-    padding: 38px;
+    padding: 10px;
+}
+.orderBtnSection .gridSection {
+    display: grid;
+}
+.customItemOptions {
+    color: dimgrey;
+	padding: 5px;
+}
+.customItemOptions .eachItemCustomName::before {
+    content: " - ";
+}
+.eachCustomItemsBtn {
+	padding: 0px 6px;
+	margin-top: -7px;
 }
 /* Small Screens: iphone, samsungs, ... */
 @media screen and (max-width: 776px) {

@@ -17,23 +17,23 @@ var getLocations = [
 ];
 var categories = [ "Dinners", "Lunch", "Breakfast", "Side Orders", "Specials" ];
 var customDinners = [
-	{	"custItem" : "Extra Meat", "price": 15.99 } ,
-	{	"custItem" : "Upgrade Lemonade", "price": 5.99 } 
+	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99 } ,
+	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99 } 
 ];
 var Menu = { "Menu" :
 	[
 	{
-		"id"			: 1,
-		"Category" 		: categories[0],
-		"Item"			: "Catfish & Shrimp",
-		"Price"			: 15.99,
-		"IsCustomItem"	: true,
-		"CustomItem"	: customDinners, //invoke only if IsCustomItem is true
-		"HaveImage"		: true,
+		"id"			: 1, //item unique id number
+		"Category" 		: categories[0], //choose the category to be displayed under
+		"Item"			: "Catfish & Shrimp", //item name
+		"Price"			: 15.99, //item price
+		"IsCustomItem"	: true, //show custom button if is true
+		"CustomItem"	: [customDinners[0]], //invoke only if IsCustomItem is true
+		"HaveImage"		: true, //show image?
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
-		"IsDescriped"	: false,
-		"Description"	: "This is one of our favorite dish for Catfish & Shrimp",
-		"Active"		: true
+		"IsDescriped"	: false, //no description
+		"Description"	: "This is one of our favorite dish for Catfish & Shrimp", //description is. can be empty if IsDescriped is false
+		"Active"		: true //it is valid item
 	},
 	{
 		"id"			: 2,
@@ -41,7 +41,7 @@ var Menu = { "Menu" :
 		"Item"			: "Chicken Tender & Perch",
 		"Price"			: 10.99,
 		"IsCustomItem"	: true,
-		"CustomItem"	: customDinners, //invoke only if IsCustomItem is true
+		"CustomItem"	: [customDinners[0]], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
@@ -54,7 +54,14 @@ var Menu = { "Menu" :
 		"Item"			: "Catfish & Shrimp",
 		"Price"			: 15.99,
 		"IsCustomItem"	: true,
-		"CustomItem"	: customDinners, //invoke only if IsCustomItem is true
+		"CustomItem"	: [
+							customDinners[0],
+							customDinners[0],
+							customDinners[0],
+							customDinners[0],
+							customDinners[0],
+							customDinners[1]
+						   ], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
@@ -67,7 +74,7 @@ var Menu = { "Menu" :
 		"Item"			: "Chicken Tender & Perch",
 		"Price"			: 10.99,
 		"IsCustomItem"	: false,
-		"CustomItem"	: customDinners, //invoke only if IsCustomItem is true
+		"CustomItem"	: [customDinners[1]], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
@@ -80,7 +87,7 @@ var Menu = { "Menu" :
 		"Item"			: "Wings & Gizzards",
 		"Price"			: 10.99,
 		"IsCustomItem"	: true,
-		"CustomItem"	: customDinners, //invoke only if IsCustomItem is true
+		"CustomItem"	: [customDinners[0]], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
@@ -93,7 +100,7 @@ var Menu = { "Menu" :
 		"Item"			: "Philly Steak",
 		"Price"			: 10.99,
 		"IsCustomItem"	: true,
-		"CustomItem"	: customDinners, //invoke only if IsCustomItem is true
+		"CustomItem"	: [customDinners[0]], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
@@ -308,6 +315,7 @@ function checkDescription(x){
 	}
 	return descriptionSection;
 }
+var addBtnGlyphicon = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
 //get related menu item:
 function getRelatedMenu(value){
 	if(value.length == 0 || value == "")
@@ -321,6 +329,7 @@ function getRelatedMenu(value){
 			itemCustom, itemCustomButtons,customItemDetails,
 			customItemAre = "";
 		selectElement("addRelatedMenu").innerHTML = "<p class='lead'>"+ value +"</p>";
+		//get all items on the menu
 		for(x in Menu['Menu']){
 			if(Menu['Menu'][x].Category == value && Menu['Menu'][x].Active == true){
 				console.log(Menu['Menu'][x].Item + ' ........\n\t\t\t\t\t\t $' + Menu['Menu'][x].Price);
@@ -338,20 +347,25 @@ function getRelatedMenu(value){
 					descriptionSection = ""; //keep empty
 				//show custom info: IsCustomItem
 				if(itemCustom == true ){
-					itemCustomButtons = '<div class="orderBtnSection"><button type="button" class="col-xs-3 btn btn-info"  data-toggle="collapse" href="#collapseItem_'+itemId+'" role="button" aria-expanded="false" aria-controls="collapseItem_'+itemId+'">Custom</button><span class="col-xs-6"></span>';
-					
+					itemCustomButtons = '<div class="orderBtnSection"><button type="button" class="col-xs-3 btn btn-info" data-toggle="collapse" href="#collapseItem_'+itemId+'" role="button" aria-expanded="false" aria-controls="collapseItem_'+itemId+'">Custom</button><span class="col-xs-6"></span>';
 				}
 				else
 					itemCustomButtons = '<div class="orderBtnSection"><span class="col-xs-3"></span><span class="col-xs-6"></span>';
-				//get all extra custom items:
-				//for(x in Menu['Menu'][3].CustomItem) console.log(Menu['Menu'][3].CustomItem[x].custItem);
-				for(y in customItemAre)
-					customItemDetails = '<div class="col-xs-12"><div class="col-xs-8">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div><div class="col-xs-4"> ' + Menu['Menu'][x].CustomItem[y].price + '</div></div>';
-				customOrder = '<div class="col-xm-12 menuItemsSmall"><span class="itemName col-xs-10">'+ itemName + "</span><span class='itemPrice col-xs-2'>$" + itemPrice;
+				//show item name, description, custom btn, add btn, custom item options as well
+				customOrder = '<div class="col-xm-12 menuItemsSmall"><span id= "item_name_'+itemId+'" class="itemName col-xs-10">'+ itemName + "</span><span class='itemPrice col-xs-2'>$" + itemPrice;
 				customOrder +='</span><div class="clearfix"></div>'+ descriptionSection +' <div class="clearfix"></div>' + itemCustomButtons;
-				customOrder += '<button type="button" class="col-xs-3 btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>'
-				customOrder += '<div  class="collapse" id="collapseItem_'+itemId+'">'+ customItemDetails +'</div></div></div>';
+				customOrder += '<button type="button" class="col-xs-3 btn btn-primary">'+addBtnGlyphicon+'</button></span><div class="clearfix"></div>'
+				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+'"></div></div></div></div>'; //add in between the custom items
 				selectElement("addRelatedMenu").innerHTML +=  customOrder;
+				//get all extra custom items option: for(x in Menu['Menu'][3].CustomItem) console.log(Menu['Menu'][3].CustomItem[x].custItem);
+				for(y in customItemAre){
+					customItemDetails =  '<div class="col-xs-12 customItemOptions">';
+					customItemDetails += '<div class="col-xs-8 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
+					customItemDetails += '<div class="col-xs-2"> $' + Menu['Menu'][x].CustomItem[y].price + '</div>';
+					customItemDetails += '<div class="col-xs-2"><button type="button" class="btn btn-primary eachCustomItemsBtn" onclick="function addCustomItem('+Menu['Menu'][x].CustomItem[y].id+')">'+addBtnGlyphicon+'</button></div>';
+					customItemDetails += '</div>';
+					selectElement("showCustomItemsHere_"+itemId).innerHTML +=  customItemDetails; //must be called after appending customOrder btn, so it can read it "showCustomItemsHere_"+itemId
+				}
 			}
 		}
 	}
