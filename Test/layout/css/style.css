@@ -97,6 +97,24 @@ body{
 	padding: 0px 6px;
 	margin-top: -7px;
 }
+.addTitleToCustomItems{
+    color: #337ab7;
+    font-weight: bolder;
+    padding-left: 13px
+    padding-top: 14px;
+}
+/*override bootstrap*/
+.btn-info {
+    background-color: #798f63;
+    border: 1px solid burlywood;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #fff;
+}
+.btn-info:focus, .btn-info:hover, .btn-info:visited, .btn-info:active {
+    color: #e1e1e1;
+    background-color: #5f8539;
+    border-color: #ffffff;
+}
 /* Small Screens: iphone, samsungs, ... */
 @media screen and (max-width: 776px) {
   	/*.showLocation {

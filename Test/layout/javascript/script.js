@@ -16,9 +16,22 @@ var getLocations = [
 	}
 ];
 var categories = [ "Dinners", "Lunch", "Breakfast", "Side Orders", "Specials" ];
+var customSelectDown = [
+					{id:1, "item":"small", "price": 2.99},
+					{id:2, "item":"medium", "price": 3.99},
+					{id:3, "item":"large", "price": 4.99},
+					{id:4, "item":"Cook Meduim", "price": 0.99},
+					{id:5, "item":"Well Done", "price": 0.99},
+					{id:6, "item":"X.Hard", "price": 0.00}
+				];
 var customDinners = [
-	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99 } ,
-	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99 } 
+		//each custom item is unique (id)
+	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99, 
+		"type": "dropdownList", "options": [customSelectDown[1],customSelectDown[2] ] },
+	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99, "type": "checkbox" , 
+		"options": [ customSelectDown[0] ] },
+	{	"id" : 3, "custItem" : "Chilly", "price": 19.99, "type": "number" , 
+		"options": [ customSelectDown[3] ] }
 ];
 var Menu = { "Menu" :
 	[
@@ -54,10 +67,10 @@ var Menu = { "Menu" :
 		"Item"			: "Catfish & Shrimp",
 		"Price"			: 15.99,
 		"IsCustomItem"	: true,
-		"CustomItem"	: [
+		"CustomItem"	: [ 
 							customDinners[0],
 							customDinners[0],
-							customDinners[0],
+							customDinners[1],
 							customDinners[0],
 							customDinners[0],
 							customDinners[1]
@@ -106,7 +119,39 @@ var Menu = { "Menu" :
 		"IsDescriped"	: true,
 		"Description"	: "This is one of our favorite dish for Philly Steak",
 		"Active"		: true
+	},
+	/*
+	{
+		"id"			: 7,
+		"Category" 		: categories[0],
+		"Item"			: "Catfish & Shrimp",
+		"Price"			: 15.99,
+		"IsCustomItem"	: true,
+		"CustomItem"	:   [ {
+								"type_checkbox" : [
+									customDinners[0],
+									customDinners[0],
+									customDinners[1],
+									customDinners[0],
+									customDinners[0],
+									customDinners[1]
+								],"type_radio" : [
+									customDinners[0],
+									customDinners[0],
+									customDinners[1],
+									customDinners[0],
+									customDinners[0],
+									customDinners[1]
+								]
+							  }
+						   ], //invoke only if IsCustomItem is true
+		"HaveImage"		: true,
+		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
+		"IsDescriped"	: true,
+		"Description"	: "This is one of our favorite dish for Catfish & Shrimp",
+		"Active"		: true
 	}
+	*/
 	]
 };
 /*
@@ -315,7 +360,18 @@ function checkDescription(x){
 	}
 	return descriptionSection;
 }
+//get dropdown items from specific list
+function getDropDownList(menuIndex,CustomItemIndex){
+	//Menu['Menu'][0].CustomItem[0]["options"][1]["id"]
+	var listItemDropDown = Menu['Menu'][menuIndex].CustomItem[CustomItemIndex].options, addSelectedItems = "";
+	for(DropDownListItemIndex in listItemDropDown){
+		addSelectedItems += '<option value="'+Menu['Menu'][menuIndex].CustomItem[CustomItemIndex]["options"][DropDownListItemIndex]["price"]+'">'+Menu['Menu'][menuIndex].CustomItem[CustomItemIndex]["options"][DropDownListItemIndex]["item"]+'</option>';
+	}
+	return addSelectedItems;
+}
 var addBtnGlyphicon = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
+var minusBtnGlyphicon = '<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>';
+var clearHTMLDiv = '<div class="clearfix"></div>';
 //get related menu item:
 function getRelatedMenu(value){
 	if(value.length == 0 || value == "")
@@ -326,8 +382,8 @@ function getRelatedMenu(value){
 		var itemName, itemPrice, itemId, 
 			customOrder, descriptionRslt, 
 			descriptionSection, itemDescriped,
-			itemCustom, itemCustomButtons,customItemDetails,
-			customItemAre = "";
+			itemCustom, itemCustomButtons, customItemDetails,
+			customItemAre, customItemTitle = "";
 		selectElement("addRelatedMenu").innerHTML = "<p class='lead'>"+ value +"</p>";
 		//get all items on the menu
 		for(x in Menu['Menu']){
@@ -351,18 +407,37 @@ function getRelatedMenu(value){
 				}
 				else
 					itemCustomButtons = '<div class="orderBtnSection"><span class="col-xs-3"></span><span class="col-xs-6"></span>';
+				
+				//show custom item title:
+				customItemTitle  =  '<div class="col-xs-12 customItemOptions">';
+				customItemTitle += '<div class="col-xs-5">Item</div>';
+				customItemTitle  += '<div class="col-xs-2"> Price</div>';
+				customItemTitle  += '<div class="col-xs-5"> Choose</div></div>'+clearHTMLDiv;
 				//show item name, description, custom btn, add btn, custom item options as well
 				customOrder = '<div class="col-xm-12 menuItemsSmall"><span id= "item_name_'+itemId+'" class="itemName col-xs-10">'+ itemName + "</span><span class='itemPrice col-xs-2'>$" + itemPrice;
 				customOrder +='</span><div class="clearfix"></div>'+ descriptionSection +' <div class="clearfix"></div>' + itemCustomButtons;
-				customOrder += '<button type="button" class="col-xs-3 btn btn-primary">'+addBtnGlyphicon+'</button></span><div class="clearfix"></div>'
-				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+'"></div></div></div></div>'; //add in between the custom items
+				customOrder += '<button type="button" class="col-xs-3 btn btn-primary">'+addBtnGlyphicon+'</button></span><div class="clearfix"></div>';
+				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+'"></div></div></div></div>'; //add in between the custom items
 				selectElement("addRelatedMenu").innerHTML +=  customOrder;
+				//get all dropdown list items on each dropdown:
 				//get all extra custom items option: for(x in Menu['Menu'][3].CustomItem) console.log(Menu['Menu'][3].CustomItem[x].custItem);
 				for(y in customItemAre){
-					customItemDetails =  '<div class="col-xs-12 customItemOptions">';
-					customItemDetails += '<div class="col-xs-8 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
+					customItemDetails =  '<div id="addCustomItemTitle_'+Menu['Menu'][x].CustomItem[y].id+'"></div><div class="col-xs-12 customItemOptions">';
+					customItemDetails += '<div class="col-xs-5 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
 					customItemDetails += '<div class="col-xs-2"> $' + Menu['Menu'][x].CustomItem[y].price + '</div>';
-					customItemDetails += '<div class="col-xs-2"><button type="button" class="btn btn-primary eachCustomItemsBtn" onclick="function addCustomItem('+Menu['Menu'][x].CustomItem[y].id+')">'+addBtnGlyphicon+'</button></div>';
+					customItemDetails += '<div class="col-xs-5 btn-group" role="group" aria-label="Show add and subtract">';	
+					//show radio btn, dropdown list, dropdown numebr, checkbox
+					//get a dropdown list of items:
+					if(Menu['Menu'][x].CustomItem[y]["type"] == "dropdownList"){ //if type selected is a dropdownList
+						customItemDetails += '<select class="custom-select" id="inp01"><option selected>Choose...</option>'+ getDropDownList(x,y) +'</select>';
+					}else if(Menu['Menu'][x].CustomItem[y]["type"] == "checkbox"){//if type selected is a checkbox
+						customItemDetails += '<input type="checkbox" class="btn btn-primary eachCustomItemsBtn" value="Add Now">Add Now</input>';
+					}else if(Menu['Menu'][x].CustomItem[y]["type"] == "number"){ //if type selected is number
+						customItemDetails += '<button type="button" class="btn btn-primary eachCustomItemsBtn" onclick="function addCustomItem('+Menu['Menu'][x].CustomItem[y].id+')">'+addBtnGlyphicon+'</button>';
+						customItemDetails += '<input type="number" class="btn btn-primary eachCustomItemsBtn" value="Add Now"/>';
+						customItemDetails += '<button type="button" class="btn btn-primary eachCustomItemsBtn" onclick="function addCustomItem('+Menu['Menu'][x].CustomItem[y].id+')">'+minusBtnGlyphicon+'</button>';
+					}
+					customItemDetails += '</div>';
 					customItemDetails += '</div>';
 					selectElement("showCustomItemsHere_"+itemId).innerHTML +=  customItemDetails; //must be called after appending customOrder btn, so it can read it "showCustomItemsHere_"+itemId
 				}
