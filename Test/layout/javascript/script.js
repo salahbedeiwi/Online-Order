@@ -288,7 +288,8 @@ function loadMenu(rslt){
 	//add a select dropdown for all categories:
 	txt1 += '<div class="col-xm-12 col-sm-8"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
 	//show the related menu section based on the value of the #showCategoriesName and also show your order section
-	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!</h3></div>";
+	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!</h3>";
+	txt1 += "<div class='table-responsive'><table class='table'><thead><th>Qty</th><th>Item</th><th>Price($)</th></thead><tbody id='addYourOrderHere'></tbody></table></div></div>";
     selectElement(rslt).innerHTML = txt1;
     loadingMainImgAfterLocationIsSelected("addRelatedMenu"); //load this image and then later append the menu
 } // load my menu
@@ -400,7 +401,7 @@ function getRelatedMenu(value){
 				//show item name, description, custom btn, add btn, custom item options as well
 				customOrder = '<div class="col-xm-12 menuItemsSmall"><span id= "item_name_'+itemId+'" class="itemName col-xs-10">'+ itemName + "</span><span class='itemPrice col-xs-2'>$" + itemPrice;
 				customOrder +='</span><div class="clearfix"></div>'+ descriptionSection +' <div class="clearfix"></div>' + itemCustomButtons;
-				customOrder += '<button type="button" class="col-xs-3 btn btn-primary">'+addBtnGlyphicon+'</button><div class="clearfix"></div>';
+				customOrder += '<button type="button" class="col-xs-3 btn btn-primary" onclick="addItemToCheckOut('+itemId+", 'addYourOrderHere'"+')">'+addBtnGlyphicon+'</button><div class="clearfix"></div>';
 				//start a collapse div here
 				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+'"></div></div></div></div>'; //add in between the custom items
 				selectElement("addRelatedMenu").innerHTML +=  customOrder;
@@ -424,4 +425,51 @@ function addMenu(itemName,itemPrice){
 	var myDiv = 	"<div class='col-xm-12 col-sm-6'>";
 		myDiv += 	"<p class='lead'>" + itemName + "<label class='text-right'>$" + itemPrice + "</label>"+"</p>";
 		myDiv += 	"</div></div>";
+}
+//add order to checkout - front end:
+// function addItemToCheckOut(id, appendTo){
+	// //create tr
+	// var tr = document.createElement('tr'); //create an element
+	// var rslt = "";//empty text
+	// //look for this id on the menu & get all its info
+	// for( c in Menu['Menu'] ){
+		// if(Menu['Menu'][c].id == id){ //find the matching item with the id 
+			// var itemName = Menu['Menu'][c].Item; //get item name
+			// var itemPrice = Menu['Menu'][c].Price;//get item price
+			// // var wholeRow = "<td>1</td>"+"<td>"+itemName+"</td>"+"<td>"+itemPrice+"</td>";
+			// // rslt = document.createTextNode(wholeRow); //add item qty, name and price
+			// rslt = document.createTextNode(itemName+' - $'+itemPrice); //add item name,
+			// test('<td>1</td><td>'+itemName+'</td><td>'+itemPrice+'</td>');
+		// }
+	// }
+	// tr.appendChild(rslt); //add text to the li
+	// //append this info to:
+	// document.getElementById(appendTo).appendChild(tr); //append it to the last item.
+// }
+function addItemToCheckOut(id, appendTo){
+	//create tr
+	var tr = document.createElement('tr'); //create an element
+	var td_qty = document.createElement('td'); //create an element
+	var td_price = document.createElement('td'); //create an element
+	var td_name = document.createElement('td'); //create an element
+	var rslt_qty,rslt_name,rslt_price = "";//empty text
+	//look for this id on the menu & get all its info
+	for( c in Menu['Menu'] ){
+		if(Menu['Menu'][c].id == id){ //find the matching item with the id 
+			var itemName = Menu['Menu'][c].Item; //get item name
+			var itemPrice = Menu['Menu'][c].Price;//get item price
+			var itemID = Menu['Menu'][c].id;//get item price
+			rslt_qty = document.createTextNode(1); //add item qty,
+			rslt_name = document.createTextNode(itemName); //add item name,
+			rslt_price = document.createTextNode(itemPrice); //add item price,
+		}
+	}
+	td_qty.appendChild(rslt_qty);
+	td_name.appendChild(rslt_name);
+	td_price.appendChild(rslt_price);
+	tr.appendChild(td_qty); //add qty to this item
+	tr.appendChild(td_name); //add name to this item
+	tr.appendChild(td_price); //add price to this item
+	//append this info to:
+	document.getElementById(appendTo).appendChild(tr); //append it to the last item.
 }
