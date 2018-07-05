@@ -17,17 +17,17 @@ var getLocations = [
 ];
 var categories = [ "Dinners", "Lunch", "Breakfast", "Side Orders", "Specials" ];
 var customSelectDown = [
-					{id:1, "item":"small", "price": 2.99},
-					{id:2, "item":"medium", "price": 3.99},
-					{id:3, "item":"large", "price": 4.99},
-					{id:4, "item":"Cook Meduim", "price": 0.99},
-					{id:5, "item":"Well Done", "price": 0.99},
-					{id:6, "item":"X.Hard", "price": 0.00}
+					{id:1, "item":"small", "price": 2.99}, //0
+					{id:2, "item":"medium", "price": 3.99}, //1
+					{id:3, "item":"large", "price": 4.99},//2
+					{id:4, "item":"Cook Meduim", "price": 0.99},//3
+					{id:5, "item":"Well Done", "price": 0.99},//4
+					{id:6, "item":"X.Hard", "price": 0.00}//5
 				];
 var customDinners = [
 		//each custom item is unique (id)
 	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99, 
-		"type": "dropdownList", "options": [customSelectDown[1],customSelectDown[2] ] },
+		"type": "dropdownList", "options": [customSelectDown[1] ] }, //0 & 1 index
 	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99, "type": "checkbox" , 
 		"options": [ customSelectDown[0] ] },
 	{	"id" : 3, "custItem" : "Chilly", "price": 19.99, "type": "number" , 
@@ -54,7 +54,7 @@ var Menu = { "Menu" :
 		"Item"			: "Chicken Tender & Perch",
 		"Price"			: 10.99,
 		"IsCustomItem"	: true,
-		"CustomItem"	: [customDinners[0]], //invoke only if IsCustomItem is true
+		"CustomItem"	: [customDinners[1]], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
@@ -69,11 +69,7 @@ var Menu = { "Menu" :
 		"IsCustomItem"	: true,
 		"CustomItem"	: [ 
 							customDinners[0],
-							customDinners[0],
-							customDinners[1],
-							customDinners[0],
-							customDinners[0],
-							customDinners[1]
+							customDinners[2]
 						   ], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
@@ -429,7 +425,11 @@ function getRelatedMenu(value){
 					//show radio btn, dropdown list, dropdown numebr, checkbox
 					//get a dropdown list of items:
 					if(Menu['Menu'][x].CustomItem[y]["type"] == "dropdownList"){ //if type selected is a dropdownList
-						customItemDetails += '<select class="custom-select" id="inp01"><option selected>Choose...</option>'+ getDropDownList(x,y) +'</select>';
+						var addList = "";
+						for(f in Menu['Menu'][x].CustomItem[y]["options"]){
+							addList += getDropDownList(x,y);
+						}
+						customItemDetails += '<select class="custom-select" id="inp01"><option selected>Choose...</option>'+ addList +'</select>';
 					}else if(Menu['Menu'][x].CustomItem[y]["type"] == "checkbox"){//if type selected is a checkbox
 						customItemDetails += '<input type="checkbox" class="btn btn-primary eachCustomItemsBtn" value="Add Now">Add Now</input>';
 					}else if(Menu['Menu'][x].CustomItem[y]["type"] == "number"){ //if type selected is number
