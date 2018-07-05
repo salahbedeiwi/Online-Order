@@ -1,17 +1,16 @@
 <?php 
 	//class
-	include 'routers.php';
-	include $_controllers.'myControllers.php';
+	include_once 'routers.php';
+	include_once $_controllers.'functions.php';
 ?>
 <?php 
 	function _getHeaderTags(){
-		include 'headerTags.php';
+		include_once 'headerTags.php';
 	}
 	function _getRoutersControllersFunctions(){
-		include 'routers.php'; #all shortcuts
-		include $_controllers.'myControllers.php';
+		include_once 'routers.php'; #all shortcuts
 	}
 	function _include_routers(){
-		include 'routers.php';
+		include_once 'routers.php';
 	}
 ?>
