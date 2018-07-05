@@ -14,8 +14,8 @@
 			<!-- Include head -->
 			<?php 
 				include 'routers.php';
-				include $func;
-				_getRoutersControllersFunctions(); #call in controllers, functions and routers
+				include $func; //call in functions page
+				_include_routers(); #call in routers page
 				_getHeaderTags(); #call in header tags from headerTags.php
 			?>
 		</head>
