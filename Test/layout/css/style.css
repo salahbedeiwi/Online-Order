@@ -115,13 +115,38 @@ body{
     background-color: #5f8539;
     border-color: #ffffff;
 }
+.addCustomSelectionBtn{
+	padding:0;
+	line-height:1;
+}
 /* Small Screens: iphone, samsungs, ... */
 @media screen and (max-width: 776px) {
-  	/*.showLocation {
-	    margin: auto 2%;
-	    width: 90%;
-	}*/
+  	.showLocation {
+		background-color: #e1e1e1;
+		border: 2px solid #e6dfc1;
+		border-radius: 5%;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		color: #3c763d;
+		font-size: 1.5em;
+		padding: 5px;
+		margin: 10% auto;
+		width: 90%;
+	}
 	.itemPrice {
 	    right: 3px;
 	}
+	.showMenu {
+		background-color: #e1e1e1;
+		border: 2px solid #e6dfc1;
+		border-radius: 5%;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		color: #3c763d;
+		padding:1px;
+		margin:1px;
+		width:100%;
+	}
+	.orderBtnSection {
+		padding: 4px;
+	}
+	.container{padding:0}
 }

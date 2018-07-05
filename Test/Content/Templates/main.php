@@ -6,10 +6,11 @@
 	  <div class="form-group">
 	    <label for="selectLocationLabel">Select Location</label>
 	    <div id="getLocations">
-			<!-- Get Locations -->      	
+			<!-- Get All Locations Here -->      	
 	    </div>
 	  </div>
 	  <div class="form-group">
+		<!-- Show error here if location is not selected -->
 	  	<span class="label label-danger" id="showLocationError"></span>
 	  </div>
 	  <button type="button" class="btn btn-primary" id="selectMenuBtn">View Menu</button>

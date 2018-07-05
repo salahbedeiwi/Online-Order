@@ -1,6 +1,7 @@
 //add all locations on here: 
 var getLocations = [
 	{
+		"id" : 0,
 		"location" : "Burnsville",
 		"locationValue" : "Burnsville",
 		"locationAddress" : "1234 sample, Burnsville MN",
@@ -8,6 +9,7 @@ var getLocations = [
 		"menu_url" : "Burnsville.json"
 	},
 	{
+		"id" : 1,
 		"location" : "St Paul",
 		"locationValue" : "St_Paul",
 		"locationAddress" : "1234 sample, St Paul MN",
@@ -15,6 +17,7 @@ var getLocations = [
 		"menu_url" : "StPaul.json"
 	}
 ];
+//my categories
 var categories = [ "Dinners", "Lunch", "Breakfast", "Side Orders", "Specials" ];
 var customSelectDown = [
 					{id:1, "item":"small", "price": 2.99}, //0
@@ -24,14 +27,12 @@ var customSelectDown = [
 					{id:5, "item":"Well Done", "price": 0.99},//4
 					{id:6, "item":"X.Hard", "price": 0.00}//5
 				];
+//custom each item - to have these extras on it when click on custom button
 var customDinners = [
 		//each custom item is unique (id)
-	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99, 
-		"type": "dropdownList", "options": [customSelectDown[1] ] }, //0 & 1 index
-	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99, "type": "checkbox" , 
-		"options": [ customSelectDown[0] ] },
-	{	"id" : 3, "custItem" : "Chilly", "price": 19.99, "type": "number" , 
-		"options": [ customSelectDown[3] ] }
+	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99}, //0 & 1 index
+	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99},
+	{	"id" : 3, "custItem" : "Chilly", "price": 19.99}
 ];
 var Menu = { "Menu" :
 	[
@@ -62,20 +63,22 @@ var Menu = { "Menu" :
 		"Active"		: true
 	},
 	{
-		"id"			: 3,
-		"Category" 		: categories[0],
-		"Item"			: "Catfish & Shrimp",
-		"Price"			: 15.99,
+		"id"						: 3,
+		"Category" 			: categories[0],
+		"Item"					: "Catfish & Shrimp",
+		"Price"					: 15.99,
 		"IsCustomItem"	: true,
-		"CustomItem"	: [ 
-							customDinners[0],
-							customDinners[2]
-						   ], //invoke only if IsCustomItem is true
+		"CustomItem"		: [ 
+										customDinners[0],
+										customDinners[0],
+										customDinners[0],
+										customDinners[2]
+									], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
-		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
-		"IsDescriped"	: true,
-		"Description"	: "This is one of our favorite dish for Catfish & Shrimp",
-		"Active"		: true
+		"ImgUrl"				: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
+		"IsDescriped"		: true,
+		"Description"			: "This is one of our favorite dish for Catfish & Shrimp",
+		"Active"				: true
 	},
 	{
 		"id"			: 4,
@@ -118,34 +121,24 @@ var Menu = { "Menu" :
 	},
 	/*
 	{
-		"id"			: 7,
-		"Category" 		: categories[0],
-		"Item"			: "Catfish & Shrimp",
-		"Price"			: 15.99,
-		"IsCustomItem"	: true,
-		"CustomItem"	:   [ {
-								"type_checkbox" : [
-									customDinners[0],
-									customDinners[0],
-									customDinners[1],
-									customDinners[0],
-									customDinners[0],
-									customDinners[1]
-								],"type_radio" : [
-									customDinners[0],
-									customDinners[0],
-									customDinners[1],
-									customDinners[0],
-									customDinners[0],
-									customDinners[1]
-								]
-							  }
-						   ], //invoke only if IsCustomItem is true
-		"HaveImage"		: true,
+		"id"			: 7, //every item must be unique
+		"Category" 		: categories[0], //add this item to which category
+		"Item"			: "Catfish & Shrimp", //item name
+		"Price"			: 15.99, //item price
+		"IsCustomItem"	: true, //if this item can be custom
+		"CustomItem"	:   [ //add custom options for this item
+										customDinners[0],
+										customDinners[0],
+										customDinners[1],
+										customDinners[0],
+										customDinners[0],
+										customDinners[1]
+									]	//invoke only if IsCustomItem is true
+		"HaveImage"		: true, //if item can have an image
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
-		"IsDescriped"	: true,
-		"Description"	: "This is one of our favorite dish for Catfish & Shrimp",
-		"Active"		: true
+		"IsDescriped"	: true, //show description
+		"Description"	: "This is one of our favorite dish for Catfish & Shrimp", //only if IsDescriped is true
+		"Active"		: true //if item is available
 	}
 	*/
 	]
@@ -179,13 +172,13 @@ var Menu = { "Menu" :
 	ex: show value of json data with drop down
 	https://www.w3schools.com/js/tryit.asp?filename=tryjson_html_table_dynamic
 */
-function selectElement(elementName){
+function selectElement(elementName){ //select element by id
 	return document.getElementById(elementName);
 }
-function getElementValue(elementName){
+function getElementValue(elementName){ //input/select/radio/checkbox
 	return selectElement(elementName).value;
 }
-function setElementValue(elementName, msg){
+function setElementValue(elementName, msg){ // add a message to an element
 	selectElement(elementName).innerHTML = msg;
 	return msg;
 }
@@ -193,7 +186,7 @@ function styleElement(elementName){
 	//selectLocationDropDown
 	return document.getElementById(elementName).style;
 }
-function test(msg){
+function test(msg){ //console.log a message
 	return console.log(msg);
 }
 //load any script:
@@ -203,7 +196,7 @@ function dynamicallyLoadScript(url) {
 
     document.head.appendChild(script); // Add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
 }
-//load an img
+//loading an img - may be used for onloading specific data
 function loadingImg(id){
 	selectElement(id).innerHTML = 
 		"<img src='layout/img/Design/loading1.gif' style='width:50px' class='img-responsive img-rounded center-block' alt='' title='loading'/>";
@@ -253,7 +246,7 @@ function deleteCookieIfExists(cookieName) {
     }
     else {
         // do cookie exists stuff
-        deleteCookie(cookieName);
+        deleteCookie(cookieName);//delete cookie on selecting new location or page reload
     }
 }
 //1.0.0
@@ -280,6 +273,7 @@ function loadJsonData(RenderAt, src) {
 	xhr.open('GET', src, true);
 	xhr.send();
 }; //1.0.1 : loads any json file data in json format
+//load all categories
 var	 txt0 = "";
 function loadMyCategories(rslt){
 	txt0 += '<option value="">Select Menu</option>';
@@ -288,27 +282,20 @@ function loadMyCategories(rslt){
    	}
     selectElement(rslt).innerHTML = txt0;
 }
+//this will show both sections for 1. showing your menu select & categories & menu items sections 2. your order sections
 var	 txt1 = "";
 function loadMenu(rslt){
 	//add a select dropdown for all categories:
 	txt1 += '<div class="col-xm-12 col-sm-8"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
-	//show the related menu based on the value of the #showCategoriesName
+	//show the related menu section based on the value of the #showCategoriesName and also show your order section
 	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!</h3></div>";
-    /*
-	txt1 += "<table border='1'>";
-    for (x in getLocations) {
-            txt1 += "<tr><td>" + getLocations[x].location + "</td></tr>";
-    }
-    txt1 += "</table>";
-    */
     selectElement(rslt).innerHTML = txt1;
-    loadingMainImgAfterLocationIsSelected("addRelatedMenu");
+    loadingMainImgAfterLocationIsSelected("addRelatedMenu"); //load this image and then later append the menu
 } // load my menu
 function loadLocations(rslt){
    var txt = "";
    txt += '<select class="form-control text-center" id="showLocationsName" required="required"> <option value="">Choose Location</option>';
     for (x in getLocations) {
-           // txt += "<option value="+ getLocations[x].menu_url +">"+ getLocations[x].location + "</option>";
             txt += "<option value="+ getLocations[x].locationValue +">"+ getLocations[x].location + "</option>";
     }
     txt += '</select>';
@@ -317,39 +304,38 @@ function loadLocations(rslt){
 selectElement("getLocations").addEventListener("load", loadLocations("getLocations")); // fire the locations on page load
 selectElement("showLocationsName").addEventListener("change", function(){
 	//delete existed location
-	test("Cookie is to : " + document.cookie); //cookie before
-    deleteCookieIfExists("LocationSelectedIs");//delete location cookie, because customer is changing the location
-	test("Cookie is to : " + document.cookie); //cookie after
+	test("Cookie is to : " + document.cookie); //cookie before: was there a cookie before? if yes show it, if no- empty cookie
+    deleteCookieIfExists("LocationSelectedIs");//delete existing location cookie, if customer is changing the location
+	test("Cookie is to : " + document.cookie); //cookie after - new cookie
 }); // when changing the location, update the existed location cookie
 // 1.1.0
-var getLocationBtn 	= selectElement("selectMenuBtn");
-getLocationBtn.addEventListener("click", displayLocationMenu); // 1.1.1
-function displayLocationMenu(){
-	if(	getElementValue("showLocationsName").length > 1 ){
-		test(getElementValue("showLocationsName") +" is selected!");
-		setElementValue("showLocationError", ""); // 1.1.2
-		// 1.2.0
-		loadingImg("addProperMenuHere");
-		setTimeout(loadContent, 3000);
-		function loadContent(){
-			// loadJsonData("addProperMenuHere", 'Content/Business/businessLocations.js');
-			loadMenu("addProperMenuHere"); // view related menu
-			loadMyCategories("showCategoriesName");// show all categories as a select dropdown list
-		}
-		// then hide the select dropdown
-		var selectedLocation = getElementValue("showLocationsName");
-		//add a cookie for the location: make it exprie after an hour from now
-		setCookie("LocationSelectedIs", selectedLocation, 0.5); //cookie: LocationSelectedIs
-		selectElement("selectLocationDropDown").innerText = selectedLocation; //show selected location
-	// selectLocationDropDown
+var getLocationBtn 	= selectElement("selectMenuBtn"); //on click on view menu btn of main page
+getLocationBtn.addEventListener("click", displayLocationMenu); // 1.1.1 - when clicking on view menu btn
+function displayLocationMenu(){ //on selecting a location
+	if( getElementValue("showLocationsName").length > 1 ){
+			test(getElementValue("showLocationsName") +" is selected!");
+			setElementValue("showLocationError", ""); // 1.1.2 - don't show errors
+			// 1.2.0
+			loadingImg("addProperMenuHere"); //load this image here on addProperMenuHere - div where the menu will be displayed
+			setTimeout(loadContent, 3000); //3 seconds and show loadContent
+			function loadContent(){
+				loadMenu("addProperMenuHere"); // view both sections for the menu and your order sections
+				loadMyCategories("showCategoriesName");// show all categories as a select dropdown on the menu section
+			}
+			// then hide the select dropdown
+			var selectedLocation = getElementValue("showLocationsName");
+			//add a cookie for the location: make it exprie after an hour from now
+			setCookie("LocationSelectedIs", selectedLocation, 0.5); //cookie: LocationSelectedIs to be expired in 0.5 day(s)
+			selectElement("selectLocationDropDown").innerText = selectedLocation; //show selected location to be displayed on the select location
+		// selectLocationDropDown
 	}
 	else
-		setElementValue("showLocationError", "Must Select Location!"); // 1.1.3
+		setElementValue("showLocationError", "Must Select Location!"); // 1.1.3 - show an error if no selection is made
 }
 //check if an item is descriped
 function checkDescription(x){
 	var descriptionSection = "";
-	if(Menu['Menu'][x].IsDescriped == true){
+	if(Menu['Menu'][x].IsDescriped == true){ //if found, have a label to be displayed
 		descriptionSection = "<label class='text-muted itemDescription'>- "+descriptionRslt + "</label>";
 	}else{
 		descriptionSection = ""; //keep empty
@@ -368,10 +354,12 @@ function getDropDownList(menuIndex,CustomItemIndex){
 var addBtnGlyphicon = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
 var minusBtnGlyphicon = '<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>';
 var clearHTMLDiv = '<div class="clearfix"></div>';
-//get related menu item:
+//get related menu item on change the drop down of the categories:
 function getRelatedMenu(value){
-	if(value.length == 0 || value == "")
+	if(value.length == 0 || value == ""){
 		test('No Value is Selected!');
+		selectElement("addRelatedMenu").innerHTML =  "<p class='text-center red' style='color: red; border: 1px solid;'>Must Select Menu Category!</p>"; 
+	}
 	else{
 		test(value + ' is Selected!');
 		//match selected item
@@ -380,24 +368,24 @@ function getRelatedMenu(value){
 			descriptionSection, itemDescriped,
 			itemCustom, itemCustomButtons, customItemDetails,
 			customItemAre, customItemTitle = "";
-		selectElement("addRelatedMenu").innerHTML = "<p class='lead'>"+ value +"</p>";
-		//get all items on the menu
+		selectElement("addRelatedMenu").innerHTML = "<h3 class='text-center'>"+ value +"</h3>";
+		//get all items on the menu - as long as it is active and the value is the same as the category value selected
 		for(x in Menu['Menu']){
 			if(Menu['Menu'][x].Category == value && Menu['Menu'][x].Active == true){
-				console.log(Menu['Menu'][x].Item + ' ........\n\t\t\t\t\t\t $' + Menu['Menu'][x].Price);
-				itemName = Menu['Menu'][x].Item,
-				itemPrice = Menu['Menu'][x].Price;
-				itemId	= Menu['Menu'][x].id;
-				itemDescriped = Menu['Menu'][x].IsDescriped;
-				descriptionRslt	= Menu['Menu'][x].Description;
-				itemCustom	= Menu['Menu'][x].IsCustomItem;
-				customItemAre = Menu['Menu'][x].CustomItem;
+				console.log(Menu['Menu'][x].Item + ' ........\n\t\t\t\t\t\t $' + Menu['Menu'][x].Price); //test: item name and price
+				itemName = Menu['Menu'][x].Item, //get item name
+				itemPrice = Menu['Menu'][x].Price;//get item price
+				itemId	= Menu['Menu'][x].id;//get item id
+				itemDescriped = Menu['Menu'][x].IsDescriped;//is item have a description
+				descriptionRslt	= Menu['Menu'][x].Description;//what is the item description
+				itemCustom	= Menu['Menu'][x].IsCustomItem;//does item have a custom item
+				customItemAre = Menu['Menu'][x].CustomItem; //what are the options for this custom item
 				//check if description is true, if so -> show description section				
 				if(itemDescriped == true)
 					descriptionSection = "<label class='text-muted itemDescription'>- "+descriptionRslt + "</label>";
 				else
 					descriptionSection = ""; //keep empty
-				//show custom info: IsCustomItem
+				//show custom info: IsCustomItem - add a custom button to be shown
 				if(itemCustom == true ){
 					itemCustomButtons = '<div class="orderBtnSection"><button type="button" class="col-xs-3 btn btn-info" data-toggle="collapse" href="#collapseItem_'+itemId+'" role="button" aria-expanded="false" aria-controls="collapseItem_'+itemId+'">Custom</button><span class="col-xs-6"></span>';
 				}
@@ -408,11 +396,12 @@ function getRelatedMenu(value){
 				customItemTitle  =  '<div class="col-xs-12 customItemOptions">';
 				customItemTitle += '<div class="col-xs-5">Item</div>';
 				customItemTitle  += '<div class="col-xs-2"> Price</div>';
-				customItemTitle  += '<div class="col-xs-5"> Choose</div></div>'+clearHTMLDiv;
+				customItemTitle  += '<div class="col-xs-5"> Select</div></div>'+clearHTMLDiv; 
 				//show item name, description, custom btn, add btn, custom item options as well
 				customOrder = '<div class="col-xm-12 menuItemsSmall"><span id= "item_name_'+itemId+'" class="itemName col-xs-10">'+ itemName + "</span><span class='itemPrice col-xs-2'>$" + itemPrice;
 				customOrder +='</span><div class="clearfix"></div>'+ descriptionSection +' <div class="clearfix"></div>' + itemCustomButtons;
-				customOrder += '<button type="button" class="col-xs-3 btn btn-primary">'+addBtnGlyphicon+'</button></span><div class="clearfix"></div>';
+				customOrder += '<button type="button" class="col-xs-3 btn btn-primary">'+addBtnGlyphicon+'</button><div class="clearfix"></div>';
+				//start a collapse div here
 				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+'"></div></div></div></div>'; //add in between the custom items
 				selectElement("addRelatedMenu").innerHTML +=  customOrder;
 				//get all dropdown list items on each dropdown:
@@ -421,23 +410,9 @@ function getRelatedMenu(value){
 					customItemDetails =  '<div id="addCustomItemTitle_'+Menu['Menu'][x].CustomItem[y].id+'"></div><div class="col-xs-12 customItemOptions">';
 					customItemDetails += '<div class="col-xs-5 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
 					customItemDetails += '<div class="col-xs-2"> $' + Menu['Menu'][x].CustomItem[y].price + '</div>';
-					customItemDetails += '<div class="col-xs-5 btn-group" role="group" aria-label="Show add and subtract">';	
-					//show radio btn, dropdown list, dropdown numebr, checkbox
-					//get a dropdown list of items:
-					if(Menu['Menu'][x].CustomItem[y]["type"] == "dropdownList"){ //if type selected is a dropdownList
-						var addList = "";
-						for(f in Menu['Menu'][x].CustomItem[y]["options"]){
-							addList += getDropDownList(x,y);
-						}
-						customItemDetails += '<select class="custom-select" id="inp01"><option selected>Choose...</option>'+ addList +'</select>';
-					}else if(Menu['Menu'][x].CustomItem[y]["type"] == "checkbox"){//if type selected is a checkbox
-						customItemDetails += '<input type="checkbox" class="btn btn-primary eachCustomItemsBtn" value="Add Now">Add Now</input>';
-					}else if(Menu['Menu'][x].CustomItem[y]["type"] == "number"){ //if type selected is number
-						customItemDetails += '<button type="button" class="btn btn-primary eachCustomItemsBtn" onclick="function addCustomItem('+Menu['Menu'][x].CustomItem[y].id+')">'+addBtnGlyphicon+'</button>';
-						customItemDetails += '<input type="number" class="btn btn-primary eachCustomItemsBtn" value="Add Now"/>';
-						customItemDetails += '<button type="button" class="btn btn-primary eachCustomItemsBtn" onclick="function addCustomItem('+Menu['Menu'][x].CustomItem[y].id+')">'+minusBtnGlyphicon+'</button>';
-					}
-					customItemDetails += '</div>';
+					customItemDetails += '<div class="col-xs-4 form-group" role="group" aria-label="select item">';	
+					customItemDetails += '<input type="number" class="btn btn-primary col-sm-6 col-xs-12 addCustomSelectionBtn" min="0" max="200" value="0">';
+					customItemDetails += '</input><button type="button" class="addCustomSelectionBtn btn btn-info col-sm-6 col-xs-12">'+addBtnGlyphicon+'</button></div>'+clearHTMLDiv;
 					customItemDetails += '</div>';
 					selectElement("showCustomItemsHere_"+itemId).innerHTML +=  customItemDetails; //must be called after appending customOrder btn, so it can read it "showCustomItemsHere_"+itemId
 				}

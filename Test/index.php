@@ -5,7 +5,7 @@
 	Contact:	Bedei001@umn.edu
 -->
 <?php
-	$no_maintainance_rqrd = true; //
+	$no_maintainance_rqrd = true; // change to false if in maintainace mode
 	if($no_maintainance_rqrd){ //if no maint. rqrd
 ?>
 		<!DOCTYPE html>
@@ -16,7 +16,7 @@
 				include 'routers.php';
 				include $func; //call in functions page
 				_include_routers(); #call in routers page
-				_getHeaderTags(); #call in header tags from headerTags.php
+				_getHeaderTags(); #call in header tags from headerTags.php - include title
 			?>
 		</head>
 		<body>
@@ -34,6 +34,6 @@
 	}else{
 		include 'routers.php';
 		include $func;
-		include $src['maintaincePage'];
+		include $src['maintaincePage']; //call in maintainace page for message
 	}
 ?>

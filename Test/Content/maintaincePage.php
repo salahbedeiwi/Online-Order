@@ -12,6 +12,6 @@
 	?>
 </head>
 <body>
-	<p class="text-center maintainancePage">Maintainance Required!</p>
+	<p class="text-center maintainancePage">Under Maintainance!</p>
 </body>
 </html>
