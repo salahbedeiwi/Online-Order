@@ -6,6 +6,7 @@ var getLocations = [
 		"locationValue" : "Burnsville",
 		"locationAddress" : "1234 sample, Burnsville MN",
 		"phoneNumber" : "612 644 1634",
+		"taxes" : 7.87,
 		"menu_url" : "Burnsville.json"
 	},
 	{
@@ -14,6 +15,7 @@ var getLocations = [
 		"locationValue" : "St_Paul",
 		"locationAddress" : "1234 sample, St Paul MN",
 		"phoneNumber" : "644 644 644",
+		"taxes" : 7.87,
 		"menu_url" : "StPaul.json"
 	}
 ];
@@ -289,7 +291,11 @@ function loadMenu(rslt){
 	txt1 += '<div class="col-xm-12 col-sm-8"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
 	//show the related menu section based on the value of the #showCategoriesName and also show your order section
 	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!</h3>";
-	txt1 += "<div class='table-responsive'><table class='table'><thead><th>Qty</th><th>Item</th><th>Price($)</th></thead><tbody id='addYourOrderHere'></tbody></table></div></div>";
+	txt1 += "<div class='table-responsive '><table class='table'><thead><th>Action</th><th class='text-center'>Item</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
+	txt1 += "<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
+	txt1 += "</table></div>";
+	txt1 += "<div class='table-responsive '><table class='table'><tfoot><tr><th></th><th class='text-center'>Taxes(7.78%)</th><th class='pricesTitle'>$0.00</th></tr><tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'>$0.00</th></tr></tfoot></table></div>";
+	txt1 += '</div>'; //end of col-sm-4
     selectElement(rslt).innerHTML = txt1;
     loadingMainImgAfterLocationIsSelected("addRelatedMenu"); //load this image and then later append the menu
 } // load my menu
@@ -395,7 +401,7 @@ function getRelatedMenu(value){
 				
 				//show custom item title:
 				customItemTitle  =  '<div class="col-xs-12 customItemOptions">';
-				customItemTitle += '<div class="col-xs-5">Item</div>';
+				customItemTitle += '<div class="col-xs-5"> Item</div>';
 				customItemTitle  += '<div class="col-xs-2"> Price</div>';
 				customItemTitle  += '<div class="col-xs-5"> Select</div></div>'+clearHTMLDiv; 
 				//show item name, description, custom btn, add btn, custom item options as well
@@ -412,8 +418,7 @@ function getRelatedMenu(value){
 					customItemDetails += '<div class="col-xs-5 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
 					customItemDetails += '<div class="col-xs-2"> $' + Menu['Menu'][x].CustomItem[y].price + '</div>';
 					customItemDetails += '<div class="col-xs-4 form-group" role="group" aria-label="select item">';	
-					customItemDetails += '<input type="number" class="btn btn-primary col-sm-6 col-xs-12 addCustomSelectionBtn" min="0" max="200" value="0">';
-					customItemDetails += '</input><button type="button" class="addCustomSelectionBtn btn btn-info col-sm-6 col-xs-12">'+addBtnGlyphicon+'</button></div>'+clearHTMLDiv;
+					customItemDetails += '<button type="button" class="addCustomSelectionBtn btn btn-info col-xs-12">'+addBtnGlyphicon+'</button></div>'+clearHTMLDiv;
 					customItemDetails += '</div>';
 					selectElement("showCustomItemsHere_"+itemId).innerHTML +=  customItemDetails; //must be called after appending customOrder btn, so it can read it "showCustomItemsHere_"+itemId
 				}
@@ -426,7 +431,6 @@ function addMenu(itemName,itemPrice){
 		myDiv += 	"<p class='lead'>" + itemName + "<label class='text-right'>$" + itemPrice + "</label>"+"</p>";
 		myDiv += 	"</div></div>";
 }
-//add order to checkout - front end:
 // function addItemToCheckOut(id, appendTo){
 	// //create tr
 	// var tr = document.createElement('tr'); //create an element
@@ -446,30 +450,47 @@ function addMenu(itemName,itemPrice){
 	// //append this info to:
 	// document.getElementById(appendTo).appendChild(tr); //append it to the last item.
 // }
+//add order to checkout - front end:
+var counterAdd = 541; //start every check order with unique id
 function addItemToCheckOut(id, appendTo){
 	//create tr
 	var tr = document.createElement('tr'); //create an element
-	var td_qty = document.createElement('td'); //create an element
+			tr.setAttribute("id", counterAdd); //make it a span with remove sign & btn
+	var td_action = document.createElement('td'); //create an element
 	var td_price = document.createElement('td'); //create an element
 	var td_name = document.createElement('td'); //create an element
-	var rslt_qty,rslt_name,rslt_price = "";//empty text
+	var addSpan = document.createElement('span'); //create span element
+		    addSpan.setAttribute("type", "button"); //make it a span with remove sign & btn
+		    addSpan.setAttribute("class", "removeMeNow glyphicon glyphicon-minus btn btn-danger addCustomSelectionBtn"); //make it a span with remove sign & btn
+		    addSpan.setAttribute("onclick", "removeCurrentItem("+counterAdd+")"); //add this function to remove current item 
+	var rslt_action,rslt_name,rslt_price = "";//empty text
 	//look for this id on the menu & get all its info
 	for( c in Menu['Menu'] ){
 		if(Menu['Menu'][c].id == id){ //find the matching item with the id 
 			var itemName = Menu['Menu'][c].Item; //get item name
 			var itemPrice = Menu['Menu'][c].Price;//get item price
 			var itemID = Menu['Menu'][c].id;//get item price
-			rslt_qty = document.createTextNode(1); //add item qty,
+			rslt_action = document.createTextNode(''); //add item removed,
 			rslt_name = document.createTextNode(itemName); //add item name,
 			rslt_price = document.createTextNode(itemPrice); //add item price,
 		}
 	}
-	td_qty.appendChild(rslt_qty);
+	// td_action.appendChild(rslt_action);
+	addSpan.appendChild(rslt_action); //empty
 	td_name.appendChild(rslt_name);
 	td_price.appendChild(rslt_price);
-	tr.appendChild(td_qty); //add qty to this item
+	tr.appendChild(addSpan); //add qty to this item
 	tr.appendChild(td_name); //add name to this item
 	tr.appendChild(td_price); //add price to this item
 	//append this info to:
-	document.getElementById(appendTo).appendChild(tr); //append it to the last item.
+	var addAt = document.getElementById(appendTo);
+	// addAt.appendChild(tr); //append it to the last item.
+	addAt.insertBefore(tr, addAt.childNodes[0]); //append it to the first item.
+	counterAdd += 658; //make sure to add random id, so next id will be different - note after clikcing on an item
+}
+//remove current item from checkout:
+function removeCurrentItem(findId){
+	var item = document.getElementById(findId);
+	item.remove();
+	test(findId + " -  item id is removed!");
 }
