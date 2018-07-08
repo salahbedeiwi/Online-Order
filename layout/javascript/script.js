@@ -482,11 +482,11 @@ function addItemToCheckOut(id, appendTo){
 			rslt_price = document.createTextNode(itemPrice); //add item price,
 		}
 	}
-	// td_action.appendChild(rslt_action);
+	td_action.appendChild(addSpan);
 	addSpan.appendChild(rslt_action); //empty
 	td_name.appendChild(rslt_name);
 	td_price.appendChild(rslt_price);
-	tr.appendChild(addSpan); //add qty to this item
+	tr.appendChild(td_action); //add qty to this item
 	tr.appendChild(td_name); //add name to this item
 	tr.appendChild(td_price); //add price to this item
 	//append this info to:
