@@ -174,6 +174,9 @@ var Menu = { "Menu" :
 	ex: show value of json data with drop down
 	https://www.w3schools.com/js/tryit.asp?filename=tryjson_html_table_dynamic
 */
+var addBtnGlyphicon = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
+var minusBtnGlyphicon = '<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>';
+var clearHTMLDiv = '<div class="clearfix"></div>';
 function selectElement(elementName){ //select element by id
 	return document.getElementById(elementName);
 }
@@ -290,7 +293,8 @@ function loadMenu(rslt){
 	//add a select dropdown for all categories:
 	txt1 += '<div class="col-xm-12 col-sm-8"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
 	//show the related menu section based on the value of the #showCategoriesName and also show your order section
-	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!</h3>";
+	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!";
+	txt1 += '<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentItem(\'addYourOrderHere\')">Clear All</button></h3>'+clearHTMLDiv; //make sure id is between two ''
 	txt1 += "<div class='table-responsive '><table class='table'><thead><th>Action</th><th class='text-center'>Item</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
 	txt1 += "<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
 	txt1 += "</table></div>";
@@ -358,9 +362,7 @@ function getDropDownList(menuIndex,CustomItemIndex){
 	}
 	return addSelectedItems;
 }
-var addBtnGlyphicon = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
-var minusBtnGlyphicon = '<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>';
-var clearHTMLDiv = '<div class="clearfix"></div>';
+
 //get related menu item on change the drop down of the categories:
 function getRelatedMenu(value){
 	if(value.length == 0 || value == ""){
@@ -498,22 +500,25 @@ function removeCurrentItem(findId){
 	addTotalPaymentNow('.addTotalHere', '.viewMyPriceForThisItem'); // - make sure to add . or # - querySelectorAll
 	test(findId + " -  item id is removed!");
 }
+//remove all items from checkout:
+function removeAllCurrentItem(findId){
+	var item = document.getElementById(findId);
+	item.innerHTML = '';
+	//update total:
+	addTotalPaymentNow('.addTotalHere', '.viewMyPriceForThisItem'); // - make sure to update total when clearing all order
+	test(findId + " -  item id is removed!");
+}
 //get Order Total
 function getTotalForMoreThanOneElement(className){
 	var getElement = document.querySelectorAll(className);
 	//to get length of items: may be display 
 	var total = 0.00;
-	// for(x in getElement){
-		// // total = 1;
-		// var n = parseFloat(getElement[x].innerText);
-		// total = total + n;
-	// }
 	for(x = 0; x < getElement["length"]; x++){
 		var n = parseFloat(getElement[x].innerText);
 		total = total + n;
 	}
-	test(" -  you calculating payment: " + total);
-	return total; //return total of items on that specific item
+	test(" -  you calculating payment: " + total.toFixed(2));
+	return total.toFixed(2); //return total of items on that specific item, must be decimal number like 12.659 -> 12.66
 }
 //append total to specific element:
 function addTotalPaymentNow(addResultsTo, calcTotalOfThisElelemnt){
