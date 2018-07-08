@@ -1,0 +1,11 @@
+p.maintainancePage {
+	background-color: #0b0b59;
+	border: 2px solid #c9a311;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	color: #c9a311;
+	display: : block;
+	font-size: 1.5em;
+	padding:10px;
+	margin: 10.33% 33.33% auto 33.33%; /* could change it to auto 33.33% */
+	width: 33.33%;
+}

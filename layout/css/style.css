@@ -1,0 +1,167 @@
+/*
+	Name 		: Salah Bedeiwi
+	Version 	: 1.0.0
+	Date 		: 6/11/2018
+	Copyright	: Custom Work!
+*/
+body{
+	background-color: #e1e1e1; /* #0b0b59*/
+	color: #a77b41;
+	font-family: serif;
+}
+.mt-12 {
+	margin-top: 12px
+}
+.mb-neg-32{
+	margin-bottom: -32px;
+}
+/* main page : select location */
+.showLocation {
+    background-color: #e1e1e1;
+    border: 2px solid #e6dfc1;
+    border-radius: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #3c763d;
+    font-size: 1.5em;
+    padding: 10px;
+    margin: 10.33% 33.33% auto 33.33%;
+    width: 33.33%;
+}
+.showMenu {
+    background-color: #e1e1e1;
+    border: 2px solid #e6dfc1;
+    border-radius: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #3c763d;
+    /*font-size: 1.5em;*/
+    height: 1200px;
+    padding: 10px;
+    margin: 2%;
+    min-height: 500px;
+    /*width: 90%;*/
+}
+.menuItemsSmall {
+    background-color: #e1e1e1;
+    border: 2px solid #e6dfc1;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #31708f;
+    margin: 30px 0px
+}
+.itemPrice {
+	position: relative;
+    right: 0px;
+    background-color: #57020229;
+    color: black;
+    padding: 2px;
+    border-radius: 9%;
+    top: -13px;
+    border-bottom: 2px solid #092136;
+    text-align: center;
+    font-style: oblique;
+    font-size: medium;
+}
+.itemName{
+	color: #1e0d0d;
+    font-family: serif;
+    font-size: 1.2em;
+    font-style: unset;
+    font-variant-caps: small-caps;
+    font-weight: bold;
+    margin-top: 12px;
+}
+.itemDescription {
+    font-style: italic;
+	font-weight: 300;
+    padding-left: 48px;
+    margin-bottom: 0
+}
+.CustomOrAddOrderBtn{
+	padding: 0;
+
+}
+.orderBtnSection{
+	background-color: #e1e1e1;
+    padding: 10px;
+}
+.orderBtnSection .gridSection {
+    display: grid;
+}
+.customItemOptions {
+    color: dimgrey;
+	padding: 5px;
+}
+.customItemOptions .eachItemCustomName::before {
+    content: " - ";
+}
+.eachCustomItemsBtn {
+	padding: 0px 6px;
+	margin-top: -7px;
+}
+.addTitleToCustomItems{
+    color: #337ab7;
+    font-weight: bolder;
+    padding-left: 13px
+    padding-top: 14px;
+}
+/*override bootstrap*/
+.btn-info {
+    background-color: #798f63;
+    border: 1px solid burlywood;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #fff;
+}
+.btn-info:focus, .btn-info:hover, .btn-info:visited, .btn-info:active {
+    color: #e1e1e1;
+    background-color: #5f8539;
+    border-color: #ffffff;
+}
+.addCustomSelectionBtn{
+	padding:0;
+	line-height:1;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {border-top: 0}
+#addYourOrderHere tr > td, .table>thead>tr>th  {padding:0; border-bottom:none}
+.tableCheckOrder {
+	height:350px;
+	overflow-x: auto;
+}
+.pricesTitle {
+	text-align: right;
+    padding-right: 18px;
+}
+/* Small Screens: iphone, samsungs, ... */
+@media screen and (max-width: 776px) {
+  	.showLocation {
+		background-color: #e1e1e1;
+		border: 2px solid #e6dfc1;
+		border-radius: 5%;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		color: #3c763d;
+		font-size: 1.5em;
+		padding: 5px;
+		margin: 10% auto;
+		width: 90%;
+	}
+	.tableCheckOrder {
+		height:auto;
+		overflow-x: auto;
+	}
+	.itemPrice {
+	    right: 3px;
+	}
+	.showMenu {
+		background-color: #e1e1e1;
+		border: 2px solid #e6dfc1;
+		border-radius: 5%;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		color: #3c763d;
+		padding:1px;
+		margin:1px;
+		width:100%;
+		height:auto;
+	}
+	.orderBtnSection {
+		padding: 4px;
+	}
+	.container{padding:0}
+}
