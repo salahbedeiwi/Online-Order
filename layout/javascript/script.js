@@ -294,11 +294,15 @@ function loadMenu(rslt){
 	txt1 += '<div class="col-xm-12 col-sm-8"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
 	//show the related menu section based on the value of the #showCategoriesName and also show your order section
 	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!";
-	txt1 += '<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentItem(\'addYourOrderHere\')">Clear All</button></h3>'+clearHTMLDiv; //make sure id is between two ''
-	txt1 += "<div class='table-responsive '><table class='table'><thead><th>Action</th><th class='text-center'>Item</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
-	txt1 += "<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
-	txt1 += "</table></div>";
-	txt1 += "<div class='table-responsive '><table class='table'><tfoot><tr><th></th><th class='text-center'>Taxes(7.78%)</th><th class='pricesTitle'>$0.00</th></tr><tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere'>0.00</span></th></tr></tfoot></table></div>";
+	txt1 += 	'<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentItem(\'addYourOrderHere\')">Clear All</button></h3>'+clearHTMLDiv; //make sure id is between two ''
+	txt1 += 	"<div class='table-responsive '><table class='table'><thead><th>Action</th><th class='text-center'>Item</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
+	txt1 += 	"<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
+	txt1 += 	"</table></div>";
+	txt1 += 	"<div class='table-responsive '><table class='table'><tfoot>"+
+							"<tr><th></th><th class='text-center'>Taxes(7.78%)</th><th class='pricesTitle'>$0.00</th></tr>" +
+							"<tr><th></th><th class='text-center'>Sub Total</th><th class='pricesTitle'><span>$</span><span class='addSubTotalHere'>0.00</span></th></tr>"+
+							"<tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere'>0.00</span></th></tr>"+
+					"</tfoot></table></div>";
 	txt1 += '</div>'; //end of col-sm-4
     selectElement(rslt).innerHTML = txt1;
     loadingMainImgAfterLocationIsSelected("addRelatedMenu"); //load this image and then later append the menu
@@ -490,14 +494,14 @@ function addItemToCheckOut(id, appendTo){
 	// addAt.appendChild(tr); //append it to the last item.
 	addAt.insertBefore(tr, addAt.childNodes[0]); //append it to the first item.
 	counterAdd += 658; //make sure to add random id, so next id will be different - note after clikcing on an item
-	addTotalPaymentNow('.addTotalHere', '.viewMyPriceForThisItem'); //update total payments of current order - make sure to add . or # - querySelectorAll
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem'); //update total payments of current order - make sure to add . or # - querySelectorAll
 }
 //remove current item from checkout:
 function removeCurrentItem(findId){
 	var item = document.getElementById(findId);
 	item.remove();
 	//update total:
-	addTotalPaymentNow('.addTotalHere', '.viewMyPriceForThisItem'); // - make sure to add . or # - querySelectorAll
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem'); // - make sure to add . or # - querySelectorAll
 	test(findId + " -  item id is removed!");
 }
 //remove all items from checkout:
@@ -505,7 +509,7 @@ function removeAllCurrentItem(findId){
 	var item = document.getElementById(findId);
 	item.innerHTML = '';
 	//update total:
-	addTotalPaymentNow('.addTotalHere', '.viewMyPriceForThisItem'); // - make sure to update total when clearing all order
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem'); // - make sure to update total when clearing all order
 	test(findId + " -  item id is removed!");
 }
 //get Order Total
