@@ -2,20 +2,24 @@
 var getLocations = [
 	{
 		"id" : 0,
+		"randLocationId" : 658658, //random loca. id than other locations
+		"locationNumber" : 1, // location number
 		"location" : "Burnsville",
 		"locationValue" : "Burnsville",
-		"locationAddress" : "1234 sample, Burnsville MN",
-		"phoneNumber" : "612 644 1634",
-		"taxes" : 7.87,
+		"locationAddress" : "1234 sample, Burnsville MN 54235", //location address
+		"phoneNumber" : "612 644 1634", //location phone number
+		"taxes" : 7.878, //current location taxes - up to 3 decimals
 		"menu_url" : "Burnsville.json"
 	},
 	{
 		"id" : 1,
-		"location" : "St Paul",
-		"locationValue" : "St_Paul",
-		"locationAddress" : "1234 sample, St Paul MN",
-		"phoneNumber" : "644 644 644",
-		"taxes" : 7.87,
+		"randLocationId" : 475285,
+		"locationNumber" : 2, 
+		"location" : "St_Paul",
+		"locationValue" : "St-Paul",
+		"locationAddress" : "1234 sample, St Paul MN 54235", 
+		"phoneNumber" : "612 501 4314",
+		"taxes" : 8.46, 
 		"menu_url" : "StPaul.json"
 	}
 ];
@@ -299,19 +303,22 @@ function loadMenu(rslt){
 	txt1 += 	"<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
 	txt1 += 	"</table></div>";
 	txt1 += 	"<div class='table-responsive '><table class='table'><tfoot>"+
-							"<tr><th></th><th class='text-center'>Taxes(7.78%)</th><th class='pricesTitle'>$0.00</th></tr>" +
-							"<tr><th></th><th class='text-center'>Sub Total</th><th class='pricesTitle'><span>$</span><span class='addSubTotalHere'>0.00</span></th></tr>"+
-							"<tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere'>0.00</span></th></tr>"+
+							"<tr><th></th><th class='text-center'>Taxes(<span id='selectedLocationTaxes'></span>%)</th><th class='pricesTitle'>$<span id='addTaxTotalHere'>0.00</span></th></tr>" +
+							"<tr><th></th><th class='text-center'>Sub Total</th><th class='pricesTitle'><span>$</span><span class='addSubTotalHere' id='getSubTotalHere'>0.00</span></th></tr>"+
+							"<tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere' id='AddFinalTotalHere'>0.00</span></th></tr>"+
 					"</tfoot></table></div>";
 	txt1 += '</div>'; //end of col-sm-4
     selectElement(rslt).innerHTML = txt1;
     loadingMainImgAfterLocationIsSelected("addRelatedMenu"); //load this image and then later append the menu
+	//also show the current tax percentage
+	getCurrentTaxesOf('selectedLocationTaxes', 'locationSelectedNumber');
 } // load my menu
+
 function loadLocations(rslt){
    var txt = "";
    txt += '<select class="form-control text-center" id="showLocationsName" required="required"> <option value="">Choose Location</option>';
     for (x in getLocations) {
-            txt += "<option value="+ getLocations[x].locationValue +">"+ getLocations[x].location + "</option>";
+            txt += "<option value="+ getLocations[x].randLocationId +">"+ getLocations[x].location + "</option>";
     }
     txt += '</select>';
     selectElement(rslt).innerHTML = txt;
@@ -325,27 +332,51 @@ selectElement("showLocationsName").addEventListener("change", function(){
 }); // when changing the location, update the existed location cookie
 // 1.1.0
 var getLocationBtn 	= selectElement("selectMenuBtn"); //on click on view menu btn of main page
-getLocationBtn.addEventListener("click", displayLocationMenu); // 1.1.1 - when clicking on view menu btn
+getLocationBtn.addEventListener( "click", displayLocationMenu ); // 1.1.1 - when clicking on view menu btn
+//show locations selected and the address from the drop down menu for location
 function displayLocationMenu(){ //on selecting a location
 	if( getElementValue("showLocationsName").length > 1 ){
 			test(getElementValue("showLocationsName") +" is selected!");
 			setElementValue("showLocationError", ""); // 1.1.2 - don't show errors
 			// 1.2.0
 			loadingImg("addProperMenuHere"); //load this image here on addProperMenuHere - div where the menu will be displayed
-			setTimeout(loadContent, 3000); //3 seconds and show loadContent
+			setTimeout(loadContent, 1000); //1 second(s) and show loadContent
 			function loadContent(){
 				loadMenu("addProperMenuHere"); // view both sections for the menu and your order sections
 				loadMyCategories("showCategoriesName");// show all categories as a select dropdown on the menu section
 			}
 			// then hide the select dropdown
-			var selectedLocation = getElementValue("showLocationsName");
+			var selectedLocation = getElementValue("showLocationsName"); //this is a location random id:
+			//now i need to get location info:
+			var yourSelectedLocationIs = "";
+			for( x  in getLocations ){ //this could be x-out by users for better look and feeling
+				if( getLocations[x].randLocationId == selectedLocation ){ //only show selected location address and location number
+					yourSelectedLocationIs = '<p class="text-center hideCurrentSelectedLocation">';
+					yourSelectedLocationIs += '<span id="locationSelectedNumber" class="hide">'+getLocations[x].randLocationId+'</span>'; //this location rand id is to be hidden
+					yourSelectedLocationIs += '#<span id="locationSelectedNumber">'+getLocations[x].locationNumber+'</span> - '; //location number
+					yourSelectedLocationIs += '<span id="locationSelectedAddress">'+getLocations[x].locationAddress+'</span>'; //location Address
+					yourSelectedLocationIs += '<span class="close">&times;</span></p>';
+				}
+			}
 			//add a cookie for the location: make it exprie after an hour from now
 			setCookie("LocationSelectedIs", selectedLocation, 0.5); //cookie: LocationSelectedIs to be expired in 0.5 day(s)
-			selectElement("selectLocationDropDown").innerText = selectedLocation; //show selected location to be displayed on the select location
+			selectElement("selectLocationDropDown").innerHTML = yourSelectedLocationIs ; //show location number and address here once selected
+			selectElement("selectLocationDropDown").style.backgroundColor = "rgb(100, 149, 237)"; //give parentElement a different background
+			exitCurrentAnyItem('close');//this element can be hidden/exit - ok
 		// selectLocationDropDown
 	}
 	else
 		setElementValue("showLocationError", "Must Select Location!"); // 1.1.3 - show an error if no selection is made
+}
+//close out locatoin number and address:
+function exitCurrentAnyItem(closeWhatClass){
+	var closebtns = document.getElementsByClassName(closeWhatClass);
+	var i;
+	for (i = 0; i < closebtns.length; i++) {
+	  closebtns[i].addEventListener("click", function() { //at which event this happened?
+		this.parentElement.parentElement.style.display = 'none'; //hide from parent class: showLocation
+	  });
+	}
 }
 //check if an item is descriped
 function checkDescription(x){
@@ -437,25 +468,6 @@ function addMenu(itemName,itemPrice){
 		myDiv += 	"<p class='lead'>" + itemName + "<label class='text-right'>$" + itemPrice + "</label>"+"</p>";
 		myDiv += 	"</div></div>";
 }
-// function addItemToCheckOut(id, appendTo){
-	// //create tr
-	// var tr = document.createElement('tr'); //create an element
-	// var rslt = "";//empty text
-	// //look for this id on the menu & get all its info
-	// for( c in Menu['Menu'] ){
-		// if(Menu['Menu'][c].id == id){ //find the matching item with the id 
-			// var itemName = Menu['Menu'][c].Item; //get item name
-			// var itemPrice = Menu['Menu'][c].Price;//get item price
-			// // var wholeRow = "<td>1</td>"+"<td>"+itemName+"</td>"+"<td>"+itemPrice+"</td>";
-			// // rslt = document.createTextNode(wholeRow); //add item qty, name and price
-			// rslt = document.createTextNode(itemName+' - $'+itemPrice); //add item name,
-			// test('<td>1</td><td>'+itemName+'</td><td>'+itemPrice+'</td>');
-		// }
-	// }
-	// tr.appendChild(rslt); //add text to the li
-	// //append this info to:
-	// document.getElementById(appendTo).appendChild(tr); //append it to the last item.
-// }
 //add order to checkout - front end:
 var counterAdd = 541; //start every check order with unique id
 function addItemToCheckOut(id, appendTo){
@@ -494,25 +506,27 @@ function addItemToCheckOut(id, appendTo){
 	// addAt.appendChild(tr); //append it to the last item.
 	addAt.insertBefore(tr, addAt.childNodes[0]); //append it to the first item.
 	counterAdd += 658; //make sure to add random id, so next id will be different - note after clikcing on an item
-	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem'); //update total payments of current order - make sure to add . or # - querySelectorAll
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); //update total payments of current order - make sure to add . or # - querySelectorAll
 }
 //remove current item from checkout:
 function removeCurrentItem(findId){
 	var item = document.getElementById(findId);
+	//clear this item
 	item.remove();
 	//update total:
-	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem'); // - make sure to add . or # - querySelectorAll
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to add . or # - querySelectorAll
 	test(findId + " -  item id is removed!");
 }
 //remove all items from checkout:
 function removeAllCurrentItem(findId){
 	var item = document.getElementById(findId);
+	//clear this item
 	item.innerHTML = '';
-	//update total:
-	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem'); // - make sure to update total when clearing all order
+	//update sub total:
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
 	test(findId + " -  item id is removed!");
 }
-//get Order Total
+//get Order Tax, Sub Total & Total:
 function getTotalForMoreThanOneElement(className){
 	var getElement = document.querySelectorAll(className);
 	//to get length of items: may be display 
@@ -524,12 +538,61 @@ function getTotalForMoreThanOneElement(className){
 	test(" -  you calculating payment: " + total.toFixed(2));
 	return total.toFixed(2); //return total of items on that specific item, must be decimal number like 12.659 -> 12.66
 }
-//append total to specific element:
-function addTotalPaymentNow(addResultsTo, calcTotalOfThisElelemnt){
-	var getElement = document.querySelectorAll(addResultsTo); //make all elements that will have total with the same class
-	var myTotalIs = getTotalForMoreThanOneElement(calcTotalOfThisElelemnt);
+//append sub total, tax total to specific element:
+function addTotalPaymentNow( addResultsTo, calcTotalOfThisElelemnt,addFinalPaymentTo ){
+	//add subtotal
+	var getElement = document.querySelectorAll( addResultsTo ); //make all elements that will have total with the same class
+	var myTotalIs = getTotalForMoreThanOneElement( calcTotalOfThisElelemnt );
 	for(x = 0; x < getElement["length"]; x++){
 		 getElement[x].innerHTML = myTotalIs; //get total of this div and add results to addResultsTo
 	}
-	test(" -  you adding total of " + getTotalForMoreThanOneElement(calcTotalOfThisElelemnt) + " payment here!: ");
+	//get tax total:
+	addTotalTaxes();
+	//get total: 
+	var finalTotalIs = document.getElementById( addFinalPaymentTo ); //make all elements that will have total with the same class
+	var totalTaxes = parseFloat(addTotalTaxes()); //get Total Taxes
+	var subtotalIs = parseFloat(document.getElementById( 'getSubTotalHere' ).innerText); //subtotal
+	var finalTotal = (totalTaxes + subtotalIs).toFixed(2);
+	finalTotalIs.innerText = finalTotal;
+	//
+	test(" -  your subtotal is " + getTotalForMoreThanOneElement(calcTotalOfThisElelemnt) + " & Taxes: !: " + addTotalTaxes()  + " & Total: !: " + finalTotal);
+}
+//get current selected location taxes:
+function getCurrentTaxesOf( addTo, locationId ){
+	var locationId = document.getElementById(locationId).innerText; //get the id as a text
+	for( x  in getLocations ){ //this could be x-out by users for better look and feeling
+		if( getLocations[x].randLocationId == locationId ){ //only show selected location address and location number
+			//show location taxes on menu:
+			document.getElementById(addTo).innerText = getLocations[x].taxes.toFixed(3); // up to 3 decimals
+		}
+	}
+}
+//get total of taxes everytime you add/remove an item
+function getTotalOfTaxes( addResultsTo ){
+	var addTotalOfTaxes = document.getElementById( addResultsTo ); //get the id as a text
+	//note: taxIs, will come from function returnCurrentTaxesOf( locationId ) everytime to add/remove items
+	var taxIs = returnCurrentTaxesOf( 'locationSelectedNumber' );
+	var subTotalIs = getTotalForMoreThanOneElement('.viewMyPriceForThisItem');
+	var taxTotal = ( ( taxIs/100 ) * subTotalIs ); //ex: ( 7.45/100 * 150 )+ 150 = 161.175.toFixed(2) ~ 161.18
+	//add results to tax total:
+	addTotalOfTaxes.innerText = taxTotal.toFixed(2);
+	//return my total of taxes only:
+	return taxTotal.toFixed(2);
+}
+//get taxes:
+function returnCurrentTaxesOf( locationId ){
+	var locationId = document.getElementById( locationId ).innerText; //get the id as a text
+	var tax = 0.000;
+	for( x  in getLocations ){ //this could be x-out by users for better look and feeling
+		if( getLocations[x].randLocationId == locationId ){ //only show selected location address and location number
+			//show location taxes on menu:
+			tax = getLocations[x].taxes.toFixed(3); // up to 3 decimals
+		}
+	}
+	return tax; //now this my current taxes selected
+}
+function addTotalTaxes(){
+	var addResultsTo = 'addTaxTotalHere';
+	var rslt =  getTotalOfTaxes(addResultsTo);
+	return rslt;
 }
