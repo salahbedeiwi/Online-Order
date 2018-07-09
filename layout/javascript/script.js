@@ -299,10 +299,10 @@ function loadMenu(rslt){
 	//show the related menu section based on the value of the #showCategoriesName and also show your order section
 	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!";
 	txt1 += 	'<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentItem(\'addYourOrderHere\')">Clear All</button></h3>'+clearHTMLDiv; //make sure id is between two ''
-	txt1 += 	"<div class='table-responsive '><table class='table'><thead><th>Action</th><th class='text-center'>Item</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
+	txt1 += 	"<div class='table-responsive checkOutHeaderTitle'><table class='table'><thead><th>Action</th><th class='text-center'>Item(s)</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
 	txt1 += 	"<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
 	txt1 += 	"</table></div>";
-	txt1 += 	"<div class='table-responsive '><table class='table'><tfoot>"+
+	txt1 += 	"<div class='table-responsive checkOutBottomTitle'><table class='table'><tfoot>"+
 							"<tr><th></th><th class='text-center'>Taxes(<span id='selectedLocationTaxes'></span>%)</th><th class='pricesTitle'>$<span id='addTaxTotalHere'>0.00</span></th></tr>" +
 							"<tr><th></th><th class='text-center'>Sub Total</th><th class='pricesTitle'><span>$</span><span class='addSubTotalHere' id='getSubTotalHere'>0.00</span></th></tr>"+
 							"<tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere' id='AddFinalTotalHere'>0.00</span></th></tr>"+
@@ -546,9 +546,9 @@ function addTotalPaymentNow( addResultsTo, calcTotalOfThisElelemnt,addFinalPayme
 	for(x = 0; x < getElement["length"]; x++){
 		 getElement[x].innerHTML = myTotalIs; //get total of this div and add results to addResultsTo
 	}
-	//get tax total:
+	//get tax total here:
 	addTotalTaxes();
-	//get total: 
+	//get total of all items: 
 	var finalTotalIs = document.getElementById( addFinalPaymentTo ); //make all elements that will have total with the same class
 	var totalTaxes = parseFloat(addTotalTaxes()); //get Total Taxes
 	var subtotalIs = parseFloat(document.getElementById( 'getSubTotalHere' ).innerText); //subtotal
