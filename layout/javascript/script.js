@@ -321,7 +321,7 @@ function loadMenu(rslt){
 	txt1 += '<div class="col-xm-12 col-sm-8"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
 	//show the related menu section based on the value of the #showCategoriesName and also show your order section
 	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!";
-	txt1 += 	'<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentItem(\'addYourOrderHere\')">Clear All</button></h3>'+clearHTMLDiv; //make sure id is between two ''
+	txt1 += 	'<button class="pull-right btn btn-info  addCustomOrderToCart" onclick="removeAllCurrentItem(\'addYourOrderHere\')">Clear All</button></h3>'+clearHTMLDiv; //make sure id is between two ''
 	txt1 += 	"<div class='table-responsive checkOutHeaderTitle'><table class='table'><thead><th>Action</th><th class='text-center'>Item(s)</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
 	txt1 += 	"<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
 	txt1 += 	"</table></div>";
@@ -477,7 +477,9 @@ function getRelatedMenu(value){
 				//start a collapse div here
 				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+
 															customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+
-																'"></div></div>'+'<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\')">Clear All</button></h3>'+clearHTMLDiv+
+																'"></div></div>'+
+																'<button class="btn btn-info addCustomOrderToCart" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\')">Add to Card</button></h3>'+
+																'<button class="pull-right btn btn-danger addCustomOrderToCart" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\')">Clear All</button></h3>'+clearHTMLDiv+
 																'<div class="table-responsive tableCheckOrder"><table class="table"><tbody class="p2 showCustomAddedOrder_'+itemId+'" id="showCustomAddedOrder_'+itemId+'"></tbody></table></div>'+
 																'</div></div>';
 																//add in between the custom items and also show the custom items being added
