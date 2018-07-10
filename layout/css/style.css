@@ -155,6 +155,8 @@ tbody.p2 > tr > td {padding:2px}
 	float: right;
     padding-right: 17px;
 }
+.addCustomOrderToCart{background-color: rgb(148, 11, 11) !important;}
+.addCustomOrderToCart:hover{background-color:rgb(160, 53, 53) !important;}
 /* Small Screens: iphone, samsungs, ... */
 @media screen and (max-width: 776px) {
   	.showLocation {
