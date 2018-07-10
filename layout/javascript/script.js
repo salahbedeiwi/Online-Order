@@ -38,7 +38,11 @@ var customDinners = [
 		//each custom item is unique (id)
 	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99}, //0 & 1 index
 	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99},
-	{	"id" : 3, "custItem" : "Chilly", "price": 19.99}
+	{	"id" : 3, "custItem" : "Catfish & Shrimp", "price": 9.99},
+	{	"id" : 4, "custItem" : "Burgers & Wings", "price": 3.99},
+	{	"id" : 5, "custItem" : "Mango Juice & Org.", "price": 1.99},
+	{	"id" : 6, "custItem" : "Chilly", "price": 19.99},
+	{	"id" : 7, "custItem" : "40 Chx Wings", "price": 29.99},
 ];
 var Menu = { "Menu" :
 	[
@@ -119,6 +123,25 @@ var Menu = { "Menu" :
 		"Price"			: 10.99,
 		"IsCustomItem"	: true,
 		"CustomItem"	: [customDinners[0]], //invoke only if IsCustomItem is true
+		"HaveImage"		: true,
+		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
+		"IsDescriped"	: true,
+		"Description"	: "This is one of our favorite dish for Philly Steak",
+		"Active"		: true
+	},
+	{
+		"id"			: 7,
+		"Category" 		: categories[0],
+		"Item"			: "Make Your Own",
+		"Price"			: 10.99,
+		"IsCustomItem"	: true,
+		"CustomItem"	:  [ 
+										customDinners[2],
+										customDinners[3],
+										customDinners[4],
+										customDinners[5],
+										customDinners[7]
+									], //invoke only if IsCustomItem is true
 		"HaveImage"		: true,
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: true,
@@ -393,7 +416,8 @@ function getDropDownList(menuIndex,CustomItemIndex){
 	//Menu['Menu'][0].CustomItem[0]["options"][1]["id"]
 	var listItemDropDown = Menu['Menu'][menuIndex].CustomItem[CustomItemIndex].options, addSelectedItems = "";
 	for(DropDownListItemIndex in listItemDropDown){
-		addSelectedItems += '<option value="'+Menu['Menu'][menuIndex].CustomItem[CustomItemIndex]["options"][DropDownListItemIndex]["price"]+'">'+Menu['Menu'][menuIndex].CustomItem[CustomItemIndex]["options"][DropDownListItemIndex]["item"]+'</option>';
+		addSelectedItems += '<option value="'+Menu['Menu'][menuIndex].CustomItem[CustomItemIndex]["options"][DropDownListItemIndex]["price"]+'">'+
+																			Menu['Menu'][menuIndex].CustomItem[CustomItemIndex]["options"][DropDownListItemIndex]["item"]+'</option>';
 	}
 	return addSelectedItems;
 }
@@ -431,7 +455,9 @@ function getRelatedMenu(value){
 					descriptionSection = ""; //keep empty
 				//show custom info: IsCustomItem - add a custom button to be shown
 				if(itemCustom == true ){
-					itemCustomButtons = '<div class="orderBtnSection"><button type="button" class="col-xs-3 btn btn-info" data-toggle="collapse" href="#collapseItem_'+itemId+'" role="button" aria-expanded="false" aria-controls="collapseItem_'+itemId+'">Custom</button><span class="col-xs-6"></span>';
+					itemCustomButtons = '<div class="orderBtnSection"><button type="button" class="col-xs-3 btn btn-info" data-toggle="collapse" href="#collapseItem_'+
+																itemId+'" role="button" aria-expanded="false" aria-controls="collapseItem_'+
+																	itemId+'">Custom</button><span class="col-xs-6"></span>';
 				}
 				else
 					itemCustomButtons = '<div class="orderBtnSection"><span class="col-xs-3"></span><span class="col-xs-6"></span>';
@@ -442,20 +468,31 @@ function getRelatedMenu(value){
 				customItemTitle  += '<div class="col-xs-2"> Price</div>';
 				customItemTitle  += '<div class="col-xs-5"> Select</div></div>'+clearHTMLDiv; 
 				//show item name, description, custom btn, add btn, custom item options as well
-				customOrder = '<div class="col-xm-12 menuItemsSmall"><span id= "item_name_'+itemId+'" class="itemName col-xs-10">'+ itemName + "</span><span class='itemPrice col-xs-2'>$" + itemPrice;
+				customOrder = '<div class="col-xm-12 menuItemsSmall"><span id= "item_name_'+itemId+'" class="itemName col-xs-10">'+
+																	itemName + "</span><span class='itemPrice col-xs-2'>$" + itemPrice;
 				customOrder +='</span><div class="clearfix"></div>'+ descriptionSection +' <div class="clearfix"></div>' + itemCustomButtons;
-				customOrder += '<button type="button" class="col-xs-3 btn btn-primary" onclick="addItemToCheckOut('+itemId+", 'addYourOrderHere'"+')">'+addBtnGlyphicon+'</button><div class="clearfix"></div>';
+				customOrder += '<button type="button" class="col-xs-3 btn btn-primary" onclick="addItemToCheckOut('+itemId+", 'addYourOrderHere'"+')">'+
+													addBtnGlyphicon+'</button><div class="clearfix"></div>';
 				//start a collapse div here
-				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+'"></div></div></div></div>'; //add in between the custom items
+				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+
+															customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+
+																'"></div></div>'+'<div class="table-responsive tableCheckOrder"><table class="table"><tbody class="p2 showCustomAddedOrder_'+itemId+'" id="showCustomAddedOrder_'+itemId+'"></tbody></table></div>'+
+																'</div></div>';
+																//add in between the custom items and also show the custom items being added
+																//txt1 += 	"<div class="table-responsive tableCheckOrder"><table class="table"><tbody id="addYourOrderHere"></tbody></table></div>";
 				selectElement("addRelatedMenu").innerHTML +=  customOrder;
 				//get all dropdown list items on each dropdown:
 				//get all extra custom items option: for(x in Menu['Menu'][3].CustomItem) console.log(Menu['Menu'][3].CustomItem[x].custItem);
+				var myCustomMenuId, addTo = '';
 				for(y in customItemAre){
+					addTo = "showCustomAddedOrder_"+itemId;
 					customItemDetails =  '<div id="addCustomItemTitle_'+Menu['Menu'][x].CustomItem[y].id+'"></div><div class="col-xs-12 customItemOptions">';
 					customItemDetails += '<div class="col-xs-5 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
 					customItemDetails += '<div class="col-xs-2"> $' + Menu['Menu'][x].CustomItem[y].price + '</div>';
 					customItemDetails += '<div class="col-xs-4 form-group" role="group" aria-label="select item">';	
-					customItemDetails += '<button type="button" class="addCustomSelectionBtn btn btn-info col-xs-12">'+addBtnGlyphicon+'</button></div>'+clearHTMLDiv;
+					customItemDetails += '<button type="button" class="addCustomSelectionBtn btn btn-info col-xs-12" onclick="addCustomItemToPreCheckOut('+Menu['Menu'][x].CustomItem[y].id+ ', \''+ addTo+'\')">'+
+															addBtnGlyphicon+'</button></div>'+
+																clearHTMLDiv;
 					customItemDetails += '</div>';
 					selectElement("showCustomItemsHere_"+itemId).innerHTML +=  customItemDetails; //must be called after appending customOrder btn, so it can read it "showCustomItemsHere_"+itemId
 				}
@@ -507,6 +544,44 @@ function addItemToCheckOut(id, appendTo){
 	addAt.insertBefore(tr, addAt.childNodes[0]); //append it to the first item.
 	counterAdd += 658; //make sure to add random id, so next id will be different - note after clikcing on an item
 	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); //update total payments of current order - make sure to add . or # - querySelectorAll
+}
+//add order to pre checkout - front end - custom each item:
+//start every check order with unique id
+function addCustomItemToPreCheckOut(id, appendTo){
+	//create tr
+	var tr = document.createElement('tr'); //create an element
+			tr.setAttribute("id", counterAdd); //make it a span with remove sign & btn
+	var td_action = document.createElement('td'); //create an element
+	var td_price = document.createElement('td'); //create an element
+		  td_price.setAttribute('class', 'viewMyPriceForThisItem');
+	var td_name = document.createElement('td'); //create an element
+	var addSpan = document.createElement('span'); //create span element
+		    addSpan.setAttribute("type", "button"); //make it a span with remove sign & btn
+		    addSpan.setAttribute("class", "removeMeNow glyphicon glyphicon-minus btn btn-danger addCustomSelectionBtn"); //make it a span with remove sign & btn
+		    addSpan.setAttribute("onclick", "removeCurrentItem("+counterAdd+")"); //add this function to remove current item 
+	var rslt_action,rslt_name,rslt_price = "";//empty text
+	//look for this id on the customDinners menu & get all its info - note we already know the id, no need to loop through it
+		if(customDinners[id-1].id == id){ //find the matching item with the id - //NOTE id-1 since index of array starts at 0
+			var itemName = customDinners[id-1].custItem; //get item name
+			var itemPrice = customDinners[id-1].price;//get item price
+			var itemID = customDinners[id-1].id;//get item price
+			rslt_action = document.createTextNode(''); //add item removed,
+			rslt_name = document.createTextNode(itemName); //add item name,
+			rslt_price = document.createTextNode(itemPrice); //add item price,
+		}
+	td_action.appendChild(addSpan);
+	addSpan.appendChild(rslt_action); //empty
+	td_name.appendChild(rslt_name);
+	td_price.appendChild(rslt_price);
+	tr.appendChild(td_action); //add qty to this item
+	tr.appendChild(td_name); //add name to this item
+	tr.appendChild(td_price); //add price to this item
+	//append this info to:
+	var addAt = document.getElementById(appendTo);
+	// addAt.appendChild(tr); //append it to the last item.
+	addAt.insertBefore(tr, addAt.childNodes[0]); //append it to the first item.
+	counterAdd += 658; //make sure to add random id, so next id will be different - note after clikcing on an item
+	//addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); //update total payments of current order - make sure to add . or # - querySelectorAll
 }
 //remove current item from checkout:
 function removeCurrentItem(findId){
