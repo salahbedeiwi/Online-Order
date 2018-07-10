@@ -476,10 +476,10 @@ function getRelatedMenu(value){
 				//start a collapse div here
 				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+
 															customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+
-																'"></div></div>'+'<div class="table-responsive tableCheckOrder"><table class="table"><tbody class="p2 showCustomAddedOrder_'+itemId+'" id="showCustomAddedOrder_'+itemId+'"></tbody></table></div>'+
+																'"></div></div>'+'<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\')">Clear All</button></h3>'+clearHTMLDiv+
+																'<div class="table-responsive tableCheckOrder"><table class="table"><tbody class="p2 showCustomAddedOrder_'+itemId+'" id="showCustomAddedOrder_'+itemId+'"></tbody></table></div>'+
 																'</div></div>';
 																//add in between the custom items and also show the custom items being added
-																//txt1 += 	"<div class="table-responsive tableCheckOrder"><table class="table"><tbody id="addYourOrderHere"></tbody></table></div>";
 				selectElement("addRelatedMenu").innerHTML +=  customOrder;
 				//get all dropdown list items on each dropdown:
 				//get all extra custom items option: for(x in Menu['Menu'][3].CustomItem) console.log(Menu['Menu'][3].CustomItem[x].custItem);
@@ -558,7 +558,7 @@ function addCustomItemToPreCheckOut(id, appendTo){
 	var addSpan = document.createElement('span'); //create span element
 		    addSpan.setAttribute("type", "button"); //make it a span with remove sign & btn
 		    addSpan.setAttribute("class", "removeMeNow glyphicon glyphicon-minus btn btn-danger addCustomSelectionBtn"); //make it a span with remove sign & btn
-		    addSpan.setAttribute("onclick", "removeCurrentItem("+counterAdd+")"); //add this function to remove current item 
+		    addSpan.setAttribute("onclick", "removeCurrentItemPreChecked("+counterAdd+")"); //add this function to remove current item from custom item
 	var rslt_action,rslt_name,rslt_price = "";//empty text
 	//look for this id on the customDinners menu & get all its info - note we already know the id, no need to loop through it
 		if(customDinners[id-1].id == id){ //find the matching item with the id - //NOTE id-1 since index of array starts at 0
@@ -600,6 +600,24 @@ function removeAllCurrentItem(findId){
 	//update sub total:
 	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
 	test(findId + " -  item id is removed!");
+}
+//remove current each custom item from pre checkout:
+function removeCurrentItemPreChecked(findId){
+	var item = document.getElementById(findId);
+	//clear this item
+	item.remove();
+	//update total:
+	//addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to add . or # - querySelectorAll
+	test(findId + " -  item id is removed!");
+}
+//remove all custom items from pre-checkout:
+function removeAllCurrentCustomItem(findId){
+	var item = document.getElementById(findId);
+	//clear this item
+	item.innerHTML = '';
+	//update sub total:
+	//addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
+	test(findId + " - custom items is/are removed!");
 }
 //get Order Tax, Sub Total & Total:
 function getTotalForMoreThanOneElement(className){
