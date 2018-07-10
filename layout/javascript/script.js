@@ -486,12 +486,12 @@ function getRelatedMenu(value){
 				var myCustomMenuId, addTo = '';
 				for(y in customItemAre){
 					addTo = "showCustomAddedOrder_"+itemId;
-					customItemDetails =  '<div id="addCustomItemTitle_'+Menu['Menu'][x].CustomItem[y].id+'"></div><div class="col-xs-12 customItemOptions">';
+					customItemDetails =  '<div id="addCustomItemTitle_'+ Menu["Menu"][x].CustomItem[y].id + '" > </div> <div class="col-xs-12 customItemOptions">';
 					customItemDetails += '<div class="col-xs-5 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
 					customItemDetails += '<div class="col-xs-2"> $' + Menu['Menu'][x].CustomItem[y].price + '</div>';
 					customItemDetails += '<div class="col-xs-4 form-group" role="group" aria-label="select item">';	
 					customItemDetails += '<button type="button" class="addCustomSelectionBtn btn btn-info col-xs-12" onclick="addCustomItemToPreCheckOut('+Menu['Menu'][x].CustomItem[y].id+ ', \''+ addTo+'\')">'+
-															addBtnGlyphicon+'</button></div>'+
+															addBtnGlyphicon + '</button></div>'+
 																clearHTMLDiv;
 					customItemDetails += '</div>';
 					selectElement("showCustomItemsHere_"+itemId).innerHTML +=  customItemDetails; //must be called after appending customOrder btn, so it can read it "showCustomItemsHere_"+itemId
