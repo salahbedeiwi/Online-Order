@@ -422,6 +422,7 @@ function getDropDownList(menuIndex,CustomItemIndex){
 	return addSelectedItems;
 }
 
+var counterCustomItemAdd = 548; //custom item order unique class
 //get related menu item on change the drop down of the categories:
 function getRelatedMenu(value){
 	if(value.length == 0 || value == ""){
@@ -476,7 +477,7 @@ function getRelatedMenu(value){
 				//start a collapse div here
 				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+
 															customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+
-																'"></div></div>'+'<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\')">Clear All</button></h3>'+clearHTMLDiv+
+																'"></div></div>'+'<button class="pull-right btn btn-info addCustomSelectionBtn" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\')">Clear All</button></h3>'+clearHTMLDiv+
 																'<div class="table-responsive tableCheckOrder"><table class="table"><tbody class="p2 showCustomAddedOrder_'+itemId+'" id="showCustomAddedOrder_'+itemId+'"></tbody></table></div>'+
 																'</div></div>';
 																//add in between the custom items and also show the custom items being added
@@ -486,7 +487,8 @@ function getRelatedMenu(value){
 				var myCustomMenuId, addTo = '';
 				for(y in customItemAre){
 					addTo = "showCustomAddedOrder_"+itemId;
-					customItemDetails =  '<div id="addCustomItemTitle_'+ Menu["Menu"][x].CustomItem[y].id + '" > </div> <div class="col-xs-12 customItemOptions">';
+					countCustomDeleteOrAddAll =  "deleteOrAddOrderId-"+counterCustomItemAdd;
+					customItemDetails =  '<div class=' + countCustomDeleteOrAddAll +  ' id="addCustomItemTitle_'+ Menu["Menu"][x].CustomItem[y].id + '" > </div> <div class="col-xs-12 customItemOptions">';
 					customItemDetails += '<div class="col-xs-5 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
 					customItemDetails += '<div class="col-xs-2"> $' + Menu['Menu'][x].CustomItem[y].price + '</div>';
 					customItemDetails += '<div class="col-xs-4 form-group" role="group" aria-label="select item">';	
@@ -495,6 +497,7 @@ function getRelatedMenu(value){
 																clearHTMLDiv;
 					customItemDetails += '</div>';
 					selectElement("showCustomItemsHere_"+itemId).innerHTML +=  customItemDetails; //must be called after appending customOrder btn, so it can read it "showCustomItemsHere_"+itemId
+					counterCustomItemAdd += 142; //let second custom order class such as deleteOrderId-### or addOrderId-###
 				}
 			}
 		}
@@ -548,9 +551,14 @@ function addItemToCheckOut(id, appendTo){
 //add order to pre checkout - front end - custom each item:
 //start every check order with unique id
 function addCustomItemToPreCheckOut(id, appendTo){
+	//get the item you're in
+	var getCurrentItem = document.getElementById('addCustomItemTitle_'+id);
+	//get the class name of that id:
+	var classNameIs  = getCurrentItem.className; // "deleteOrAddOrderId-"+counterCustomItemAdd;
 	//create tr
 	var tr = document.createElement('tr'); //create an element
 			tr.setAttribute("id", counterAdd); //make it a span with remove sign & btn
+			tr.setAttribute("class", classNameIs); //add custom class to each row we create, so we can delete or add all at once
 	var td_action = document.createElement('td'); //create an element
 	var td_price = document.createElement('td'); //create an element
 		  td_price.setAttribute('class', 'viewMyPriceForThisItem');
@@ -581,6 +589,7 @@ function addCustomItemToPreCheckOut(id, appendTo){
 	// addAt.appendChild(tr); //append it to the last item.
 	addAt.insertBefore(tr, addAt.childNodes[0]); //append it to the first item.
 	counterAdd += 658; //make sure to add random id, so next id will be different - note after clikcing on an item
+	//counterCustomItemAdd += 548; //this is to add extra 548 for each custom order to be unique
 	//addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); //update total payments of current order - make sure to add . or # - querySelectorAll
 }
 //remove current item from checkout:
@@ -611,13 +620,25 @@ function removeCurrentItemPreChecked(findId){
 	test(findId + " -  item id is removed!");
 }
 //remove all custom items from pre-checkout:
-function removeAllCurrentCustomItem(findId){
+function removeAllCurrentCustomItem(findId, changeItemId){
 	var item = document.getElementById(findId);
 	//clear this item
 	item.innerHTML = '';
+	//make sure when clearing all, give it a different class name as well as adding order to checkout, let the main class name to be different so it can be unique
+	//get the item you're in
+	var getCurrentItem = document.getElementById('addCustomItemTitle_'+changeItemId);
+	//get the class name of that id:
+	var classNameIs  = getCurrentItem.className; // "deleteOrAddOrderId-"+counterCustomItemAdd;
+	getCurrentItem.classList.remove(classNameIs); // remove class name : "deleteOrAddOrderId-"+counterCustomItemAdd;
+	getCurrentItem.classList.add('deleteOrAddOrderId-'+counterCustomItemAdd); // add to new class name : "deleteOrAddOrderId-"+counterCustomItemAdd;
+	//create tr
+	var tr = document.createElement('tr'); //create an element
+			tr.setAttribute("id", counterAdd); //make it a span with remove sign & btn
+			tr.setAttribute("class", classNameIs); //add custom class to each row we create, so we can delete or add all at once
 	//update sub total:
 	//addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
 	test(findId + " - custom items is/are removed!");
+	counterCustomItemAdd += 25; //add this number randomaly to next counterCustomItemAdd unique number
 }
 //get Order Tax, Sub Total & Total:
 function getTotalForMoreThanOneElement(className){
