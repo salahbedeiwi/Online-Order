@@ -478,7 +478,7 @@ function getRelatedMenu(value){
 				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+
 															customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+
 																'"></div></div>'+
-																'<button class="btn btn-info addCustomOrderToCart" onclick="addAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\')">Add to Cart</button></h3>'+
+																'<button class="btn btn-info addCustomOrderToCart" onclick="addAllCurrentCustomItem(this,\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\',\'addYourOrderHere\')">Add to Cart</button></h3>'+
 																'<button class="pull-right btn btn-danger addCustomOrderToCart" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\')">Clear All</button></h3>'+clearHTMLDiv+
 																'<div class="table-responsive tableCheckOrder"><table class="table"><tbody class="p2 showCustomAddedOrder_'+itemId+'" id="showCustomAddedOrder_'+itemId+'"></tbody></table></div>'+
 																'</div></div>';
@@ -643,32 +643,41 @@ function removeAllCurrentCustomItem(findId, changeItemId){
 	counterCustomItemAdd += 25; //add this number randomaly to next counterCustomItemAdd unique number
 }
 //add all custom items from pre-checkout to checkout:
-function addAllCurrentCustomItem(findId, changeItemId){
-	var item = document.getElementById(findId);
-	//make sure to update the classes from viewMyPriceForThisItem-1 to viewMyPriceForThisItem, so it can be calculated on the total when moved to checkout
-	var getCurrentClass = document.querySelectorAll('.viewMyPriceForThisItem-'+changeItemId);//ex:  add new viewMyPriceForThisItem-1 with viewMyPriceForThisItem
-	//find all class with name: getCurrentClass and add another class to it.
-	for(i = 0; i < getCurrentClass.length; i++){ 
-		getCurrentClass[i].classList.add('viewMyPriceForThisItem');
+var customClassStartsWith = 63;
+function addAllCurrentCustomItem(currentElement, findId, changeItemId,appendTo){
+	// var item = document.getElementById(findId);
+	// //make sure to update the classes from viewMyPriceForThisItem-1 to viewMyPriceForThisItem, so it can be calculated on the total when moved to checkout
+	// var getCurrentClass = document.querySelectorAll('.viewMyPriceForThisItem-'+changeItemId);//ex:  add new viewMyPriceForThisItem-1 with viewMyPriceForThisItem
+	// //find all class with name: getCurrentClass and add another class to it.
+	// for(i = 0; i < getCurrentClass.length; i++){ 
+		// getCurrentClass[i].classList.add('viewMyPriceForThisItem');
+	// }
+	var getCurrentTable = currentElement.nextSibling.nextSibling.nextSibling.children[0];
+	var getAllRows = getCurrentTable.children[0]; //use .children[] @the end to get every tr
+	var getAllRowsLength = getAllRows.children.length;
+	for(i = 0; i < getAllRowsLength; i++){ 
+		var eachRow = getAllRows.children[i];
+		var currentRowId = eachRow.getAttribute('id');
+		eachRow.setAttribute('class', customClassStartsWith); //each row with same class name
+		eachRow.children[0].children[0].setAttribute('onClick', "removeCurrentItem("+currentRowId+")" ); //each first td on row, to remove individual
+		eachRow.children[2].classList.remove('viewMyPriceForThisItem'-changeItemId); //remove custom remove item class
+		eachRow.children[2].classList.add('viewMyPriceForThisItem'); //add  regular remove item class
 	}
-	// getCurrentClass.classlist.remove(getCurrentClass); //remove old class
-	//make sure when clearing all, give it a different class name as well as adding order to checkout, let the main class name to be different so it can be unique
-	//get the item you're in
-	//clear this item
-	// item.innerHTML = '';
-	// var getCurrentItem = document.getElementById('addCustomItemTitle_'+changeItemId);
-	// //get the class name of that id:
-	// var classNameIs  = getCurrentItem.className; // "deleteOrAddOrderId-"+counterCustomItemAdd;
-	// getCurrentItem.classList.remove(classNameIs); // remove class name : "deleteOrAddOrderId-"+counterCustomItemAdd;
-	// getCurrentItem.classList.add('deleteOrAddOrderId-'+counterCustomItemAdd); // add to new class name : "deleteOrAddOrderId-"+counterCustomItemAdd;
-	// //create tr
-	// var tr = document.createElement('tr'); //create an element
-			// tr.setAttribute("id", counterAdd); //make it a span with remove sign & btn
-			// tr.setAttribute("class", classNameIs); //add custom class to each row we create, so we can delete or add all at once
+	// add all items now:
+	var addAt = document.getElementById(appendTo); //append to
+	//create another row with this current item:
+	while (getAllRows.childNodes.length > 0) {
+		addAt.appendChild(getAllRows.childNodes[0]);
+	}
+	var 	tr = document.createElement('tr'); //create an element
+			tr.setAttribute("id", counterAdd); //make it a span with remove sign & btn
+			tr.setAttribute("class", customClassStartsWith); //same class as custom items
 	// //update sub total:
-	// //addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
-	// test(findId + " - custom items is/are removed!");
-	// counterCustomItemAdd += 25; //add this number randomaly to next counterCustomItemAdd unique number
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
+	//getAllRows.innerHTML = '';
+	test(customClassStartsWith + " - class custom items is/are removed!");
+	customClassStartsWith += 35;
+	counterAdd += 25; //add this number randomaly to next counterCustomItemAdd unique number
 }
 //get Order Tax, Sub Total & Total:
 function getTotalForMoreThanOneElement(className){
