@@ -1,3 +1,15 @@
+// define a callback function, which accepts the returned JSON data as its only argument
+/*
+function response(data) {
+    // JSON data in form of a JavaScript object
+    console.log(data);
+}
+// create a script tag with the external request URL
+// include "response" as value of the GET param "callback" in the URL
+var script = document.createElement('script');
+script.src = 'https://somewhere/api/?callback=response';
+document.body.appendChild(script);
+*/
 //add all locations on here: 
 var getLocations = [
 	{
@@ -550,6 +562,46 @@ function addItemToCheckOut(id, appendTo){
 	counterAdd += 658; //make sure to add random id, so next id will be different - note after clikcing on an item
 	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); //update total payments of current order - make sure to add . or # - querySelectorAll
 }
+function addMainCustomItemToCheckOut(id, appendTo,matchClassName){
+	//create tr
+	var tr = document.createElement('tr'); //create an element
+			tr.setAttribute("id", counterAdd); //make it a span with remove sign & btn
+			tr.setAttribute("class", 'class-'+matchClassName); //add same class to current main item, so it can trigger all other classes with same class name
+	var td_action = document.createElement('td'); //create an element
+	var td_price = document.createElement('td'); //create an element
+		  td_price.setAttribute('class', 'viewMyPriceForThisItem');
+	var td_name = document.createElement('td'); //create an element
+	var addSpan = document.createElement('span'); //create span element
+		    addSpan.setAttribute("type", "button"); //make it a span with remove sign & btn
+		    addSpan.setAttribute("class", "removeMeNow glyphicon glyphicon-minus btn btn-danger addCustomSelectionBtn"); //make it a span with remove sign & btn
+			var addNewClass= 'class-'+matchClassName;
+		    addSpan.setAttribute("onclick", 'removeCurrentMainItem("'+addNewClass+'")'); //add this function to remove current main custom item - note its the classname not an id
+	var rslt_action,rslt_name,rslt_price = "";//empty text
+	//look for this id on the menu & get all its info
+	for( c in Menu['Menu'] ){
+		if(Menu['Menu'][c].id == id){ //find the matching item with the id 
+			var itemName = Menu['Menu'][c].Item; //get item name
+			var itemPrice = Menu['Menu'][c].Price;//get item price
+			var itemID = Menu['Menu'][c].id;//get item price
+			rslt_action = document.createTextNode(''); //add item removed,
+			rslt_name = document.createTextNode(itemName); //add item name,
+			rslt_price = document.createTextNode(itemPrice); //add item price,
+		}
+	}
+	td_action.appendChild(addSpan);
+	addSpan.appendChild(rslt_action); //empty
+	td_name.appendChild(rslt_name);
+	td_price.appendChild(rslt_price);
+	tr.appendChild(td_action); //add qty to this item
+	tr.appendChild(td_name); //add name to this item
+	tr.appendChild(td_price); //add price to this item
+	//append this info to:
+	var addAt = document.getElementById(appendTo);
+	// addAt.appendChild(tr); //append it to the last item.
+	addAt.insertBefore(tr, addAt.childNodes[0]); //append it to the first item.
+	counterAdd += 658; //make sure to add random id, so next id will be different - note after clikcing on an item
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); //update total payments of current order - make sure to add . or # - querySelectorAll
+}
 //add order to pre checkout - front end - custom each item:
 //start every check order with unique id
 function addCustomItemToPreCheckOut(id, appendTo){
@@ -603,6 +655,16 @@ function removeCurrentItem(findId){
 	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to add . or # - querySelectorAll
 	test(findId + " -  item id is removed!");
 }
+function removeCurrentMainItem(classNameIs){
+	var deleteAllCustomItems = document.querySelectorAll('.'+classNameIs); //since it a class, must have .className
+	//clear this all custom item + main custom item
+	for(i = 0; i < deleteAllCustomItems.length; i++){
+		deleteAllCustomItems[i].remove();
+	} //remove all with the same class
+	//update total:
+	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to add . or # - querySelectorAll
+	test(deleteAllCustomItems + " -  items id is removed!");
+}
 //remove all items from checkout:
 function removeAllCurrentItem(findId){
 	var item = document.getElementById(findId);
@@ -652,7 +714,7 @@ function addAllCurrentCustomItem(currentElement, findId, changeItemId,appendTo){
 	for(i = 0; i < getAllRowsLength; i++){ 
 		var eachRow = getAllRows.children[i];
 		var currentRowId = eachRow.getAttribute('id');
-		eachRow.setAttribute('class', customClassStartsWith); //each row with same class name
+		eachRow.setAttribute('class', 'class-'+customClassStartsWith); //each row with same class name
 		eachRow.children[0].children[0].setAttribute('onClick', "removeCurrentItem("+currentRowId+")" ); //each first td on row, to remove individual
 		eachRow.children[2].classList.remove('viewMyPriceForThisItem'-changeItemId); //remove custom remove item class
 		eachRow.children[2].classList.add('viewMyPriceForThisItem'); //add  regular remove item class
@@ -661,11 +723,12 @@ function addAllCurrentCustomItem(currentElement, findId, changeItemId,appendTo){
 	var addAt = document.getElementById(appendTo); //append to
 	//create another row with this current item:
 	while (getAllRows.childNodes.length > 0) {
-		addAt.appendChild(getAllRows.childNodes[0]);
+		addAt.insertAdjacentElement('afterbegin', getAllRows.childNodes[0]);
+		// addAt.insertBefore(getAllRows.childNodes[0]);
 		// addAt.insertBefore(getAllRows.childNodes[0]);
 	}
 	//add main item
-	addItemToCheckOut(changeItemId, appendTo);
+	addMainCustomItemToCheckOut(changeItemId, appendTo,customClassStartsWith);
 	// //update sub total:
 	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
 	//getAllRows.innerHTML = '';
