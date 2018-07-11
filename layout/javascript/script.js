@@ -645,13 +645,9 @@ function removeAllCurrentCustomItem(findId, changeItemId){
 //add all custom items from pre-checkout to checkout:
 var customClassStartsWith = 63;
 function addAllCurrentCustomItem(currentElement, findId, changeItemId,appendTo){
-	// var item = document.getElementById(findId);
-	// //make sure to update the classes from viewMyPriceForThisItem-1 to viewMyPriceForThisItem, so it can be calculated on the total when moved to checkout
-	// var getCurrentClass = document.querySelectorAll('.viewMyPriceForThisItem-'+changeItemId);//ex:  add new viewMyPriceForThisItem-1 with viewMyPriceForThisItem
-	// //find all class with name: getCurrentClass and add another class to it.
-	// for(i = 0; i < getCurrentClass.length; i++){ 
-		// getCurrentClass[i].classList.add('viewMyPriceForThisItem');
-	// }
+	//add main item
+	addItemToCheckOut(changeItemId, appendTo);
+	//get all custom items
 	var getCurrentTable = currentElement.nextSibling.nextSibling.nextSibling.children[0];
 	var getAllRows = getCurrentTable.children[0]; //use .children[] @the end to get every tr
 	var getAllRowsLength = getAllRows.children.length;
@@ -669,9 +665,6 @@ function addAllCurrentCustomItem(currentElement, findId, changeItemId,appendTo){
 	while (getAllRows.childNodes.length > 0) {
 		addAt.appendChild(getAllRows.childNodes[0]);
 	}
-	var 	tr = document.createElement('tr'); //create an element
-			tr.setAttribute("id", counterAdd); //make it a span with remove sign & btn
-			tr.setAttribute("class", customClassStartsWith); //same class as custom items
 	// //update sub total:
 	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
 	//getAllRows.innerHTML = '';
