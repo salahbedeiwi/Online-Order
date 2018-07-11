@@ -645,8 +645,6 @@ function removeAllCurrentCustomItem(findId, changeItemId){
 //add all custom items from pre-checkout to checkout:
 var customClassStartsWith = 63;
 function addAllCurrentCustomItem(currentElement, findId, changeItemId,appendTo){
-	//add main item
-	addItemToCheckOut(changeItemId, appendTo);
 	//get all custom items
 	var getCurrentTable = currentElement.nextSibling.nextSibling.nextSibling.children[0];
 	var getAllRows = getCurrentTable.children[0]; //use .children[] @the end to get every tr
@@ -664,7 +662,10 @@ function addAllCurrentCustomItem(currentElement, findId, changeItemId,appendTo){
 	//create another row with this current item:
 	while (getAllRows.childNodes.length > 0) {
 		addAt.appendChild(getAllRows.childNodes[0]);
+		// addAt.insertBefore(getAllRows.childNodes[0]);
 	}
+	//add main item
+	addItemToCheckOut(changeItemId, appendTo);
 	// //update sub total:
 	addTotalPaymentNow('.addSubTotalHere', '.viewMyPriceForThisItem', 'AddFinalTotalHere'); // - make sure to update total when clearing all order
 	//getAllRows.innerHTML = '';
