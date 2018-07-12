@@ -329,10 +329,12 @@ function loadMyCategories(rslt){
 //this will show both sections for 1. showing your menu select & categories & menu items sections 2. your order sections
 var	 txt1 = "";
 function loadMenu(rslt){
+	//See whole body content: main menu, order items checkout, select pickup time, login page, payment page and then confirmation order #
 	//add a select dropdown for all categories:
-	txt1 += '<div class="col-xm-12 col-sm-8"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
-	//show the related menu section based on the value of the #showCategoriesName and also show your order section
-	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4' id='renderOrderedItems'><h3>Your Order!";
+	txt1 += '<div class="mainMenuAndCheckoutOrder"><div class="col-xm-12 col-sm-8 myMainMenu"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
+	//show the related menu section based on the value of the #showCategoriesName and also show your order section - select all items from menu here
+	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4 myMainOrderDisplay' id='renderOrderedItems'><h3 class='text-center'>";
+	txt1 += 	'<button class="pull-left btn btn-info  addCustomOrderToCart" onclick="showThisSection(\'pickUpTimeSection\')">Next</button> Your Order!'; //make sure id is between two ''
 	txt1 += 	'<button class="pull-right btn btn-info  addCustomOrderToCart" onclick="removeAllCurrentItem(\'addYourOrderHere\')">Clear All</button></h3>'+clearHTMLDiv; //make sure id is between two ''
 	txt1 += 	"<div class='table-responsive checkOutHeaderTitle'><table class='table'><thead><th>Action</th><th class='text-center'>Item(s)</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
 	txt1 += 	"<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
@@ -341,14 +343,102 @@ function loadMenu(rslt){
 							"<tr><th></th><th class='text-center'>Taxes(<span id='selectedLocationTaxes'></span>%)</th><th class='pricesTitle'>$<span id='addTaxTotalHere'>0.00</span></th></tr>" +
 							"<tr><th></th><th class='text-center'>Sub Total</th><th class='pricesTitle'><span>$</span><span class='addSubTotalHere' id='getSubTotalHere'>0.00</span></th></tr>"+
 							"<tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere' id='AddFinalTotalHere'>0.00</span></th></tr>"+
-					"</tfoot></table></div>";
-	txt1 += '</div>'; //end of col-sm-4
+					"</tfoot></table></div><button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Next</button>";
+	txt1 += '</div></div>'; //end of col-sm-4 and mainMenuAndCheckoutOrder div - see your orders that have been added
+	txt1 += '<div class="hide pickUpTimeSection"></div>'; //pick UpTime Section
+	txt1 += '<div class="hide getCustomerRecordSection"></div>'; //get Customer Record Section
+	txt1 += '<div class="hide paymentSection"></div>'; //payment Section
+	txt1 += '<div class="hide confirmationOrderSection"></div>'; //confirmation Order Section
     selectElement(rslt).innerHTML = txt1;
     loadingMainImgAfterLocationIsSelected("addRelatedMenu"); //load this image and then later append the menu
 	//also show the current tax percentage
 	getCurrentTaxesOf('selectedLocationTaxes', 'locationSelectedNumber');
 } // load my menu
-
+//show pickup order time and date form
+// function pickUpTime(currentElement){
+	// document.querySelector('.mainMenuAndCheckoutOrder').classList.toggle('hide'); //add hide main menu myMainMenu & myMainOrderDisplay , since querySelector return an array
+	// document.querySelector('.pickUpTimeSection').classList.toggle('hide'); // show pick up time - remove hide, since it is added by default
+	// document.querySelector('.pickUpTimeSection').innerHTML = pickUpTimeForm(); //get pickUp time form
+// }
+// //show main order and hide current
+// function showMainMenuAndMyOrder(currentElement){
+	// document.querySelector('.mainMenuAndCheckoutOrder').classList.toggle('hide'); //show main menu - note [0], since querySelector return an array
+	// document.querySelector('.pickUpTimeSection').classList.toggle('hide'); // hide pick up time - remove hide, since it is added by default
+// }
+function showThisSection(showCurrentElement){
+	//hide all but current - showCurrentElement
+	var parentElementDivLength = document.querySelectorAll('.'+showCurrentElement)[0].parentElement.children.length;
+	for(i = 0; i < parentElementDivLength; i++){
+		document.querySelectorAll('.'+showCurrentElement)[0].parentElement.children[i].style.display = 'none';
+	}
+	document.querySelectorAll('.'+showCurrentElement)[0].style.display = 'block'; //show main menu - note [0], since querySelector return an array
+	document.querySelectorAll('.'+showCurrentElement)[0].classList.remove('hide'); //show main menu - note [0], since querySelector return an array
+	if(showCurrentElement == 'pickUpTimeSection'){ //if selected element is pick up form
+		document.querySelector('.pickUpTimeSection').innerHTML = pickUpTimeForm(); //get pickUp time form
+	}
+	if(showCurrentElement == 'getCustomerRecordSection'){ //if selected element is get customer info (login/register/guest) form
+		document.querySelector('.getCustomerRecordSection').innerHTML = getCustomerRecord(); //get pickUp time form
+	}
+	if(showCurrentElement == 'paymentSection'){ //if selected to get a payment forms
+		document.querySelector('.paymentSection').innerHTML = getPaymentForms(); //get payment form
+	}
+	if(showCurrentElement == 'confirmationOrderSection'){ //if selected to show confirmation
+		document.querySelector('.confirmationOrderSection').innerHTML = getConfirmationForms(); //get confirmationOrderSection form
+	}
+}
+//pick up time and date form
+function pickUpTimeForm(){
+	var 	pickUpForm 	= "<div class='col-sm-6'>"; //main form
+			pickUpForm  += "<div>";
+			pickUpForm  += "<button class='pull-left btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
+			pickUpForm  += "<button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"getCustomerRecordSection\")'>Next</button>"; //get customer record
+			pickUpForm  += "</div>";
+			pickUpForm  += clearHTMLDiv;
+			pickUpForm  += "<div>";
+			pickUpForm  += "Pick Date: "; //update my order
+			pickUpForm  += "Pick Time: "; //get customer record
+			pickUpForm  += "</div>"; 
+			pickUpForm  += "</div>"; 
+	return pickUpForm;
+}
+//get custom record form
+function getCustomerRecord(){
+	var 	pickUpForm 	= "<div class='col-sm-6'>"; //main form
+			pickUpForm  += "<div>";
+			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
+			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Update PickUp Time</button>"; //update PickUp Time
+			pickUpForm  += "<button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"paymentSection\")'>Next</button>"; //go to payment section
+			pickUpForm  += "</div>";
+			pickUpForm  += clearHTMLDiv;
+			pickUpForm  += "<p>Enter Your Customer Info </p>"; //show Customer form
+			pickUpForm  += "</div>"; 
+	return pickUpForm;
+}
+//get payment  form
+function getPaymentForms(){
+	var 	pickUpForm 	= "<div class='col-sm-6'>"; //main form
+			pickUpForm  += "<div>";
+			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
+			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Update PickUp Time</button>"; //update PickUp Time
+			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"getCustomerRecordSection\")'>Update Custom Info</button>"; //update customer Login Info
+			pickUpForm  += "<button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"confirmationOrderSection\")'>Confirmation</button>"; //go to Confirmation order section
+			pickUpForm  += "</div>"; 
+			pickUpForm  += clearHTMLDiv;
+			pickUpForm  += "<p>Enter Your Payment Info </p>"; //show payment form
+			pickUpForm  += "</div>"; 
+	return pickUpForm;
+}
+//get confirmation  form
+function getConfirmationForms(){
+	var 	pickUpForm 	= "<div class='col-sm-6'>"; //main form
+			pickUpForm  += "<div>";
+			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart'>Go To Our Website</button>"; //go to website
+			pickUpForm  += "</div>"; 
+			pickUpForm  += clearHTMLDiv;
+			pickUpForm  += "<p>Thank you! Your order number is # xxxxx </p>"; //show confirmation info
+			pickUpForm  += "</div>"; 
+	return pickUpForm;
+}
 function loadLocations(rslt){
    var txt = "";
    txt += '<select class="form-control text-center" id="showLocationsName" required="required"> <option value="">Choose Location</option>';
