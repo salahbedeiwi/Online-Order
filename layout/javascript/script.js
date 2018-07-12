@@ -344,6 +344,8 @@ function loadMenu(rslt){
 							"<tr><th></th><th class='text-center'>Sub Total</th><th class='pricesTitle'><span>$</span><span class='addSubTotalHere' id='getSubTotalHere'>0.00</span></th></tr>"+
 							"<tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere' id='AddFinalTotalHere'>0.00</span></th></tr>"+
 					"</tfoot></table></div><button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Next</button>";
+	txt1  += '<p>Pick up time : <span class="timePicked">---</span></p>'+
+								  '<p>Pick up date : <span class="datePicked">---</span></p>'; //add both pick up time and date here
 	txt1 += '</div></div>'; //end of col-sm-4 and mainMenuAndCheckoutOrder div - see your orders that have been added
 	txt1 += '<div class="hide pickUpTimeSection"></div>'; //pick UpTime Section
 	txt1 += '<div class="hide getCustomerRecordSection"></div>'; //get Customer Record Section
@@ -364,6 +366,8 @@ function showThisSection(showCurrentElement){
 	document.querySelectorAll('.'+showCurrentElement)[0].classList.remove('hide'); //show main menu - note [0], since querySelector return an array
 	if(showCurrentElement == 'pickUpTimeSection'){ //if selected element is pick up form
 		document.querySelector('.pickUpTimeSection').innerHTML = pickUpTimeForm(); //get pickUp time form
+		document.getElementById('pickupTimeIs').value = document.querySelector('.timePicked').innerText;//let the value be the same as selected before
+		document.getElementById('pickupDateIs').value = document.querySelector('.datePicked').innerText;//let the value be the same as selected before
 	}
 	if(showCurrentElement == 'getCustomerRecordSection'){ //if selected element is get customer info (login/register/guest) form
 		document.querySelector('.getCustomerRecordSection').innerHTML = getCustomerRecord(); //get pickUp time form
@@ -405,10 +409,13 @@ function mainPickUpTimeSection(){
 			myForm += '<div class="form-group">'+
 								  '<button class="btn btn-info addCustomOrderToCart" onclick="addOrderPickUpTimeAndDate(\'pickupTimeIs\',\'pickupDateIs\')">Add</button>'+
 								'</div>';
+			/* 
+			//note: this is being added on the main page
 			myForm += '<div class="form-group">'+
 								  '<p>Pick up time : <span class="timePicked"></span></p>'+
 								  '<p>Pick up date : <span class="datePicked"></span></p>'+
 								'</div>';
+			*/
 			myForm += '</div>';
 	
 	return myForm;
@@ -423,9 +430,10 @@ function addOrderPickUpTimeAndDate(getTimeEntered, getDateEntered){
 		 selectedTimeId.nextSibling.innerHTML = "You must select time to pick up your order on!";
 		 selectedTimeId.nextSibling.classList.add('error');
 		 selectedTimeId.style.border = "1px solid rgb(148, 11, 11)";
+		 
 		 document.querySelector('.timePicked').innerText = '';
 	}else{
-		 selectedTimeId.nextSibling.innerHTML = "What time do you like to pick up your order?";
+		 selectedTimeId.nextSibling.innerHTML = "Time is added - You can update it still";
 		 selectedTimeId.nextSibling.classList.remove('error');
 		 selectedTimeId.style.border = "1px solid rgb(14, 105, 59)";
 		document.querySelector('.timePicked').innerText = timeIs; //enter time on success
@@ -434,7 +442,7 @@ function addOrderPickUpTimeAndDate(getTimeEntered, getDateEntered){
 		 selectedDateId.nextSibling.innerHTML = "You must select date to pick up your order on!";
 		 selectedDateId.nextSibling.classList.add('error');
 		 selectedDateId.style.border = "1px solid rgb(148, 11, 11)";
-		  document.querySelector('.datePicked').innerText = '';
+		 document.querySelector('.datePicked').innerText = '';
 	}else{
 		 selectedDateId.nextSibling.innerHTML = "What day do you like to pick up your order?";
 		 selectedDateId.nextSibling.classList.remove('error');
