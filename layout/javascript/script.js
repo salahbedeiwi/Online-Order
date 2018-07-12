@@ -354,17 +354,6 @@ function loadMenu(rslt){
 	//also show the current tax percentage
 	getCurrentTaxesOf('selectedLocationTaxes', 'locationSelectedNumber');
 } // load my menu
-//show pickup order time and date form
-// function pickUpTime(currentElement){
-	// document.querySelector('.mainMenuAndCheckoutOrder').classList.toggle('hide'); //add hide main menu myMainMenu & myMainOrderDisplay , since querySelector return an array
-	// document.querySelector('.pickUpTimeSection').classList.toggle('hide'); // show pick up time - remove hide, since it is added by default
-	// document.querySelector('.pickUpTimeSection').innerHTML = pickUpTimeForm(); //get pickUp time form
-// }
-// //show main order and hide current
-// function showMainMenuAndMyOrder(currentElement){
-	// document.querySelector('.mainMenuAndCheckoutOrder').classList.toggle('hide'); //show main menu - note [0], since querySelector return an array
-	// document.querySelector('.pickUpTimeSection').classList.toggle('hide'); // hide pick up time - remove hide, since it is added by default
-// }
 function showThisSection(showCurrentElement){
 	//hide all but current - showCurrentElement
 	var parentElementDivLength = document.querySelectorAll('.'+showCurrentElement)[0].parentElement.children.length;
@@ -388,22 +377,74 @@ function showThisSection(showCurrentElement){
 }
 //pick up time and date form
 function pickUpTimeForm(){
-	var 	pickUpForm 	= "<div class='col-sm-6'>"; //main form
+	var 	pickUpForm 	  = "<div class='col-sm-12'>"; //main form
 			pickUpForm  += "<div>";
 			pickUpForm  += "<button class='pull-left btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
 			pickUpForm  += "<button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"getCustomerRecordSection\")'>Next</button>"; //get customer record
 			pickUpForm  += "</div>";
 			pickUpForm  += clearHTMLDiv;
 			pickUpForm  += "<div>";
-			pickUpForm  += "Pick Date: "; //update my order
-			pickUpForm  += "Pick Time: "; //get customer record
+			pickUpForm  += mainPickUpTimeSection(); //get body of the pickup order
 			pickUpForm  += "</div>"; 
 			pickUpForm  += "</div>"; 
 	return pickUpForm;
 }
+//get body of the pickup order
+function mainPickUpTimeSection(){
+	var 	myForm   = '<div>';
+			myForm += '<div class="form-group">'+
+								  '<label for="pickupDateIs">Pick Date:</label>'+
+								  '<input type="date" class="form-control" id="pickupDateIs" required="required">'+
+								  '<span class="help-block">What day do you like to pick up your order?</span>'+
+								'</div>';
+			myForm += '<div class="form-group">'+
+								  '<label for="pickupTimeIs">Pick Time:</label>'+
+								  '<input type="time" class="form-control" id="pickupTimeIs" required="required">'+
+								  '<span class="help-block">What time do you like to pick up your order?</span>'+
+								'</div>';
+			myForm += '<div class="form-group">'+
+								  '<button class="btn btn-info addCustomOrderToCart" onclick="addOrderPickUpTimeAndDate(\'pickupTimeIs\',\'pickupDateIs\')">Add</button>'+
+								'</div>';
+			myForm += '<div class="form-group">'+
+								  '<p>Pick up time : <span class="timePicked"></span></p>'+
+								  '<p>Pick up date : <span class="datePicked"></span></p>'+
+								'</div>';
+			myForm += '</div>';
+	
+	return myForm;
+}
+//on click on add Order Time and Pickup: 
+function addOrderPickUpTimeAndDate(getTimeEntered, getDateEntered){
+	var selectedTimeId = document.getElementById(getTimeEntered);
+	var selectedDateId = document.getElementById(getDateEntered);
+	var timeIs = selectedTimeId.value;
+	var dateIs = selectedDateId.value;
+	if(timeIs == "" || timeIs.length == 0){
+		 selectedTimeId.nextSibling.innerHTML = "You must select time to pick up your order on!";
+		 selectedTimeId.nextSibling.classList.add('error');
+		 selectedTimeId.style.border = "1px solid rgb(148, 11, 11)";
+		 document.querySelector('.timePicked').innerText = '';
+	}else{
+		 selectedTimeId.nextSibling.innerHTML = "What time do you like to pick up your order?";
+		 selectedTimeId.nextSibling.classList.remove('error');
+		 selectedTimeId.style.border = "1px solid rgb(14, 105, 59)";
+		document.querySelector('.timePicked').innerText = timeIs; //enter time on success
+	}
+	if(dateIs == "" || dateIs.length == 0){
+		 selectedDateId.nextSibling.innerHTML = "You must select date to pick up your order on!";
+		 selectedDateId.nextSibling.classList.add('error');
+		 selectedDateId.style.border = "1px solid rgb(148, 11, 11)";
+		  document.querySelector('.datePicked').innerText = '';
+	}else{
+		 selectedDateId.nextSibling.innerHTML = "What day do you like to pick up your order?";
+		 selectedDateId.nextSibling.classList.remove('error');
+		 selectedDateId.style.border = "1px solid rgb(14, 105, 59)";
+		document.querySelector('.datePicked').innerText = dateIs; //enter date on success
+	}
+}
 //get custom record form
 function getCustomerRecord(){
-	var 	pickUpForm 	= "<div class='col-sm-6'>"; //main form
+	var 	pickUpForm 	= "<div class='col-sm-12'>"; //main form
 			pickUpForm  += "<div>";
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Update PickUp Time</button>"; //update PickUp Time
@@ -416,7 +457,7 @@ function getCustomerRecord(){
 }
 //get payment  form
 function getPaymentForms(){
-	var 	pickUpForm 	= "<div class='col-sm-6'>"; //main form
+	var 	pickUpForm 	= "<div class='col-sm-12'>"; //main form
 			pickUpForm  += "<div>";
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Update PickUp Time</button>"; //update PickUp Time
@@ -430,7 +471,7 @@ function getPaymentForms(){
 }
 //get confirmation  form
 function getConfirmationForms(){
-	var 	pickUpForm 	= "<div class='col-sm-6'>"; //main form
+	var 	pickUpForm 	= "<div class='col-sm-12'>"; //main form
 			pickUpForm  += "<div>";
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart'>Go To Our Website</button>"; //go to website
 			pickUpForm  += "</div>"; 
