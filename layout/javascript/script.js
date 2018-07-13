@@ -334,7 +334,7 @@ function loadMenu(rslt){
 	txt1 += '<div class="mainMenuAndCheckoutOrder"><div class="col-xm-12 col-sm-8 myMainMenu"><h3>Choose Your Menu!</h3><select class="form-control text-center" id="showCategoriesName" onchange="getRelatedMenu(this.value)"> <option value="">Select Menu</option></select><br>';
 	//show the related menu section based on the value of the #showCategoriesName and also show your order section - select all items from menu here
 	txt1 += "<div class='text-left' id='addRelatedMenu'></div></div><div class='col-xm-12 col-sm-4 myMainOrderDisplay' id='renderOrderedItems'><h3 class='text-center'>";
-	txt1 += 	'<button class="pull-left btn btn-info  addCustomOrderToCart" onclick="showThisSection(\'pickUpTimeSection\')">Next</button> Your Order!'; //make sure id is between two ''
+	txt1 += 	'<button class="pull-left btn btn-info" onclick="showThisSection(\'pickUpTimeSection\')" id="viewPickUpTimeBtn-0" style="display:none">Next</button> Your Order!'; //make sure id is between two ''
 	txt1 += 	'<button class="pull-right btn btn-info  addCustomOrderToCart" onclick="removeAllCurrentItem(\'addYourOrderHere\')">Clear All</button></h3>'+clearHTMLDiv; //make sure id is between two ''
 	txt1 += 	"<div class='table-responsive checkOutHeaderTitle'><table class='table'><thead><th>Action</th><th class='text-center'>Item(s)</th><th class='pricesTitle'>Price($)</th></thead></table></div>";
 	txt1 += 	"<div class='table-responsive tableCheckOrder'><table class='table'><tbody id='addYourOrderHere'></tbody>";
@@ -343,7 +343,7 @@ function loadMenu(rslt){
 							"<tr><th></th><th class='text-center'>Taxes(<span id='selectedLocationTaxes'></span>%)</th><th class='pricesTitle'>$<span id='addTaxTotalHere'>0.00</span></th></tr>" +
 							"<tr><th></th><th class='text-center'>Sub Total</th><th class='pricesTitle'><span>$</span><span class='addSubTotalHere' id='getSubTotalHere'>0.00</span></th></tr>"+
 							"<tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere' id='AddFinalTotalHere'>0.00</span></th></tr>"+
-					"</tfoot></table></div><button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Next</button>";
+					"</tfoot></table></div><button class='pull-right btn btn-info ' onclick='showThisSection(\"pickUpTimeSection\")' style='display:none' id='viewPickUpTimeBtn-1'>Next</button>";
 	txt1  += '<p>Pick up time : <span class="timePicked">---</span></p>'+
 								  '<p>Pick up date : <span class="datePicked">---</span></p>'; //add both pick up time and date here
 	txt1 += '</div></div>'; //end of col-sm-4 and mainMenuAndCheckoutOrder div - see your orders that have been added
@@ -368,6 +368,7 @@ function showThisSection(showCurrentElement){
 		document.querySelector('.pickUpTimeSection').innerHTML = pickUpTimeForm(); //get pickUp time form
 		document.getElementById('pickupTimeIs').value = document.querySelector('.timePicked').innerText;//let the value be the same as selected before
 		document.getElementById('pickupDateIs').value = document.querySelector('.datePicked').innerText;//let the value be the same as selected before
+		showOrHideNextBtnToShowCustomerRecordForm(); //show or hide the next btn based on date/time picked up empty or not
 	}
 	if(showCurrentElement == 'getCustomerRecordSection'){ //if selected element is get customer info (login/register/guest) form
 		document.querySelector('.getCustomerRecordSection').innerHTML = getCustomerRecord(); //get pickUp time form
@@ -384,7 +385,7 @@ function pickUpTimeForm(){
 	var 	pickUpForm 	  = "<div class='col-sm-12'>"; //main form
 			pickUpForm  += "<div>";
 			pickUpForm  += "<button class='pull-left btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
-			pickUpForm  += "<button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"getCustomerRecordSection\")'>Next</button>"; //get customer record
+			pickUpForm  += "<button class='pull-right btn btn-info  showGetCustomerBtn' style='display:none' onclick='showThisSection(\"getCustomerRecordSection\")'>Next</button>"; //get customer record
 			pickUpForm  += "</div>";
 			pickUpForm  += clearHTMLDiv;
 			pickUpForm  += "<div>";
@@ -407,7 +408,7 @@ function mainPickUpTimeSection(){
 								  '<span class="help-block">What time do you like to pick up your order?</span>'+
 								'</div>';
 			myForm += '<div class="form-group">'+
-								  '<button class="btn btn-info addCustomOrderToCart" onclick="addOrderPickUpTimeAndDate(\'pickupTimeIs\',\'pickupDateIs\')">Add</button>'+
+								  '<button class="btn btn-info" onclick="addOrderPickUpTimeAndDate(\'pickupTimeIs\',\'pickupDateIs\')">Add Date & Time</button>'+
 								'</div>';
 			/* 
 			//note: this is being added on the main page
@@ -430,13 +431,12 @@ function addOrderPickUpTimeAndDate(getTimeEntered, getDateEntered){
 		 selectedTimeId.nextSibling.innerHTML = "You must select time to pick up your order on!";
 		 selectedTimeId.nextSibling.classList.add('error');
 		 selectedTimeId.style.border = "1px solid rgb(148, 11, 11)";
-		 
 		 document.querySelector('.timePicked').innerText = '';
 	}else{
 		 selectedTimeId.nextSibling.innerHTML = "Time is added - You can update it still";
 		 selectedTimeId.nextSibling.classList.remove('error');
 		 selectedTimeId.style.border = "1px solid rgb(14, 105, 59)";
-		document.querySelector('.timePicked').innerText = timeIs; //enter time on success
+		 document.querySelector('.timePicked').innerText = timeIs; //enter time on success
 	}
 	if(dateIs == "" || dateIs.length == 0){
 		 selectedDateId.nextSibling.innerHTML = "You must select date to pick up your order on!";
@@ -447,19 +447,45 @@ function addOrderPickUpTimeAndDate(getTimeEntered, getDateEntered){
 		 selectedDateId.nextSibling.innerHTML = "What day do you like to pick up your order?";
 		 selectedDateId.nextSibling.classList.remove('error');
 		 selectedDateId.style.border = "1px solid rgb(14, 105, 59)";
-		document.querySelector('.datePicked').innerText = dateIs; //enter date on success
+		 document.querySelector('.datePicked').innerText = dateIs; //enter date on success
 	}
+	showOrHideNextBtnToShowCustomerRecordForm(); //show or hide the next btn based on date/time picked up empty or not
 }
+//auto function to show and hide show customer record btn from pickUp Form
+function showOrHideNextBtnToShowCustomerRecordForm() { 
+	var selectedTimeId = document.querySelector('.timePicked');
+	var selectedDateId = document.querySelector('.datePicked');
+	var timeIs = selectedTimeId.length;
+	var dateIs = selectedDateId.length;
+	if(selectedTimeId.innerText == "---" || selectedTimeId.innerText == "" || selectedDateId.innerText == "" || selectedDateId.innerText == "---" ){
+		 document.querySelector('.showGetCustomerBtn').style.display = 'none'; //hide next btn to show customer records
+	}else{
+		 document.querySelector('.showGetCustomerBtn').style.display = 'block'; //show next btn to show customer records
+	}
+ };
+ function showOrHideNextBtnToShowPickUpTimeForm(){
+	 var firstBtn = document.getElementById('viewPickUpTimeBtn-0'),
+			secondBtn = document.getElementById('viewPickUpTimeBtn-1'),
+			checkOrderLength = document.getElementById('addYourOrderHere').children.length;
+	//now check if checkout has no orders:
+	if(checkOrderLength == 0){
+		firstBtn.style.display = 'none';
+		secondBtn.style.display = 'none';
+	}else{
+		firstBtn.style.display = 'block';
+		secondBtn.style.display = 'block';
+	}
+ }
 //get custom record form
 function getCustomerRecord(){
 	var 	pickUpForm 	= "<div class='col-sm-12'>"; //main form
 			pickUpForm  += "<div>";
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Update PickUp Time</button>"; //update PickUp Time
-			pickUpForm  += "<button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"paymentSection\")'>Next</button>"; //go to payment section
+			pickUpForm  += checkToGetPaymentPageOrNot(); //show add go to payment btn
 			pickUpForm  += "</div>";
 			pickUpForm  += clearHTMLDiv;
-			pickUpForm  += "<p>Enter Your Customer Info </p>"; //show Customer form
+			pickUpForm  += checkCustomerIsLoggedIn(); //add customer info or the forms (login/guest/register)
 			pickUpForm  += "</div>"; 
 	return pickUpForm;
 }
@@ -470,7 +496,7 @@ function getPaymentForms(){
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Update PickUp Time</button>"; //update PickUp Time
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"getCustomerRecordSection\")'>Update Custom Info</button>"; //update customer Login Info
-			pickUpForm  += "<button class='pull-right btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"confirmationOrderSection\")'>Confirmation</button>"; //go to Confirmation order section
+			pickUpForm  += "<button class='pull-right btn btn-info' onclick='showThisSection(\"confirmationOrderSection\")'>Confirmation</button>"; //go to Confirmation order section
 			pickUpForm  += "</div>"; 
 			pickUpForm  += clearHTMLDiv;
 			pickUpForm  += "<p>Enter Your Payment Info </p>"; //show payment form
@@ -488,6 +514,46 @@ function getConfirmationForms(){
 			pickUpForm  += "</div>"; 
 	return pickUpForm;
 }
+//add Customer Info or let customer login/register/guest forms
+function checkCustomerIsLoggedIn(){
+	var 	custDataId = document.querySelector('.logInId'), //get customer id
+			custDataName = document.querySelector('.logInName'),//get customer name
+			custDataNameIs = custDataName.innerText,
+			custDataIdIs = custDataId.innerText,
+			result = '';
+		// if not logged in, show ustomer login/register/guest forms & hide next btn to go to payment
+	if(custDataIdIs == "" || custDataIdIs.length <=1 || custDataNameIs == "" || custDataNameIs.length <=1 ){
+		result += showCustomerInfo(); //show customer Info
+		// document.querySelector('.showGetPaymentBtn').style.display = 'none'; //hide go to payment btn
+	}else{
+		// if logged in, return name & Id & show next btn to add payment.
+		result += showCustomerLoginRegisterGuestForm(); //show customer login/guest/register forms
+		// document.querySelector('.showGetPaymentBtn').style.display = 'block'; //show go to payment btn
+	}
+	return result;
+}
+function checkToGetPaymentPageOrNot(){
+	var 	custDataId = document.querySelector('.logInId'), //get customer id
+			custDataName = document.querySelector('.logInName'),//get customer name
+			custDataNameIs = custDataName.innerText,
+			custDataIdIs = custDataId.innerText,
+			result = '';
+	if(custDataIdIs == "" || custDataIdIs.length <=1 || custDataNameIs == "" || custDataNameIs.length <=1 ){
+		result += "<button class='pull-right btn btn-info showGetPaymentBtn hide' onclick='showThisSection(\"paymentSection\")' >Next</button>"
+	}else{
+		result += "<button class='pull-right btn btn-info showGetPaymentBtn' onclick='showThisSection(\"paymentSection\")' >Next</button>"
+	}
+	return result;
+}
+//show Customer Login Info
+function showCustomerLoginRegisterGuestForm(){
+	return '<p>Thanks for logged in</p>';
+}
+//show Customer Login/Guest/Register forms
+function showCustomerInfo(){
+	return '<p>Login using any of these forms</p>';
+}
+//get all location on selecting locations
 function loadLocations(rslt){
    var txt = "";
    txt += '<select class="form-control text-center" id="showLocationsName" required="required"> <option value="">Choose Location</option>';
@@ -903,7 +969,9 @@ function addTotalPaymentNow( addResultsTo, calcTotalOfThisElelemnt,addFinalPayme
 	var subtotalIs = parseFloat(document.getElementById( 'getSubTotalHere' ).innerText); //subtotal
 	var finalTotal = (totalTaxes + subtotalIs).toFixed(2);
 	finalTotalIs.innerText = finalTotal;
-	//
+	document.getElementById('showTotalOnHeader').innerText = finalTotal;
+	//now show next btn to show pickUpDate and Time if there is an order:
+	showOrHideNextBtnToShowPickUpTimeForm();
 	test(" -  your subtotal is " + getTotalForMoreThanOneElement(calcTotalOfThisElelemnt) + " & Taxes: !: " + addTotalTaxes()  + " & Total: !: " + finalTotal);
 }
 //get current selected location taxes:
