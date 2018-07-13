@@ -521,17 +521,14 @@ function checkCustomerIsLoggedIn(){
 			custDataNameIs = custDataName.innerText,
 			custDataIdIs = custDataId.innerText,
 			result = '';
-		// if not logged in, show ustomer login/register/guest forms & hide next btn to go to payment
 	if(custDataIdIs == "" || custDataIdIs.length <=1 || custDataNameIs == "" || custDataNameIs.length <=1 ){
-		result += showCustomerInfo(); //show customer Info
-		// document.querySelector('.showGetPaymentBtn').style.display = 'none'; //hide go to payment btn
-	}else{
-		// if logged in, return name & Id & show next btn to add payment.
 		result += showCustomerLoginRegisterGuestForm(); //show customer login/guest/register forms
-		// document.querySelector('.showGetPaymentBtn').style.display = 'block'; //show go to payment btn
+	}else{
+		result += showCustomerInfo(); //show customer Info
 	}
 	return result;
 }
+//check if customer is logged in or not, to show go to payment btn
 function checkToGetPaymentPageOrNot(){
 	var 	custDataId = document.querySelector('.logInId'), //get customer id
 			custDataName = document.querySelector('.logInName'),//get customer name
@@ -545,13 +542,87 @@ function checkToGetPaymentPageOrNot(){
 	}
 	return result;
 }
-//show Customer Login Info
+//show Customer Login/guest/register forms
 function showCustomerLoginRegisterGuestForm(){
-	return '<p>Thanks for logged in</p>';
+	var 	result = '<p>Login using any of these forms</p>';
+			result += '<ul class="nav nav-pills nav-justified">'+
+							  '<li class="active"><a data-toggle="pill" href="#mainLoginForm">Login</a></li>'+
+							  '<li><a data-toggle="pill" href="#newUserForm">New User</a></li>'+
+							  '<li><a data-toggle="pill" href="#guestForm">Guest</a></li>'+
+							'</ul>'+
+							'<div class="tab-content">'+
+							  '<div id="mainLoginForm" class="tab-pane fade in active">'+
+								'<h3>Existing Customer</h3>'+
+								 mainLoginFormSection()+
+							  '</div>'+
+							  '<div id="newUserForm" class="tab-pane fade">'+
+								'<h3>New User Registeration</h3>'+
+								mainCreateNewUserFormSection()+
+							  '</div>'+
+							  '<div id="guestForm" class="tab-pane fade">'+
+								'<h3>Guest Registeration</h3>'+
+								mainCreateGuestUserFormSection()+
+							  '</div>'+
+							'</div>';
+	return result;
+}
+//show main Login Form Section
+function mainLoginFormSection(){
+	var 	result = '<form>';
+			result += 	'<div class="input-group">'+
+							  '<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>'+
+							  '<input id="loginUserEmail" type="email" class="form-control" name="loginUserEmail" placeholder="Enter Your Email" required="required">'+
+							'</div>'+
+							'<div class="input-group">'+
+							  '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>'+
+							  '<input id="loginUserPassword" type="password" class="form-control" name="loginUserPassword" placeholder="Enter Your Password" required="required">'+
+							'</div>'+
+							'<br>'+
+							'<div class="input-group">'+
+							  '<button type="submit" class="pull-right btn btn-info" onclick="loginUserAccess(\'loginUserEmail\',\'loginUserPassword\')" >Login</button>'+
+							'</div>';
+			result += '</form>'; 
+	return result;
+}
+//show main new user Form Section
+function mainCreateNewUserFormSection(){
+	var 	result = '<form>';
+			result += 	'<div class="input-group">'+
+							  '<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>'+
+							  '<input id="newUserName" type="email" class="form-control" name="newUserName" placeholder="Enter Your Name" required="required">'+
+							'</div>'+
+							'<div class="input-group">'+
+							  '<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>'+
+							  '<input id="newUserEmail" type="email" class="form-control" name="newUserEmail" placeholder="Enter Your Email" required="required">'+
+							'</div>'+
+							'<div class="input-group">'+
+							  '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>'+
+							  '<input id="newUserPassword" type="password" class="form-control" name="newUserPassword" placeholder="Enter Your Password" required="required">'+
+							'</div>'+
+							'<br>'+
+							'<div class="input-group">'+
+							  '<button type="submit" class="pull-right btn btn-info" onclick="newUserAccess(\'newUserName\',\'newUserEmail\',\'newUserPassword\')" >Create New Account</button>'+
+							'</div>';
+			result += '</form>'; 
+	return result;
+}
+//show main guest user Form Section
+function mainCreateGuestUserFormSection(){
+	var 	result = '<form>';
+			result += 	'<div class="input-group">'+
+							  '<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>'+
+							  '<input id="guestUserName" type="text" class="form-control" name="guestUserName" placeholder="Enter Your Name" required="required">'+
+							'</div>'+
+							'<br>'+
+							'<div class="input-group">'+
+							  '<button type="submit" class="pull-right btn btn-info" onclick="guestUserAccess(\'guestUserName\')" >Click as guest</button>'+
+							'</div>';
+			result += '</form>'; 
+	return result;
 }
 //show Customer Login/Guest/Register forms
 function showCustomerInfo(){
-	return '<p>Login using any of these forms</p>';
+	return '<p>Thanks for logged in</p>';
 }
 //get all location on selecting locations
 function loadLocations(rslt){
