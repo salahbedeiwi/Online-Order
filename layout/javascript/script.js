@@ -544,7 +544,7 @@ function checkToGetPaymentPageOrNot(){
 }
 //show Customer Login/guest/register forms
 function showCustomerLoginRegisterGuestForm(){
-	var 	result = '<p>Login using any of these forms</p>';
+	var 	result = '<br />';
 			result += '<ul class="nav nav-pills nav-justified">'+
 							  '<li class="active"><a data-toggle="pill" href="#mainLoginForm">Login</a></li>'+
 							  '<li><a data-toggle="pill" href="#newUserForm">New User</a></li>'+
@@ -570,7 +570,7 @@ function showCustomerLoginRegisterGuestForm(){
 function mainLoginFormSection(){
 	var 	result = '<form>';
 			result += 	'<div class="input-group">'+
-							  '<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>'+
+							  '<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>'+
 							  '<input id="loginUserEmail" type="email" class="form-control" name="loginUserEmail" placeholder="Enter Your Email" required="required">'+
 							'</div>'+
 							'<div class="input-group">'+
@@ -592,7 +592,7 @@ function mainCreateNewUserFormSection(){
 							  '<input id="newUserName" type="email" class="form-control" name="newUserName" placeholder="Enter Your Name" required="required">'+
 							'</div>'+
 							'<div class="input-group">'+
-							  '<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>'+
+							  '<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>'+
 							  '<input id="newUserEmail" type="email" class="form-control" name="newUserEmail" placeholder="Enter Your Email" required="required">'+
 							'</div>'+
 							'<div class="input-group">'+
@@ -615,7 +615,7 @@ function mainCreateGuestUserFormSection(){
 							'</div>'+
 							'<br>'+
 							'<div class="input-group">'+
-							  '<button type="submit" class="pull-right btn btn-info" onclick="guestUserAccess(\'guestUserName\')" >Click as guest</button>'+
+							  '<button type="submit" class="pull-right btn btn-info" onclick="guestUserAccess(\'guestUserName\')" >Order as guest</button>'+
 							'</div>';
 			result += '</form>'; 
 	return result;
