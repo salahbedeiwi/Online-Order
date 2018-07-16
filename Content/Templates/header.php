@@ -6,8 +6,9 @@
 			<span class="logInOrLogOut pull-right">
 				&nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;
 			</span>
-			<span class="logInName pull-right"></span>&nbsp;
-			<span class="logInId hide"></span>
+			<span class="logInName firstLetterCapital pull-right"></span>&nbsp;
+			<span class="logInId hide firstLetterCapital"></span>
+			<span class="logInEmail hide firstLetterCapital"></span>
 	</p>
 </div>
 <div class="clearfix"></div>

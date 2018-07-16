@@ -1,22 +1,6 @@
-<?php 
-	//class
-	//include_once 'routers.php';
-	// include_once $_controllers.'functions.php';
-?>
-<?php 
-	function _getHeaderTags(){
-		include_once 'headerTags.php';
-	}
-	function _getRoutersControllersFunctions(){
-		include_once 'routers.php'; #all shortcuts
-	}
-	function _include_routers(){
-		include_once 'routers.php';
-	}
-?>
 <?php
 //detect the user ip address: http://www.phpf1.com/tutorial/get-ip-address.html
-	function getMyIp() {
+	function getIp() {
 			$ip = $_SERVER['REMOTE_ADDR']; //
 		 
 			if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -24,10 +8,11 @@
 			} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
 			}
+		 
 			return $ip;
 	}
 	//generate random id
-	function generateRandomNumber($length = 7) {
+	function generateRandomString($length = 7) {
 		$characters = '0123456789'; //no &, so when searching by $_GET[], IT DOESN'T CONFUSE IT
 		$charactersLength = strlen($characters);
 		$randomString = '';
