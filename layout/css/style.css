@@ -15,6 +15,8 @@ body{
 .mb-neg-32{
 	margin-bottom: -32px;
 }
+.firstLetterCapital {font-variant-caps: titling-caps;}
+.mb30 {margin-bottom: 30px;}
 /* main page : select location */
 .showLocation {
     background-color: rgb(225, 225, 225);
@@ -158,6 +160,7 @@ tbody.p2 > tr > td {padding:2px}
 }
 .addCustomOrderToCart{background-color: rgb(148, 11, 11) !important;}
 .addCustomOrderToCart:hover{background-color:rgb(160, 53, 53) !important;}
+.error{color: rgb(148, 11, 11) !important}
 /* Small Screens: iphone, samsungs, ... */
 @media screen and (max-width: 776px) {
   	.showLocation {

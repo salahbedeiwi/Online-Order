@@ -15,6 +15,7 @@
 			<?php 
 				include 'routers.php';
 				include $func; //call in functions page
+				include $db; //call db page
 				_include_routers(); #call in routers page
 				_getHeaderTags(); #call in header tags from headerTags.php - include title
 			?>

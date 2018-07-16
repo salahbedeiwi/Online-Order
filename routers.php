@@ -3,6 +3,7 @@
 	$src = 'layout/';
 	$js = $src.'javascript/';
 	$css = $src.'css/';
+	$db = 'db/connect_db.php';
 	$img = $src.'img/';
 	$designImg = $img.'Design/';
 	$content = 'Content/';
