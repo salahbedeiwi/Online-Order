@@ -42,5 +42,9 @@
 	- or do it manually: require_once('/path/to/stripe-php/init.php');
 
 	- Download composer: getcomposer.org, then download and install it.
-	
+	- Or download bash/powershell, right click on current main file, git bash command
+	- or go to visual studio code editor, click on terminal and write the "composer require stripe/stripe-php"
+	- this should download the vendor file for you.
+
+	Now inside charge.php, require_once('vendor/autoload.php');
 -->
