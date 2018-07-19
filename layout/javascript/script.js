@@ -11,6 +11,7 @@ script.src = 'https://somewhere/api/?callback=response';
 document.body.appendChild(script);
 */
 //add all locations on here: 
+var businessName = "Hooks Fish & Chips"; //make sure you update this for every business
 var getLocations = [
 	{
 		"id" : 0,
@@ -34,6 +35,13 @@ var getLocations = [
 		"taxes" : 8.46, 
 		"menu_url" : "StPaul.json"
 	}
+];
+//show all payment that this account can accept:
+var getPaymentType = [ //payment type, accept payment?, which location will use this payment type. 
+	{ "paymentType": "stripe", "acceptPayment": "yes", "applyToLocationNumber" : getLocations[0].id },
+	{ "paymentType": "stripe", "acceptPayment": "yes", "applyToLocationNumber" : getLocations[1].id },
+	{ "paymentType": "paypal", "acceptPayment": "no", "applyToLocationNumber" : getLocations[0].id },
+	{ "paymentType": "paypal", "acceptPayment": "yes", "applyToLocationNumber" : getLocations[1].id }
 ];
 //my categories
 var categories = [ "Dinners", "Lunch", "Breakfast", "Side Orders", "Specials" ];
@@ -369,6 +377,7 @@ function showThisSection(showCurrentElement){
 		document.getElementById('pickupTimeIs').value = document.querySelector('.timePicked').innerText;//let the value be the same as selected before
 		document.getElementById('pickupDateIs').value = document.querySelector('.datePicked').innerText;//let the value be the same as selected before
 		showOrHideNextBtnToShowCustomerRecordForm(); //show or hide the next btn based on date/time picked up empty or not
+		getTodayDateForMyCalendar();//make the dates selected to be at least todays date
 	}
 	if(showCurrentElement == 'getCustomerRecordSection'){ //if selected element is get customer info (login/register/guest) form
 		document.querySelector('.getCustomerRecordSection').innerHTML = getCustomerRecord(); //get pickUp time form
@@ -418,7 +427,6 @@ function mainPickUpTimeSection(){
 								'</div>';
 			*/
 			myForm += '</div>';
-	
 	return myForm;
 }
 //on click on add Order Time and Pickup: 
@@ -491,17 +499,92 @@ function getCustomerRecord(){
 }
 //get payment  form
 function getPaymentForms(){
-	var 	pickUpForm 	= "<div class='col-sm-12'>"; //main form
-			pickUpForm  += "<div>";
+	var 	pickUpForm 	= "<div class='col-sm-12' id='placeAnOrderAndPaymentSection'>"; //Place an Order & Payment Section
+			pickUpForm  += "<div id='hideCurrentBtnsOnPlacingMyOrder'>";
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Update PickUp Time</button>"; //update PickUp Time
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"getCustomerRecordSection\")'>Update Custom Info</button>"; //update customer Login Info
 			pickUpForm  += "<button class='pull-right btn btn-info' onclick='showThisSection(\"confirmationOrderSection\")'>Confirmation</button>"; //go to Confirmation order section
 			pickUpForm  += "</div>"; 
 			pickUpForm  += clearHTMLDiv;
-			pickUpForm  += "<p>Enter Your Payment Info </p>"; //show payment form
+			pickUpForm  += "<div id='showPlaceOrderBtn'>";
+			pickUpForm  += placeMyCurrentOrderBtn(); //show place an order btn
+			pickUpForm  += "</div>"; 
+			pickUpForm  += "<div id='showPaymentBtns' style='display:none'>";
+			pickUpForm  += payForOrderBtn(); //show payment form
+			pickUpForm  += "</div>"; 
 			pickUpForm  += "</div>"; 
 	return pickUpForm;
+}
+function placeMyCurrentOrderBtn(){
+	//place an order btn:
+	var  myPlaceOrderBtn  = "<button class='btn btn-info  addCustomOrderToCart' onclick='placeMyOrderNow(this)'>Place my Order</button>";
+			myPlaceOrderBtn += "<div id='showPlacingOrderError'></div>";//show errors here
+			
+			return myPlaceOrderBtn;
+}
+function payForOrderBtn(){
+	//then show all payment options:
+	var  showMyPaymentBtns  = "<button class='btn btn-info  addCustomOrderToCart' onclick='placeMyOrderNow(this)'>My Payment Btns</button>";
+			showMyPaymentBtns += "<div id='showPaymentError'></div>";//show errors here
+			
+			return showMyPaymentBtns;
+
+}
+//place my order now:
+function placeMyOrderNow(currentBtn){
+	//first save my order on an array:
+	var myOrder = document.getElementById('addYourOrderHere');
+	var myOrderLength = myOrder.rows.length;
+	var myOrderTblRecords = [];
+	for(var i = 0; i< myOrderLength; i++){
+		myOrderTblRecords.push( { itemName: myOrder.rows[i].cells[1].innerHTML, itemPrice: myOrder.rows[i].cells[2].innerHTML } )
+	}
+	test(myOrderTblRecords);
+	//i also need to pass business info to an array: business Id, business Address, CustomerInfo (Id,name, email), total before and after taxes, taxes, sales tax total 
+	var  getUserId = document.querySelector('.logInId').innerHTML, //get User Logged Id
+			getUserName = document.querySelector('.logInName').innerHTML, //get users Logged In Name
+			getUserEmail = document.querySelector('.logInEmail').innerHTML,//get users Logged In Email
+			getBusinessUniqueId = document.getElementById('locationSelectedNumber').innerHTML, //unique store id
+			getBusinessName = businessName, //get store business name
+			getBusinessAddress = document.getElementById('locationSelectedAddress').innerHTML, //get location address
+			getBusinessSalesTaxes = document.getElementById('selectedLocationTaxes').innerHTML, //say 7.87
+			getBusinessSalesTaxTotal = document.getElementById('addTaxTotalHere').innerHTML, //
+			getBusinessTotalBeforeTaxes = document.getElementById('getSubTotalHere').innerHTML,
+			getBusinessTotalAfterTaxes = document.getElementById('showTotalOnHeader').innerHTML;
+	var myBusinessAndCustomerTblRecords = [];		
+	myBusinessAndCustomerTblRecords.push({
+		getUserId : getUserId,
+		getUserName : getUserName,
+		getUserEmail : getUserEmail,
+		getBusinessUniqueId : getBusinessUniqueId , //note, this is the unique store id, not the store number
+		getBusinessName : getBusinessName,
+		getBusinessAddress :  getBusinessAddress,
+		getBusinessSalesTaxes : getBusinessSalesTaxes,
+		getBusinessSalesTaxTotal : getBusinessSalesTaxTotal,
+		getBusinessTotalBeforeTaxes : getBusinessTotalBeforeTaxes,
+		getBusinessTotalAfterTaxes : getBusinessTotalAfterTaxes
+	});
+	test(myBusinessAndCustomerTblRecords);
+	//get Order date and time:
+	var  orderDate = document.querySelector('.timePicked').innerHTML,
+			orderTime = document.querySelector('.datePicked').innerHTML;
+	var myOrderDateAndTimeTblRecords = [{
+		orderDate : orderDate,
+		orderTime : orderTime
+	}];
+	test(myOrderDateAndTimeTblRecords);
+	
+	//now on calling the php to store these data, make sure to return the orderIdNumber, so i can pass that along with the payment info: - hide that info as a return 
+	//now i need to pass these info 
+	//hide current parent div
+	currentBtn.parentElement.style.display = "none";
+	//hide my btns options on the top of the page:
+	selectElement('hideCurrentBtnsOnPlacingMyOrder').style.display = "none";
+	//show next div: payment form:
+	currentBtn.parentElement.nextSibling.style.display = "block";
+	// if(currentBtn.nextSibling.innerText.length >= 1){
+	// }
 }
 //get confirmation  form
 function getConfirmationForms(){
@@ -653,9 +736,18 @@ function mainCreateGuestUserFormSection(){
 			result += '</div>'; 
 	return result;
 }
+//make the min date to be selected is today.
+function getTodayDateForMyCalendar(){
+	var todaysDateIs = new Date().toISOString().split('T')[0];
+	document.getElementById("pickupDateIs").setAttribute('min', todaysDateIs);
+	document.getElementById("pickupDateIs").setAttribute('value', todaysDateIs); //month/day/year
+	// document.getElementById('pickupDateIs').value = new Date().toDateInputValue();
+}
 //verify customer login Info
 // $(document).ready(function(){	
+		
 		// $('.newUserAccess').click(function() {
+			  
 			  // $.ajax({
 				// type: "POST",
 				// url: "../../Backend/createNewUser.php",
