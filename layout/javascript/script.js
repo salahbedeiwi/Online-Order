@@ -11,7 +11,7 @@ script.src = 'https://somewhere/api/?callback=response';
 document.body.appendChild(script);
 */
 //add all locations on here: 
-var businessName = "Hooks Fish & Chips"; //make sure you update this for every business
+var businessName = "Hooks Fish - Chips"; //make sure you update this for every business - DON'T USE SPECIAL CHARS LIKE &,....
 var getLocations = [
 	{
 		"id" : 0,
@@ -58,18 +58,19 @@ var customDinners = [
 		//each custom item is unique (id)
 	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99}, //0 & 1 index
 	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99},
-	{	"id" : 3, "custItem" : "Catfish & Shrimp", "price": 9.99},
-	{	"id" : 4, "custItem" : "Burgers & Wings", "price": 3.99},
-	{	"id" : 5, "custItem" : "Mango Juice & Org.", "price": 1.99},
+	{	"id" : 3, "custItem" : "Catfish and Shrimp", "price": 9.99},
+	{	"id" : 4, "custItem" : "Burgers and Wings", "price": 3.99},
+	{	"id" : 5, "custItem" : "Mango Juice and Org.", "price": 1.99},
 	{	"id" : 6, "custItem" : "Chilly", "price": 19.99},
 	{	"id" : 7, "custItem" : "40 Chx Wings", "price": 29.99},
 ];
+//don't use & or any special char on any string
 var Menu = { "Menu" :
 	[
 	{
 		"id"			: 1, //item unique id number
 		"Category" 		: categories[0], //choose the category to be displayed under
-		"Item"			: "Catfish & Shrimp", //item name
+		"Item"			: "Catfish and Shrimp", //item name
 		"Price"			: 15.99, //item price
 		"IsCustomItem"	: true, //show custom button if is true
 		"CustomItem"	: [customDinners[0]], //invoke only if IsCustomItem is true
@@ -82,7 +83,7 @@ var Menu = { "Menu" :
 	{
 		"id"			: 2,
 		"Category" 		: categories[0],
-		"Item"			: "Chicken Tender & Perch",
+		"Item"			: "Chicken Tender and Perch",
 		"Price"			: 10.99,
 		"IsCustomItem"	: true,
 		"CustomItem"	: [customDinners[1]], //invoke only if IsCustomItem is true
@@ -95,7 +96,7 @@ var Menu = { "Menu" :
 	{
 		"id"						: 3,
 		"Category" 			: categories[0],
-		"Item"					: "Catfish & Shrimp",
+		"Item"					: "Catfish and Shrimp",
 		"Price"					: 15.99,
 		"IsCustomItem"	: true,
 		"CustomItem"		: [ 
@@ -504,14 +505,18 @@ function getPaymentForms(){
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"mainMenuAndCheckoutOrder\")'>Update My Order</button>"; //update my order
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"pickUpTimeSection\")'>Update PickUp Time</button>"; //update PickUp Time
 			pickUpForm  += "<button class='btn btn-info  addCustomOrderToCart' onclick='showThisSection(\"getCustomerRecordSection\")'>Update Custom Info</button>"; //update customer Login Info
-			pickUpForm  += "<button class='pull-right btn btn-info' onclick='showThisSection(\"confirmationOrderSection\")'>Confirmation</button>"; //go to Confirmation order section
+			//pickUpForm  += "<button class='pull-right btn btn-info' onclick='showThisSection(\"confirmationOrderSection\")'>Confirmation</button>"; //go to Confirmation order section
 			pickUpForm  += "</div>"; 
 			pickUpForm  += clearHTMLDiv;
 			pickUpForm  += "<div id='showPlaceOrderBtn'>";
 			pickUpForm  += placeMyCurrentOrderBtn(); //show place an order btn
+			pickUpForm  += "<div id='showPlaceOrderBtnError'>"; //show placing order errors
+			pickUpForm  += "</div>"; 
 			pickUpForm  += "</div>"; 
 			pickUpForm  += "<div id='showPaymentBtns' style='display:none'>";
-			pickUpForm  += payForOrderBtn(); //show payment form
+			pickUpForm  += ''; //you will add  payForOrderBtn() btn to click to payment form
+			pickUpForm  += "<div id='showPaymentBtnsError'>"; //show payment order errors
+			pickUpForm  += "</div>"; 
 			pickUpForm  += "</div>"; 
 			pickUpForm  += "</div>"; 
 	return pickUpForm;
@@ -525,11 +530,18 @@ function placeMyCurrentOrderBtn(){
 }
 function payForOrderBtn(){
 	//then show all payment options:
-	var  showMyPaymentBtns  = "<button class='btn btn-info  addCustomOrderToCart' onclick='placeMyOrderNow(this)'>My Payment Btns</button>";
-			showMyPaymentBtns += "<div id='showPaymentError'></div>";//show errors here
-			
+		   var getPlacedOrderId = document.getElementById('showMyOrderId').innerHTML;
+			// var getPlacedOrderTotal = document.getElementById('showMyOrderTotal').innerHTML;
+			var myLinkToGoTo = "PayPage/index.php?orderId="+ getPlacedOrderId;
+			var showMyPaymentBtns = "<a href='"+myLinkToGoTo+"'><button class='btn btn-info  addCustomOrderToCart'>Place my Order</button></a>";					
 			return showMyPaymentBtns;
 
+}
+function downloadScriptsForStripe(){
+	var myScriptElements = '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>'+
+						'<script src="https://js.stripe.com/v3/"></script>'+
+						'<script src="layout/javascript/chargeStripe.js"></script>';
+	return myScriptElements;
 }
 //place my order now:
 function placeMyOrderNow(currentBtn){
@@ -575,17 +587,61 @@ function placeMyOrderNow(currentBtn){
 	}];
 	test(myOrderDateAndTimeTblRecords);
 	
+	var mySrc = "Backend/placeMyOrder.php";
+	var viewResults = "showPlaceOrderBtn";
+	var viewErrors = "showPlaceOrderBtnError";	
+	//var passParam = "myOrderDateAndTimeTblRecords="+ myOrderDateAndTimeTblRecords +"&myBusinessAndCustomerTblRecords="+ myBusinessAndCustomerTblRecords + "&myOrderTblRecords="+myOrderTblRecords;
+	var passParam = "myOrderDateAndTimeTblRecords="+ JSON.stringify(myOrderDateAndTimeTblRecords) +
+											"&myBusinessAndCustomerTblRecords="+ JSON.stringify(myBusinessAndCustomerTblRecords) + 
+												"&myOrderTblRecords=" + JSON.stringify(myOrderTblRecords);//to view these array after passing it, var myArr = JSON.parse(myArrString)
+	processMyOrder(viewResults, viewErrors, mySrc, passParam); 
 	//now on calling the php to store these data, make sure to return the orderIdNumber, so i can pass that along with the payment info: - hide that info as a return 
 	//now i need to pass these info 
 	//hide current parent div
-	currentBtn.parentElement.style.display = "none";
+}
+function processToPaymentSection(){
+	// currentBtn.parentElement.style.display = "none";
 	//hide my btns options on the top of the page:
 	selectElement('hideCurrentBtnsOnPlacingMyOrder').style.display = "none";
 	//show next div: payment form:
-	currentBtn.parentElement.nextSibling.style.display = "block";
-	// if(currentBtn.nextSibling.innerText.length >= 1){
-	// }
+	document.getElementById('showPaymentBtns').style.display = "block";
 }
+function processMyOrder(GoodResultsAt,ErrorResultsAt, src, params) {
+	var xhr = "";
+	if(window.XMLHttpRequest){ //if my browser supports: chrome, firefox, ie 7+, safari
+		xhr = new XMLHttpRequest();
+	}else{ //if my browser supports: ie < 6
+		xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	//xhr.overrideMimeType("application/json");
+	xhr.onreadystatechange = function () {
+		if(this.readyState == 4 && this.status == 200){
+			//view success result
+			document.getElementById(GoodResultsAt).innerHTML = this.responseText; //return the response from my src
+			//if current p#showMyPaymentToProcess that have a value on it, then show payment section
+			if(document.getElementById('showMyPaymentToProcess').innerHTML.length > 1 && document.getElementById('showMyOrderId').innerHTML.length > 1 ){
+				 processToPaymentSection();
+				 document.getElementById('showPaymentBtns').innerHTML = payForOrderBtn();//add btns with the order number here
+			}else{
+				//click on place order again
+				document.getElementById(GoodResultsAt).innerHTML += ''+
+																						'<br><p class="red">Something went wrong, click below button to go back and place your order once again</p>'+
+																						'<button class="btn btn-info" onclick="showThisSection(\'paymentSection\')">Go back to place my order</button>';
+			}
+			//var jsObj = JSON.parse( xhr.responseText ); //if my response is in json format
+		}else if (this.readyState < 4 && this.readyState > 0){
+			document.getElementById(ErrorResultsAt).innerHTML = "<img src='layout/img/Design/loading1.gif' style='width:50px' class='img-responsive img-rounded center-block' alt='' title='loading'/>";
+		}else{ //if not found 404 || readyState is 0
+			document.getElementById(ErrorResultsAt).innerHTML = "<p style='color:red'>Your page request is not initialized/defined! Try again.</p>";
+			document.getElementById(ErrorResultsAt).innerHTML += "<p style='color:red'>Status is:"+this.status+"</p>"; //show error message
+		}
+	};
+	xhr.open('POST', src, true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	//xhr.send("addSuccessResults=addSuccessResults&newUserEmail=Ford");
+	// params = getNewUserParam();
+	xhr.send(params);
+};
 //get confirmation  form
 function getConfirmationForms(){
 	var 	pickUpForm 	= "<div class='col-sm-12'>"; //main form
