@@ -498,6 +498,14 @@ function getCustomerRecord(){
 			pickUpForm  += "</div>"; 
 	return pickUpForm;
 }
+//show my order as in html:
+function myOrderHtml(){
+	//view my orders as well, so he can confirm
+	var myHtmlOrder = document.querySelector('.checkOutHeaderTitle');	//get title info:
+			myHtmlOrder += document.querySelector('.tableCheckOrder');	//get order info
+			myHtmlOrder += document.querySelector('.checkOutBottomTitle');	//get bottom tax/total info
+	return myHtmlOrder;
+}
 //get payment  form
 function getPaymentForms(){
 	var 	pickUpForm 	= "<div class='col-sm-12' id='placeAnOrderAndPaymentSection'>"; //Place an Order & Payment Section
@@ -510,6 +518,8 @@ function getPaymentForms(){
 			pickUpForm  += clearHTMLDiv;
 			pickUpForm  += "<div id='showPlaceOrderBtn'>";
 			pickUpForm  += placeMyCurrentOrderBtn(); //show place an order btn
+			// pickUpForm  += clearHTMLDiv+"<br><p>Below is my summary of my order - Now place your order to proceed</p>"; //show place an order btn
+			// pickUpForm  += myOrderHtml(); //show my order to be confirmed
 			pickUpForm  += "<div id='showPlaceOrderBtnError'>"; //show placing order errors
 			pickUpForm  += "</div>"; 
 			pickUpForm  += "</div>"; 
@@ -523,7 +533,7 @@ function getPaymentForms(){
 }
 function placeMyCurrentOrderBtn(){
 	//place an order btn:
-	var  myPlaceOrderBtn  = "<button class='btn btn-info  addCustomOrderToCart' onclick='placeMyOrderNow(this)'>Place my Order</button>";
+	var  myPlaceOrderBtn  = "<button class='btn btn-info  addCustomOrderToCart' onclick='placeMyOrderNow(this)'>Pay for my Order</button>";
 			myPlaceOrderBtn += "<div id='showPlacingOrderError'></div>";//show errors here
 			
 			return myPlaceOrderBtn;
@@ -579,8 +589,12 @@ function placeMyOrderNow(currentBtn){
 	});
 	test(myBusinessAndCustomerTblRecords);
 	//get Order date and time:
-	var  orderDate = document.querySelector('.timePicked').innerHTML,
-			orderTime = document.querySelector('.datePicked').innerHTML;
+	var  orderDate = document.getElementById('pickupDateIs').value,
+			orderTime = document.getElementById('pickupTimeIs').value;
+	// function formatDate(orderDate) {
+	  // return orderDate.getFullYear() + '-' + (orderDate.getMonth() < 9 ? '0' : ") + (orderDate.getMonth()+1) + '-' + (orderDate.getDate() < 10 ? '0' : ") + orderDate.getDate();
+	// }
+	// var orderDate_to_mysql = formatDate(orderDate);
 	var myOrderDateAndTimeTblRecords = [{
 		orderDate : orderDate,
 		orderTime : orderTime
@@ -590,9 +604,13 @@ function placeMyOrderNow(currentBtn){
 	var mySrc = "Backend/placeMyOrder.php";
 	var viewResults = "showPlaceOrderBtn";
 	var viewErrors = "showPlaceOrderBtnError";	
+	var myHtmlOrder = document.querySelector('.checkOutHeaderTitle');	//get title info:
+			myHtmlOrder += document.querySelector('.tableCheckOrder');	//get order info
+			myHtmlOrder += document.querySelector('.checkOutBottomTitle');	//get bottom tax/total info
 	//var passParam = "myOrderDateAndTimeTblRecords="+ myOrderDateAndTimeTblRecords +"&myBusinessAndCustomerTblRecords="+ myBusinessAndCustomerTblRecords + "&myOrderTblRecords="+myOrderTblRecords;
-	var passParam = "myOrderDateAndTimeTblRecords="+ JSON.stringify(myOrderDateAndTimeTblRecords) +
+	var passParam = "myOrderDateAndTimeTblRecords="+ JSON.stringify(myOrderDateAndTimeTblRecords) +//convert array to string, later 
 											"&myBusinessAndCustomerTblRecords="+ JSON.stringify(myBusinessAndCustomerTblRecords) + 
+												"&myHtmlOrder="+ JSON.stringify(myHtmlOrder) +  //that's my order in the table as html
 												"&myOrderTblRecords=" + JSON.stringify(myOrderTblRecords);//to view these array after passing it, var myArr = JSON.parse(myArrString)
 	processMyOrder(viewResults, viewErrors, mySrc, passParam); 
 	//now on calling the php to store these data, make sure to return the orderIdNumber, so i can pass that along with the payment info: - hide that info as a return 
