@@ -1,8 +1,9 @@
 <?php 
 	//now retrieve all data live for this current customer: 
-	if( !empty( $_GET['transId'] ) && !empty( $_GET['totalCharged'] ) && !empty( $_GET['paymentFor'] ) ){
+	if( !empty( $_GET['transId'] ) && !empty( $_GET['totalCharged'] ) && !empty( $_GET['paymentFor'] ) && !empty( $_GET['orderId'] ) ){
 		$GET = filter_var_array($_GET, FILTER_SANITIZE_STRING);
-		$cust_id = $GET['transId'];
+		$orderId = $GET['orderId'];
+		$transId = $GET['transId'];
 		$paymentFor = $GET['paymentFor'];
 		$totalCharged = $GET['totalCharged'];
 	}else{ //redirect if not found
@@ -15,6 +16,16 @@
 
 	// //redirect to success: 
 	// header('Location: success.php?transId='.$charge->id.'&totalCharged='.$charge->amount.'&paymentFor='.$charge->description);
+	include_once '../db/connect_db.php'; 
+	include_once '../Controller/functions.php';
+	$addPaymentToMyDb = mysql_query("update `place_orders` 
+																	set
+																		order_is_paid = 1 ,
+																		order_active = 1 ,
+																		 trans_id = '$transId'
+																	where 
+																		order_id = '$orderId' 
+														limit 1"); //activate payment and order is paid, also make sure to add the payment info such as transId, Total Paid.
 ?>
 <!DOCTYPE html>
 <head>
@@ -27,9 +38,11 @@
 
 <body>
 <div class="container mt-4">		
-	<p>Thank you - <?php echo $paymentFor;?></p>
-	<p>Your transaction id is: <?php echo $cust_id;?></p>
-	<p>Your Charge is: <?php echo $totalCharged;?></p>
+	<p>Thank you!</p>
+	<p><?php echo $paymentFor;?></p>
+	<p>Your transaction id is: <?php echo $transId;?></p>
+	<p>Your Order Number is: <?php echo $orderId;?></p>
+	<p>You successfully paid an amount of: $<?php echo $totalCharged;?></p>
 
 	<a href="index.php"><button class="mt-4 btn btn-success">Go to Home Page</button></a>
 </div>

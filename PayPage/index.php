@@ -16,6 +16,24 @@
 		if(mysql_num_rows($findIfOrderIdIsFound) < 1){
 			header('Location: ../index.php'); //if order is is active or not found, then redirect
 		}else{ //if not active, not paid, show the form to pay
+		//first get these info to pass two main things: 
+		//1. the order id that will add the info to it.
+		//get business name:
+		$row = mysql_fetch_array($findIfOrderIdIsFound);
+		$totalIs = $row['total_is'];
+		$order_id = $row['order_id'];
+		$customer_id = $row['customer_id'];
+		$total_business_customer_info = $row['total_business_customer_info'];
+		//get user name from above:
+		$getBusinesInfo = json_decode($total_business_customer_info, true);
+		$customerName = "";
+		$businessName = "";
+		foreach($getBusinesInfo as $val){ //must be in a foreach loop to get all data inside, even if only array
+			$customerName = $val['getUserName'];
+			$businessName = $val['getBusinessName'];
+		}
+		//2. amount to be paid
+		
 ?>
 <!DOCTYPE html>
 <head>
@@ -24,18 +42,20 @@
 	<meta http-equiv="X-UA-Compatible" content="ie-edge">
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-	<title>Stripe Pay Page</title>
+	<title>Pay now to <?php echo $businessName; ?> - Salah Bedeiwi Development</title>
 </head>
 
 <body>
 <!-- 0. https://stripe.com/docs/stripe-js/elements/quickstart  -->
 <div class="container">		
-	<h4 class="text-center my-3">Complete payment to proceed</h4>
+	<h4 class="text-center my-3">Complete payment to proceed or <a href="" class="text-right-right btn btn-danger">Cancel My Order</a></h4>
 	<form action="./charge.php" method="post" id="payment-form">
 	  <div class="form-row">
-	    <input type="text" class="form-control mb-3 StripeElement StripeElement--empty" name="buyerFname" placeholder="First Name"></input>
-	    <input type="text" class="form-control mb-3 StripeElement StripeElement--empty" name="buyerLname" placeholder="Last Name"></input>
-	    <input type="email" class="form-control mb-3 StripeElement StripeElement--empty" name="buyerEmail" placeholder="Email Address"></input>
+	    <input value="<?php echo $customerName;?>" type="text" class="form-control mb-3 StripeElement StripeElement--empty" id="buyerFullName" name="buyerFullName" placeholder="Your Full Name"></input>
+	    <input value="<?php echo $order_id;?>" type="text" class="form-control mb-3 StripeElement StripeElement--empty" style="display:none;" name="orderId" placeholder="OrderId"></input>
+	    <input type="text" value="<?php echo $totalIs;?>" class="form-control mb-3 StripeElement StripeElement--empty" style="display:none;" name="OrderTotal" placeholder="OrderTotal"></input>
+	    <input type="text" value="<?php echo $businessName;?>" class="form-control mb-3 StripeElement StripeElement--empty" style="display:none;" name="businessName" placeholder="businessName"></input>
+	    <!--<input type="email" class="form-control mb-3 StripeElement StripeElement--empty" name="buyerEmail" placeholder="Email Address"></input>-->
 	    <div id="card-element" class="form-control">
 	      <!-- A Stripe Element will be inserted here. -->
 	    </div>
@@ -43,7 +63,7 @@
 	    <!-- Used to display form errors. -->
 	    <div id="card-errors" role="alert"></div>
 	  </div>
-	  <button class="form-control btn btn-success">Submit Payment</button>
+	  <button class="form-control btn btn-success">Submit Payment of $<?php echo $totalIs;?></button>
 	</form>
 	<!-- 3.  -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
