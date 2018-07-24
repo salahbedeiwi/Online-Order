@@ -1,11 +1,13 @@
 <?php 
 	//now retrieve all data live for this current customer: 
-	if( !empty( $_GET['transId'] ) && !empty( $_GET['totalCharged'] ) && !empty( $_GET['paymentFor'] ) && !empty( $_GET['orderId'] ) ){
+	if( !empty( $_GET['transId'] ) && !empty( $_GET['totalCharged'] ) && !empty( $_GET['paymentFor'] ) && !empty( $_GET['orderId'] ) && !empty( $_GET['realPrice'] ) && isset( $_GET['couponCode'] ) ){
 		$GET = filter_var_array($_GET, FILTER_SANITIZE_STRING);
 		$orderId = $GET['orderId'];
 		$transId = $GET['transId'];
 		$paymentFor = $GET['paymentFor'];
 		$totalCharged = $GET['totalCharged'];
+		$realPrice = $GET['realPrice'];
+		$couponCode = $GET['couponCode'];
 	}else{ //redirect if not found
 		header('Location: index.php');
 	}
@@ -22,6 +24,8 @@
 																	set
 																		order_is_paid = 1 ,
 																		order_active = 1 ,
+																		coupon = '$couponCode' ,
+																		final_price = '$totalCharged' ,
 																		 trans_id = '$transId'
 																	where 
 																		order_id = '$orderId' 
@@ -42,7 +46,8 @@
 	<p><?php echo $paymentFor;?></p>
 	<p>Your transaction id is: <?php echo $transId;?></p>
 	<p>Your Order Number is: <?php echo $orderId;?></p>
-	<p>You successfully paid an amount of: $<?php echo $totalCharged;?></p>
+	<p>You total amount is: $<?php echo $realPrice;?></p>
+	<p>You successfully paid: $<?php echo $totalCharged;?></p>
 
 	<a href="index.php"><button class="mt-4 btn btn-success">Go to Home Page</button></a>
 </div>
