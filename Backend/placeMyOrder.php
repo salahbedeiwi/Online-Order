@@ -50,7 +50,8 @@
 			$orderId = generateRandomNumber($length = 9);
 		}
 		date_default_timezone_set("America/Chicago");
-		//note, order, order_is_paid, order_is_refunded is not active (0) by default, till it is paid, convert them all  to active (1), keep payment info empty till customer pay
+		$dicountAmount =0.00;
+		//note, order, order_is_paid, order_is_refunded is not active (0) by default, till it is paid, convert them all  to active (1), keep payment info empty till customer pay, keep coupon empty
 		$addMyOrderNow = mysql_query("insert into `place_orders` values(
 																	'',
 																	'$orderId',
@@ -66,7 +67,9 @@
 																	' ',
 																	'$myCustomerAndTotalAndBusinessTblRecords',
 																	0,
-																	0
+																	0,
+																	'',
+																	$dicountAmount
 								)");
 		if($addMyOrderNow){ //if user is added successfully
 			// if order is placed successfully, add these info on these two p's
