@@ -1,7 +1,9 @@
 <!-- 
 	Name: 		Salah Bedeiwi
 	Date: 		6/12/2018
-	Version : 	1.0.0
+	Updated on: 		7/26/2018
+	Cell: 		+1 612.644.1634
+	Version : 	Version 1.0.0 on 6/12/2018
 	Contact:	Bedei001@umn.edu
 -->
 <?php
@@ -27,6 +29,12 @@
 			<section id="mainPage"><?php include $getPages['mainContent']; ?></section>
 			<!-- Include footer -->
 			<footer id="header"><?php include $getPages['footer']; ?></footer>
+			<!-- Include Stripe Payment -->
+			<!--
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script src="https://js.stripe.com/v3/"></script>
+			<script src="layout/javascript/chargeStripe.js"></script>
+			-->
 			<!-- Include main js -->
 			<script src=<?php echo $src['js']; ?>></script>
 		</body>
