@@ -1,3 +1,7 @@
 <div class="container text-center">
-	<h1>Online Order - Footer</h1>
+	<div id="myFooter">
+	<!-- Add my business info here -->
+	<!-- Add my business logo here -->
+	<!-- Add developer info -->
+	</div>
 </div>
