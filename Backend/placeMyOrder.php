@@ -34,7 +34,7 @@
 			$myPickUpDate = $val['orderDate']; //get pick up date
 			$myPickUpTime = $val['orderTime']; //get pick up time
 		}
-		echo "<p>Your order summary before payment: <a href='#showPaymentBtns'>Pay Now</a></p><ul class='list-group col-sm-6'>";
+		echo "<p>Your order below is about to be placed: please <a href='#showPaymentBtns'>Pay Now</a></p><ul class='list-group col-sm-6'>";
 		foreach($myOrderTblRecords_db as $val){
 				echo "<li class='list-group-item'>".$val['itemName']." <span class='badge'>$".$val['itemPrice']."</span></li>";
 		}
@@ -73,7 +73,7 @@
 								)");
 		if($addMyOrderNow){ //if user is added successfully
 			// if order is placed successfully, add these info on these two p's
-			echo "<p id='showMyPaymentToProcess'>Your almost done, please pay now!</p>"; //note, i will check this p size, so i can add my payment
+			echo "<p id='showMyPaymentToProcess'>You are one step away, please pay now!</p>"; //note, i will check this p size, so i can add my payment
 			echo "<p class='hide' id='showMyOrderId'>$orderId</p>"; //note, i will check this p id, so i can it to my payment
 		}else{
 			//if order not success or not added, add place order btn again: and keep next two p's just empty

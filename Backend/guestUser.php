@@ -28,7 +28,7 @@
 								)"); //note, not active, not subscribed, user id is the same as the pass, email is like guest_userId@userId.now. 
 		if($addNewUsers){ //if user is added successfully
 			// Say thanks for subscribing
-			echo "<p>Thank you $guestUserName! Click next to proceed this order!</p>";
+			echo "<p>Thank you $guestUserName! Now, click next to confirm your order!</p>";
 			echo '<br><button class="btn btn-info showGetPaymentBtn" onclick="showThisSection(\'paymentSection\')">Next</button><br/>';
 			echo "<p class='hide'>Customer Id is: <span id='currentCustomerUniqueId'>$client_id</span></p>"; //userLogInId
 			echo "<p class='hide'>Name is: <span id='currentCustomerUniqueName'>".ucwords($guestUserName)."</span></p>"; //userLogInName
