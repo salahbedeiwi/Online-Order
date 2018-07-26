@@ -12,6 +12,8 @@ document.body.appendChild(script);
 */
 //add all locations on here: 
 var businessName = "Hooks Fish - Chips"; //make sure you update this for every business - DON'T USE SPECIAL CHARS LIKE &,....
+var businessLogo = "layout/img/Logo/HooksFishAndChipsBrooklynParkAndStPaulMN.png"; //add business logo here
+//note: you need to update the hours for every day on the pickup time - addHours function and if(showCurrentElement == 'pickUpTimeSection'){}
 var getLocations = [
 	{
 		"id" : 0,
@@ -44,7 +46,7 @@ var getPaymentType = [ //payment type, accept payment?, which location will use 
 	{ "paymentType": "paypal", "acceptPayment": "yes", "applyToLocationNumber" : getLocations[1].id }
 ];
 //my categories
-var categories = [ "Dinners", "Lunch", "Breakfast", "Side Orders", "Specials" ];
+var categories = [ "Dinners", "Lunch", "Breakfast", "Side Orders", "Specials", "Sandwiches" ];
 var customSelectDown = [
 					{id:1, "item":"small", "price": 2.99}, //0
 					{id:2, "item":"medium", "price": 3.99}, //1
@@ -56,24 +58,32 @@ var customSelectDown = [
 //custom each item - to have these extras on it when click on custom button
 var customDinners = [
 		//each custom item is unique (id)
-	{	"id" : 1, "custItem" : "Extra Meat", "price": 15.99}, //0 & 1 index
-	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 5.99},
-	{	"id" : 3, "custItem" : "Catfish and Shrimp", "price": 9.99},
+	{	"id" : 1, "custItem" : "Extra Meat", "price": 2.49}, //0 & 1 index
+	{	"id" : 2, "custItem" : "Upgrade Lemonade", "price": 1.49},
+	{	"id" : 3, "custItem" : "Extra Sauce", "price": 0.49},
 	{	"id" : 4, "custItem" : "Burgers and Wings", "price": 3.99},
-	{	"id" : 5, "custItem" : "Mango Juice and Org.", "price": 1.99},
-	{	"id" : 6, "custItem" : "Chilly", "price": 19.99},
-	{	"id" : 7, "custItem" : "40 Chx Wings", "price": 29.99},
+	{	"id" : 5, "custItem" : "Double Cheese Burger", "price": 1.99},
+	{	"id" : 6, "custItem" : "No Vege", "price": 0.00},
+	{	"id" : 7, "custItem" : "Extra Vege", "price": 0.99},
+	{	"id" : 8, "custItem" : "Extra Cheese", "price": 0.79},
+	{	"id" : 9, "custItem" : "No Cheese", "price": 0.00},
 ];
 //don't use & or any special char on any string
 var Menu = { "Menu" :
 	[
 	{
 		"id"			: 1, //item unique id number
-		"Category" 		: categories[0], //choose the category to be displayed under
-		"Item"			: "Catfish and Shrimp", //item name
-		"Price"			: 15.99, //item price
+		"Category" 		: categories[5], //choose the category to be displayed under
+		"Item"			: "Cheese Burger", //item name
+		"Price"			: 4.99, //item price
 		"IsCustomItem"	: true, //show custom button if is true
-		"CustomItem"	: [customDinners[0]], //invoke only if IsCustomItem is true
+		"CustomItem"	: [
+									customDinners[4],
+									customDinners[5],
+									customDinners[6],
+									customDinners[7],
+									customDinners[8],
+								], //invoke only if IsCustomItem is true
 		"HaveImage"		: true, //show image?
 		"ImgUrl"		: "layout/img/Design/Food-Images.png",//invoke only if HaveImage is true
 		"IsDescriped"	: false, //no description
@@ -256,7 +266,7 @@ function loadingImg(id){
 }
 //load main Image after selecting the location
 function loadingMainImgAfterLocationIsSelected(id){
-	selectElement(id).innerHTML = "<img src='layout/img/Design/Screen-Shot-2018-04-24-at-1.49.12-PM-e1524694734911.png' class='img-responsive img-rounded center-block' alt='' title='loading'/>";
+	selectElement(id).innerHTML = "<img src='layout/img/Design/what-is-on-the-menu-is.png' class='img-responsive img-rounded center-block' alt='' title='loading'/>";
 }
 //set cookies : cookiesName, When does it expire
 function setCookie(cname, cvalue, extraHours) {
@@ -352,9 +362,9 @@ function loadMenu(rslt){
 							"<tr><th></th><th class='text-center'>Taxes(<span id='selectedLocationTaxes'></span>%)</th><th class='pricesTitle'>$<span id='addTaxTotalHere'>0.00</span></th></tr>" +
 							"<tr><th></th><th class='text-center'>Sub Total</th><th class='pricesTitle'><span>$</span><span class='addSubTotalHere' id='getSubTotalHere'>0.00</span></th></tr>"+
 							"<tr><th></th><th class='text-center'>Total</th><th class='pricesTitle'><span>$</span><span class='addTotalHere' id='AddFinalTotalHere'>0.00</span></th></tr>"+
-					"</tfoot></table></div><button class='pull-right btn btn-info ' onclick='showThisSection(\"pickUpTimeSection\")' style='display:none' id='viewPickUpTimeBtn-1'>Next</button>";
-	txt1  += '<p>Pick up time : <span class="timePicked">---</span></p>'+
-								  '<p>Pick up date : <span class="datePicked">---</span></p>'; //add both pick up time and date here
+					"</tfoot></table></div><br><button class='pull-right btn btn-info col-xs-12 showOnBottomOfThePage' onclick='showThisSection(\"pickUpTimeSection\")' style='display:none' id='viewPickUpTimeBtn-1'>Next</button>";
+	txt1  += '<p style="display:none">Pick up time : <span class="timePicked">---</span></p>'+
+								  '<p  style="display:none">Pick up date : <span class="datePicked">---</span></p>'; //add both pick up time and date here
 	txt1 += '</div></div>'; //end of col-sm-4 and mainMenuAndCheckoutOrder div - see your orders that have been added
 	txt1 += '<div class="hide pickUpTimeSection"></div>'; //pick UpTime Section
 	txt1 += '<div class="hide getCustomerRecordSection"></div>'; //get Customer Record Section
@@ -364,6 +374,7 @@ function loadMenu(rslt){
     loadingMainImgAfterLocationIsSelected("addRelatedMenu"); //load this image and then later append the menu
 	//also show the current tax percentage
 	getCurrentTaxesOf('selectedLocationTaxes', 'locationSelectedNumber');
+	selectCurrentDateToTheMainMenu('datePicked');//add date automatically to the main page
 } // load my menu
 function showThisSection(showCurrentElement){
 	//hide all but current - showCurrentElement
@@ -375,10 +386,22 @@ function showThisSection(showCurrentElement){
 	document.querySelectorAll('.'+showCurrentElement)[0].classList.remove('hide'); //show main menu - note [0], since querySelector return an array
 	if(showCurrentElement == 'pickUpTimeSection'){ //if selected element is pick up form
 		document.querySelector('.pickUpTimeSection').innerHTML = pickUpTimeForm(); //get pickUp time form
+		//add current date by default	
+		selectCurrentDateByDefault('pickupDateIs');
 		document.getElementById('pickupTimeIs').value = document.querySelector('.timePicked').innerText;//let the value be the same as selected before
 		document.getElementById('pickupDateIs').value = document.querySelector('.datePicked').innerText;//let the value be the same as selected before
 		showOrHideNextBtnToShowCustomerRecordForm(); //show or hide the next btn based on date/time picked up empty or not
 		getTodayDateForMyCalendar();//make the dates selected to be at least todays date
+		//add hours to be picked
+		//note every day is different, so choose hours for every date:
+		var todayDayIs = new Date();
+		if( todayDayIs.getDay() == 0 ) addHours(9, 21, 'pickupTimeIs'); //if Sun from 10 am to 10pm
+		else if(todayDayIs.getDay() == 1) addHours(9, 21, 'pickupTimeIs'); //if Mon
+		else if(todayDayIs.getDay() == 2) addHours(9, 21, 'pickupTimeIs'); //if Tue
+		else if(todayDayIs.getDay() == 3) addHours(9, 21, 'pickupTimeIs'); //if Wed
+		else if(todayDayIs.getDay() == 4) addHours(10, 19, 'pickupTimeIs'); //if Thu - from 11 am to 8 pm
+		else if(todayDayIs.getDay() == 5) addHours(9, 21, 'pickupTimeIs'); //if Fri
+		else if(todayDayIs.getDay() == 6) addHours(9, 21, 'pickupTimeIs'); //if Sat
 	}
 	if(showCurrentElement == 'getCustomerRecordSection'){ //if selected element is get customer info (login/register/guest) form
 		document.querySelector('.getCustomerRecordSection').innerHTML = getCustomerRecord(); //get pickUp time form
@@ -404,6 +427,50 @@ function pickUpTimeForm(){
 			pickUpForm  += "</div>"; 
 	return pickUpForm;
 }
+//select Current Date By Default
+function selectCurrentDateByDefault(addTo) {
+    var d = new Date();
+    var y = d.getFullYear();
+    var day = d.getDate();
+    var month = d.getMonth()+1;
+    if(month < 10){ month = ("0"+month).toString()} //add 0 to the beginning of the value if less than 10
+    if(day < 10){ day = ("0"+day).toString()}//add 0 to the beginning of the value if less than 10
+    var n = (y+"-"+month+"-"+day).toString();
+    document.getElementById(addTo).value = n;
+}
+function selectCurrentDateToTheMainMenu(addTo) {
+    var d = new Date();
+    var y = d.getFullYear();
+    var day = d.getDate();
+    var month = d.getMonth()+1;
+    if(month < 10){ month = ("0"+month).toString()} //add 0 to the beginning of the value if less than 10
+    if(day < 10){ day = ("0"+day).toString()}//add 0 to the beginning of the value if less than 10
+    var n = (y+"-"+month+"-"+day).toString();
+    document.querySelector('.'+addTo).innerText = n;
+}
+//add hours
+function addHours(start, end, addTo){
+	var dailyHours = [1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12]; //get all hours in order
+	var dividedHours = [00,15,30,45]; //divide every hour as i like
+	var addEasily = document.getElementById(addTo); //where to add the results
+	//now for every hours division like 00,15,30,45. add it the each of the hours
+	//pick the time to start from: 0 - means 12 am
+	var startTime = start; //9 means starts at 10 am 
+	//pick the time to end from: 15 - means 4 pm
+	var endTime = end; //21 means ends at 10 pm
+	for(var i = startTime; i < endTime; i++){
+		for(var n = 0; n < dividedHours.length; n++){
+			if(i <= 11){
+				var hours = dailyHours[i]+":"+dividedHours[n];
+				var hoursVal = dailyHours[i]+":"+dividedHours[n]+" AM";
+			}else if(i > 11 && i <=22){
+				var hours = dailyHours[i]+12+":"+dividedHours[n]; //MAKE SURE I ADD 12 to the value so it can be stored on db correctly in 24 hours format
+				var hoursVal = dailyHours[i]+":"+dividedHours[n]+" PM";
+			}
+			addEasily.innerHTML += "<option value="+hours+">"+hoursVal+"</option>";
+		}
+	}
+}
 //get body of the pickup order
 function mainPickUpTimeSection(){
 	var 	myForm   = '<div>';
@@ -414,7 +481,8 @@ function mainPickUpTimeSection(){
 								'</div>';
 			myForm += '<div class="form-group">'+
 								  '<label for="pickupTimeIs">Pick Time:</label>'+
-								  '<input type="time" class="form-control" id="pickupTimeIs" required="required">'+
+								  '<select class="form-control" id="pickupTimeIs"></select>'+
+								  // '<input type="time" class="form-control" id="pickupTimeIs" required="required">'+
 								  '<span class="help-block">What time do you like to pick up your order?</span>'+
 								'</div>';
 			myForm += '<div class="form-group">'+
@@ -428,6 +496,7 @@ function mainPickUpTimeSection(){
 								'</div>';
 			*/
 			myForm += '</div>';
+			
 	return myForm;
 }
 //on click on add Order Time and Pickup: 
@@ -533,7 +602,8 @@ function getPaymentForms(){
 }
 function placeMyCurrentOrderBtn(){
 	//place an order btn:
-	var  myPlaceOrderBtn  = "<button class='btn btn-info  addCustomOrderToCart' onclick='placeMyOrderNow(this)'>Pay for my Order</button>";
+	var  myPlaceOrderBtn  = "<p>Click below to confirm your order is correct. Note: You may want to go back if you like to make changes to your order.</p>";
+			myPlaceOrderBtn  += "<button class='btn btn-info' onclick='placeMyOrderNow(this)'>Yes, I like to proceed</button>";
 			myPlaceOrderBtn += "<div id='showPlacingOrderError'></div>";//show errors here
 			
 			return myPlaceOrderBtn;
@@ -543,7 +613,7 @@ function payForOrderBtn(){
 		   var getPlacedOrderId = document.getElementById('showMyOrderId').innerHTML;
 			// var getPlacedOrderTotal = document.getElementById('showMyOrderTotal').innerHTML;
 			var myLinkToGoTo = "PayPage/index.php?orderId="+ getPlacedOrderId;
-			var showMyPaymentBtns = "<a href='"+myLinkToGoTo+"'><button class='btn btn-info  addCustomOrderToCart'>Place my Order</button></a>";					
+			var showMyPaymentBtns = "<a href='"+myLinkToGoTo+"'><button class='btn btn-info  addCustomOrderToCart'>I'm ready to pay now</button></a>";					
 			return showMyPaymentBtns;
 
 }
@@ -746,6 +816,7 @@ function mainLoginFormSection(){
 							'<div class="input-group">'+
 							  '<button type="submit" class="pull-right btn btn-info" onclick="getNormalUserParamValidate()" >Login</button>'+
 							'</div>'+
+							'<br>'+
 							'<div class="input-group">'+
 							  '<div id="showErrorsHere"></div>'+
 							'</div>';
@@ -1071,7 +1142,8 @@ function displayLocationMenu(){ //on selecting a location
 			//add a cookie for the location: make it exprie after an hour from now
 			setCookie("LocationSelectedIs", selectedLocation, 0.5); //cookie: LocationSelectedIs to be expired in 0.5 day(s)
 			selectElement("selectLocationDropDown").innerHTML = yourSelectedLocationIs ; //show location number and address here once selected
-			selectElement("selectLocationDropDown").style.backgroundColor = "rgb(100, 149, 237)"; //give parentElement a different background
+			selectElement("selectLocationDropDown").style.backgroundColor = "rgba(57, 81, 101, 0.7)"; //give parentElement a different background
+			selectElement("selectLocationDropDown").style.border = "1px solid rgb(181, 120, 45)"; //give parentElement a different background
 			exitCurrentAnyItem('close');//this element can be hidden/exit - ok
 		// selectLocationDropDown
 	}
@@ -1165,8 +1237,8 @@ function getRelatedMenu(value){
 				customOrder += '<div class="collapse" id="collapseItem_'+itemId+'"><div class="addTitleToCustomItems">'+
 															customItemTitle+'<div class="gridSection mt-12" id="showCustomItemsHere_'+itemId+
 																'"></div></div>'+
-																'<button class="btn btn-info addCustomOrderToCart" onclick="addAllCurrentCustomItem(this,\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\',\'addYourOrderHere\')">Add to Cart</button></h3>'+
-																'<button class="pull-right btn btn-danger addCustomOrderToCart" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\')">Clear All</button></h3>'+clearHTMLDiv+
+																'<button class="btn btn-primary" onclick="addAllCurrentCustomItem(this,\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\',\'addYourOrderHere\')">Add to Order</button></h3>'+
+																'<button class="pull-right btn btn-danger addCustomOrderToCart" onclick="removeAllCurrentCustomItem(\'showCustomAddedOrder_'+itemId+'\',\''+itemId+'\')">Start Over</button></h3>'+clearHTMLDiv+
 																'<div class="table-responsive tableCheckOrder"><table class="table"><tbody class="p2 showCustomAddedOrder_'+itemId+'" id="showCustomAddedOrder_'+itemId+'"></tbody></table></div>'+
 																'</div></div>';
 																//add in between the custom items and also show the custom items being added
@@ -1181,7 +1253,7 @@ function getRelatedMenu(value){
 					customItemDetails += '<div class="col-xs-5 eachItemCustomName">' + Menu['Menu'][x].CustomItem[y].custItem + ' </div>';
 					customItemDetails += '<div class="col-xs-2"> $' + Menu['Menu'][x].CustomItem[y].price + '</div>';
 					customItemDetails += '<div class="col-xs-4 form-group" role="group" aria-label="select item">';	
-					customItemDetails += '<button type="button" class="addCustomSelectionBtn btn btn-info col-xs-12" onclick="addCustomItemToPreCheckOut('+Menu['Menu'][x].CustomItem[y].id+ ', \''+ addTo+'\')">'+
+					customItemDetails += '<button type="button" class="addCustomSelectionBtn btn btn-warning col-xs-12" onclick="addCustomItemToPreCheckOut('+Menu['Menu'][x].CustomItem[y].id+ ', \''+ addTo+'\')">'+
 															addBtnGlyphicon + '</button></div>'+
 																clearHTMLDiv;
 					customItemDetails += '</div>';
@@ -1483,3 +1555,10 @@ function addTotalTaxes(){
 	var rslt =  getTotalOfTaxes(addResultsTo);
 	return rslt;
 }
+//my footer: 
+(function addMyInfoToFooter(){
+	var myFooterSection = selectElement('myFooter');
+	myFooter.innerHTML = "<div class='col-sm-4 col-xs-4'><img style='height:30px' src='"+businessLogo+"' title='"+businessName+"' alt='Image for "+businessName+"' class='img-responsive center-block'/></div>";//logo
+	myFooter.innerHTML += "<div class='col-sm-4 col-xs-8' style='line-height: 2;'>"+businessName+"</div>"; //business name
+	myFooter.innerHTML += "<div class='col-sm-4'  style='line-height: 2;'>Developed By: <a title='Salah Bedeiwi - 612 644 1634' alt='Salah Bedeiwi - 612 644 1634' href='http://salahbedeiwi.com' target='blank'>Salah Bedeiwi</a></div>";
+})();
