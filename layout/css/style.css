@@ -5,10 +5,57 @@
 	Copyright	: Custom Work!
 */
 body{
-	background-color: rgb(225, 225, 225); /* #0b0b59*/
-	color: rgb(167, 123, 65);
 	font-family: serif;
+    background-image: url("../img/Design/Food-Images.jpg");
+    /* height: 110%;  */
+    /* background-position: center; */
+    background-repeat: repeat;
+    /* background-size: contain; */
+	color: rgb(240, 248, 255);
 }
+.bgBlack {
+	background-color: rgba(255, 255, 255, 0.39);
+    background-image: url("../img/Design/hooksFishingRods.jpg");
+    /* height: 110%; */
+    /* background-position: center; */
+    background-repeat: repeat;
+    /* background-size: contain; */
+	min-height: 600px;
+    padding-top: 10px;
+}
+header p{
+	background-color: rgb(20, 44, 74);
+    color: rgb(222, 139, 14);
+    border-bottom: 1px solid rgb(255, 255, 255);
+    position: fixed;
+    padding: 5px;
+    z-index: 1000;
+    width: 100%;
+    top: 0;
+}
+footer{
+	background-color: rgb(20, 44, 74);
+    color: rgb(222, 139, 14);
+    border-bottom: 1px solid rgb(255, 255, 255);
+    margin-bottom: 0;
+    /* padding: 5px; */
+}
+footer{
+	
+}
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 4px 15px;
+    margin-bottom: -1px;
+    background-color: #35000000;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.list-group li{
+	color: #de8b0e
+}
+#mainPage{margin-top:50px;}
 .mt-12 {
 	margin-top: 12px
 }
@@ -19,49 +66,54 @@ body{
 .mb30 {margin-bottom: 30px;}
 /* main page : select location */
 .showLocation {
-    background-color: rgb(225, 225, 225);
-    border: 2px solid rgb(230, 223, 193);
-    border-radius: 5%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    color: rgb(60, 118, 61);
+       /* background-color: rgb(225, 225, 225); */
+    /* border: 2px solid rgb(230, 223, 193); */
+    /* border-radius: 5%; */
     font-size: 1.5em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: rgb(233, 240, 246);
     padding: 10px;
-    margin: 10.33% 33.33% auto 33.33%;
-    width: 33.33%;
+    margin: auto 14.33%;
+	border-radius: 5px;
+    /* width: 33.33%; */
 }
 .showMenu {
-    background-color:  rgb(225, 225, 225);
-    border: 2px solid rgb(230, 223, 193);
-    border-radius: 5%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    color: rgb(60, 118, 61);
-    height: 1200px;
-    padding: 10px;
-    margin: 2%;
-    min-height: 500px;
+    /* background-color:  rgb(225, 225, 225); */
+    /* border: 2px solid rgb(230, 223, 193); */
+    /* border-radius: 5%; */
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+    /* color: rgb(60, 118, 61); */
+    /* height: 1200px; */
+    /* padding: 10px; */
+    /* margin: 2%; */
+    /* min-height: 500px; */
 }
 .menuItemsSmall {
-    background-color:  rgb(225, 225, 225);
-    border: 2px solid rgb(230, 223, 193);
+    background-color: rgba(247, 247, 244, 0.23);
+    border: 1px solid rgb(230, 223, 193);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: rgb(49, 112, 143);
-    margin: 30px 0px
+    margin: 30px 0px;
+    border-radius: 6px;
 }
 .itemPrice {
 	position: relative;
     right: 0px;
-    background-color: rgba(87, 2, 2, 0.1607843137254902);
-    color: rgb(0, 0, 0);
+    background-color: rgb(47, 47, 47);
+    color: rgb(255, 255, 255);
     padding: 2px;
     border-radius: 9%;
     top: -13px;
-    border-bottom: 2px solid rgb(9, 33, 54);
+    border-bottom: 2px solid rgb(183, 121, 45);
     text-align: center;
     font-style: oblique;
     font-size: medium;
 }
+.text-muted {
+    color: rgb(255, 255, 255);
+}
 .itemName{
-	color: rgb(30, 13, 13);
+	color: rgb(222, 139, 14);
     font-family: serif;
     font-size: 1.2em;
     font-style: unset;
@@ -80,15 +132,20 @@ body{
 
 }
 .orderBtnSection{
-	background-color: rgb(225, 225, 225);
+	/* background-color: rgb(225, 225, 225); */
     padding: 10px;
 }
 .orderBtnSection .gridSection {
     display: grid;
 }
 .customItemOptions {
-    color: rgb(105, 105, 105);
-	padding: 5px;
+    color: rgb(255, 255, 255);
+	/* padding: 5px; */
+}
+.btn-warning {
+    color: #fff;
+    background-color: rgba(219, 131, 25, 0.71);
+    border-color: rgb(247, 251, 247);
 }
 .customItemOptions .eachItemCustomName::before {
     content: " - ";
@@ -105,8 +162,8 @@ body{
 }
 /*override bootstrap*/
 .btn-info {
-    background-color: rgb(121, 143, 99);
-    border: 1px solid rgb(222, 184, 135);
+    background-color: rgba(11, 154, 16, 0.43);
+    border: 1px solid rgb(255, 255, 255);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: rgb(255, 255, 255);
 }
@@ -122,33 +179,69 @@ body{
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {border-top: 0}
 #addYourOrderHere tr > td, .table>thead>tr>th  {padding:0; border-bottom:none}
 .tableCheckOrder {
-	background-color: rgb(48, 123, 184);
+	/*background-color:rgb(20, 44, 74); */
     height: auto; /*350px*/
     overflow-x: auto;
     color: rgb(240, 248, 255);
-    padding: 6px 0 0 16px;
+    /* padding: 4px 0 0 11px; */
     text-align: left;
     font-family: sans-serif;
+	border: none;
+}
+.gridSection .form-group {
+    margin-bottom: 10px;
 }
 .hide{display:none;}
 .show{display:block;}
 * {
   box-sizing: border-box;
 }
-.hideCurrentSelectedLocation{
-	font-size: 0.8em;
-    border-bottom: 1px solid;
-    background-color: rgb(255, 250, 240);
-    border-radius: 3px;
-    color: rgb(165, 42, 42);
+.btn-primary {
+    background-color: rgba(38, 76, 109, 0.6313725490196078);
+    border-color: rgba(38, 76, 109, 0.6313725490196078);
+    border: 1px solid rgb(222, 139, 30);
 }
-.hideCurrentSelectedLocation .close {opacity: 1}
+.btn-primary:hover {
+    background-color: rgb(40, 96, 144);
+    border-color: rgb(219, 131, 25);
+}
+.hideCurrentSelectedLocation{
+	/* font-size: 0.8em; */
+    /* border-bottom: 1px solid; */
+    /* background-color: rgb(255, 250, 240); */
+    /* border-radius: 3px; */
+    color: rgb(255, 255, 255);
+}
+.hideCurrentSelectedLocation .close {
+	opacity: 1;
+	line-height: unset;
+    padding-right: 6px;
+}
 .checkOutHeaderTitle, .checkOutBottomTitle{
-	background-color: rgb(121, 144, 99);
+	background-color: rgba(51, 75, 96, 0.75);
     color: rgb(240, 248, 255);
     padding: 6px 0 0 10px;
-    border-bottom: 2px solid;
-    border-top: 2px solid;
+    border-bottom: 1px solid rgb(222, 139, 30);
+    border-top: 1px solid rgb(222, 139, 30);
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #f1e8e8;
+    background-color: #354d62;
+    background-image: none;
+    border: 1px solid #a17135;
+    border-radius: 4px;
+    font-weight: bold;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 .checkOutBottomTitle{padding:0}
 tbody.p2 > tr > td {padding:2px}
@@ -158,21 +251,68 @@ tbody.p2 > tr > td {padding:2px}
 	float: right;
     padding-right: 17px;
 }
-.addCustomOrderToCart{background-color: rgb(148, 11, 11) !important;}
+#showFeedBackResponse{
+	background-color: rgba(7, 7, 7, 0.3411764705882353);
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+#showPlaceOrderBtn, #showPaymentBtns{
+	background-color: rgba(7, 7, 7, 0.3411764705882353);
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-top: 51px;
+}
+.addCustomOrderToCart{background-color: rgba(148, 11, 11, 0.54) !important;margin-right: 3px;}
 .addCustomOrderToCart:hover{background-color:rgb(160, 53, 53) !important;}
 .error{color: rgb(148, 11, 11) !important}
+/*stipe form css*/
+/**
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+.StripeElement {
+  background-color: white;
+  height: 40px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+.help-block {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: rgb(237, 246, 255);
+}
 /* Small Screens: iphone, samsungs, ... */
 @media screen and (max-width: 776px) {
   	.showLocation {
-		background-color: rgb(225, 225, 225);
-		border: 2px solid rgb(230, 223, 193);
-		border-radius: 5%;
+		/* background-color: rgb(225, 225, 225); */
+		/* border: 2px solid rgb(230, 223, 193); */
+		/* border-radius: 5%; */
+		/* font-size: 1.5em; */
+		/* padding: 5px; */
+		border-radius: 5px;
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		color: rgb(60, 118, 61);
-		font-size: 1.5em;
-		padding: 5px;
-		margin: 10% auto;
-		width: 90%;
+		color: rgb(250, 250, 249);
+		margin: auto 10% ;
+		width: 80%;
 	}
 	.tableCheckOrder {
 		height:auto;
@@ -182,18 +322,30 @@ tbody.p2 > tr > td {padding:2px}
 	    right: 3px;
 	}
 	.showMenu {
-		background-color: rgb(225, 225, 225);
-		border: 2px solid rgb(230, 223, 193);
-		border-radius: 5%;
-		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-		color: rgb(60, 118, 61);
+		/* background-color: rgb(225, 225, 225); */
+		/* border: 2px solid rgb(230, 223, 193); */
+		/* border-radius: 5%; */
+		/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+		/* color: rgb(60, 118, 61); */
 		padding:1px;
 		margin:1px;
-		width:100%;
+		/* width:100%; */
 		height:auto;
 	}
 	.orderBtnSection {
 		padding: 4px;
 	}
 	.container{padding:0}
+	header p {width:100%;}
+	/*show the next bottom of the main checkout order at the bottom of the page*/
+	.showOnBottomOfThePage{
+		position: fixed;
+		left: 0px;
+		bottom: 0;
+		width: 100%;
+		height: 38px;
+		opacity: 1;
+		background-color: rgba(11, 154, 16, 0.94);
+		z-index: 1200;
+	}
 }
