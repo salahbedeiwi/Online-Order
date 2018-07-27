@@ -43,12 +43,66 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 	<title>Pay now to <?php echo $businessName; ?> - Salah Bedeiwi Development</title>
+	<style>
+	.mainForm {
+		background-image: url(img/paymentBackground.jpg);
+		padding: 10px;
+		background-size: inherit;
+		background-repeat: inherit;
+		color: aliceblue;
+	}
+	body{
+		margin: 0;
+		font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		background-color: rgb(43, 86, 165);
+		color: rgb(242, 244, 245);
+		text-align: left;
+	}
+	.showPaymentTotal{
+		text-align: center;
+		font-size: 4em;
+	}
+	.form-control {
+		display: block;
+		width: 100%;
+		padding: .375rem .75rem;
+		font-size: 1rem;
+		line-height: 1.5;
+		color: #1c1624;
+		background-color: #ffffff;
+		background-clip: padding-box;
+		border: 1px solid #ffffff;
+		border-radius: .25rem;
+		transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	}
+	.proceedMyOrderNow{
+		display: block;
+		width: 100%;
+		padding: .375rem .75rem;
+		font-size: 1rem;
+		line-height: 1.5;
+		color: #ffffff;
+		background-color: #2b56a5;
+		background-clip: padding-box;
+		border: 1px solid #ffffff;
+		border-radius: .25rem;
+		transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out
+	}
+	.proceedMyOrderNow:hover {
+		color: #fff;
+		background-color: #1c4288;
+		border-color: #ffffff;
+	}
+	</style>
 </head>
 
 <body>
 <!-- 0. https://stripe.com/docs/stripe-js/elements/quickstart  -->
-<div class="container">		
-	<h4 class="text-center my-3">Complete payment to proceed</h4>
+<div class="container mainForm">		
+	<h4 class="text-center my-3">Order Number: <?php echo $order_id;?></h4>
 	<!-- Check For Dicount	 -->
 	<div style="float:right">
 		<div class="" onclick="showHideDeletingDiscount()">
@@ -56,13 +110,22 @@
 			<label class="switch"><input type="checkbox" id="showCouponBtnOrder">
 			<span class="slider round"></span>
 		</div>
-		<div style="display:none" id="showCouponOrderSection">
-			<div style="float:right">
-				<input placeholder="Enter Code Here" class="btn btn-success" type="text" id="myDiscountCode"></input>
-				<button class="text-right btn btn-danger" onclick="findCurrentCode()">Use Code</button><br>
+		<div style="display:none;" id="showCouponOrderSection">
+			<div style="float:right; background-color: black;">
+				<input placeholder="Enter Code Here" class="form-control" type="text" id="myDiscountCode"></input><br>
+				<button class="text-center btn btn-danger proceedMyOrderNow" onclick="findCurrentCode()">Use Code</button>
 				<label id="myDiscountCodeResponse"></label>
-				<p>Valid coupons will be applied.</p>
+				<p>- Only Valid coupons will be applied when proceeding to checkout.</p>
 			</div>
+		</div>
+	</div>
+	<!-- Cancel my order -->
+	<div class="clearfix"></div>
+	<div class="pt25"  style="float:right;">
+		<div class="" onclick="showHideDeletingMyOrder()"><span style="vertical-align:top">Cancel this order: </span><label class="switch"><input type="checkbox" id="showCancelBtnOrder"><span class="slider round"></span></div>
+		<div style="display:none; background-color: black;" id="showCancelOrderSection">
+			<p>Note: You will no longer retrieve your order when canceling it. You may need to reorder it.</p>
+			<form action="" method="post"><button class="text-center btn btn-warning" type="submit" name="cancelOrderNow">Yes, cancel my order now.</button></form>
 		</div>
 	</div>
 	<div class="clearfix"></div>
@@ -84,16 +147,10 @@
 	    <!-- Used to display form errors. -->
 	    <div id="card-errors" role="alert"></div>
 	  </div>
-	  <button class="form-control btn btn-success">Submit Payment of $<?php echo $totalIs;?></button>
+	  <button class="form-control btn btn-success proceedMyOrderNow">Proceed to Checkout</button>
 	</form>
-	<!-- Cancel my order -->
-	<div class="pt25"  style="float:right">
-		<div class="" onclick="showHideDeletingMyOrder()"><span style="vertical-align:top">Cancel this order: </span><label class="switch"><input type="checkbox" id="showCancelBtnOrder"><span class="slider round"></span></div>
-		<div style="display:none" id="showCancelOrderSection">
-			<p>Note: You will no longer retrieve your order when canceling it. You may need to reorder it.</p>
-			<form action="" method="post"><button class="text-right btn btn-danger" type="submit" name="cancelOrderNow">Yes, cancel my order now.</button></form>
-		</div>
-	</div>
+	<div class="clearfix"></div>
+	<p class="showPaymentTotal">$<?php echo $totalIs;?></p>
 	<?php 
 		if(isset($_POST['cancelOrderNow'])){
 			$deleteOrderNow = mysql_query("delete from `place_orders` 
@@ -133,6 +190,9 @@
 	<script src="https://js.stripe.com/v3/"></script>
 	<script src="js/charge.js"></script>
 </div>
+</div>
+<div>
+</div>
 	<script>
 	function findCurrentCode() {
 			var xhr = "";
@@ -148,8 +208,12 @@
 					document.getElementById("myDiscountCodeResponse").innerHTML = this.responseText;
 					if(this.responseText == "Not Valid"){
 						document.getElementById("myDiscountCodeRes").innerHTML = "<input type='text' style='display:none;' value='' name='myValidDiscountCode' id='myValidDiscountCode' ></input>";
+						document.getElementById("myDiscountCodeResponse").classList.remove('text-primary');
+						document.getElementById("myDiscountCodeResponse").classList.add('text-warning');
 					}else{ //if code is valid, add it to the backend
 						document.getElementById("myDiscountCodeRes").innerHTML = "<input type='text' style='display:none;' name='myValidDiscountCode' id='myValidDiscountCode' value='"+copCodeIs+"'></input>";
+						document.getElementById("myDiscountCodeResponse").classList.remove('text-warning');
+						document.getElementById("myDiscountCodeResponse").classList.add('text-primary');
 					}
 				}else if (this.readyState < 4 && this.readyState > 0){
 					document.getElementById("myDiscountCodeResponse").innerHTML = "<img src='img/loading1.gif' style='width:50px' class='img-responsive img-rounded center-block' alt='' title='loading'/>";
@@ -162,6 +226,7 @@
 			xhr.send();
 		}; //search for current coupon code.
 	</script>
+	</div>
 </body>
 
 </html>
