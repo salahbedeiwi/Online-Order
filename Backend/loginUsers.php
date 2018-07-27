@@ -24,7 +24,7 @@
 				$users_email = $row['users_email'];
 				$users_name = $row['users_name'];
 				// Say thanks for login
-				echo "<p>Thank you $users_name for logging in with us! Click next to proceed this order!</p>";
+				echo "<p>Thank you $users_name! Click next to proceed this order!</p>";
 				echo "<p>Customer Id is: <span id='currentCustomerUniqueId'>$users_id</span></p>"; //userLogInId
 				echo "<p>Name is: <span id='currentCustomerUniqueName'>".ucwords($users_name)."</span></p>"; //userLogInName
 				echo "<p>Email is: <span id='currentCustomerUniqueEmail'>".ucwords($users_email)."</span></p>"; //userLogInEmail

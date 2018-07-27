@@ -31,9 +31,9 @@
 		if($addNewUsers){ //if user is added successfully
 			// Say thanks for subscribing
 			echo "<p>Thank you $newUserName for registering with us! Click next to proceed this order!</p>";
-			echo '<br><button class="btn btn-info showGetPaymentBtn" onclick="showThisSection(\'paymentSection\')">Next</button><br>';
 			echo "<p>Customer Id is: <span id='currentCustomerUniqueId'>$client_id</span></p>"; //userLogInId
 			echo "<p>Name is: <span id='currentCustomerUniqueName'>".ucwords($newUserName)."</span></p>"; //userLogInName
 			echo "<p>Email is: <span id='currentCustomerUniqueEmail'>".ucwords($newUserEmail)."</span></p>"; //userLogInEmail
+			echo '<br><button class="btn btn-info showGetPaymentBtn" onclick="showThisSection(\'paymentSection\')">Next</button><br>';
 		}
 ?>
